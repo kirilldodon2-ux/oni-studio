@@ -1,0 +1,349 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Layout tokens ─────────────────────────────────────────────────────────
+   --oni-header-h: control surface height — advisory-only safe-zone token.
+   Mobile:  py-5 (1.25rem × 2) + h-7 reserved identity zone = 4.25rem
+   Desktop: lg:py-7 (1.75rem × 2) + md:h-8 reserved identity zone = 5.5rem
+   The control surface is fixed (not in flow). Hero height is 100svh.
+   This token is used for safe-zone content clearance (e.g. Hero top padding).
+   ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --oni-header-h: 4.25rem;
+  /* Signal-selection — accent-family residue, not full accent fill */
+  --oni-selection-bg: rgba(255, 98, 0, 0.14);
+  --oni-selection-fg: #111111;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --oni-header-h: 5.5rem;
+  }
+}
+
+html {
+  max-width: 100vw;
+  min-height: 100%;
+  /* Viewport-level horizontal containment. overflow-x: clip prevents any
+     decorative element from producing horizontal scroll without creating a
+     scroll container (safe for position: sticky children). */
+  overflow-x: clip;
+}
+
+body {
+  max-width: 100vw;
+  min-height: 100%;
+  margin: 0;
+  color: #000;
+  background: #fff;
+}
+
+/* ─── Signal selection ───────────────────────────────────────────────────────
+   Global text selection — archive inspection / latent metadata exposure.
+   CSS-only; no JS. Replaces default browser blue with atmospheric ONI residue.
+   ─────────────────────────────────────────────────────────────────────────── */
+::selection {
+  background-color: var(--oni-selection-bg);
+  color: var(--oni-selection-fg);
+  text-shadow: 0 0 0.5px rgba(17, 17, 17, 0.06);
+}
+
+::-moz-selection {
+  background-color: var(--oni-selection-bg);
+  color: var(--oni-selection-fg);
+  text-shadow: 0 0 0.5px rgba(17, 17, 17, 0.06);
+}
+
+/* WebGL canvas — avoid default grey clear before alpha composite */
+.oni-webgl canvas {
+  display: block;
+  background-color: transparent !important;
+}
+
+/* ─── Showreel media float ───────────────────────────────────────────────────
+   Slow ambient vertical drift — media only, desktop+.
+   Amplitude: 7px. Period: 8s. Physically calm.
+   Gated behind (min-width: 768px) and prefers-reduced-motion.
+   ─────────────────────────────────────────────────────────────────────────── */
+@keyframes oni-showreel-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-7px); }
+}
+
+.oni-showreel-float {
+  /* mobile: no float — save compositing budget */
+  animation: none;
+}
+
+@media (min-width: 768px) {
+  .oni-showreel-float {
+    animation: oni-showreel-float 8s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .oni-showreel-float {
+    animation: none !important;
+  }
+}
+
+/* ─── CTA spatial activation ─────────────────────────────────────────────────
+   Environmental typography field for ContactFooterSection.
+   opacity + clip-path + scaleY driven by React state (0 → active on hover/focus).
+   Transition timing is state-dependent and owned by the component (inline style):
+     emerge  — 700–850ms ease-out, 50ms onset delay (cinematic reveal)
+     recede  — 380–480ms ease-in, no delay (clean withdrawal)
+   This class exists solely to provide the prefers-reduced-motion safety gate;
+   the !important declarations override the component's inline transition values.
+   ─────────────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .oni-cta-field {
+    transition: none !important;
+    will-change: auto !important;
+  }
+}
+
+/* ─── Atmospheric motion tokens ─────────────────────────────────────────────
+   Speed cadence shared across all atmosphere systems.
+   slow · confident · nearly invisible · environmental
+   ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --atm-reveal:  1200ms;  /* cinematic opacity emergence (PresenceLayer default)  */
+  --atm-drift:   14000ms; /* ambient environmental drift period                   */
+  --atm-breath:  18000ms; /* slow spatial breathing period                        */
+  --atm-pulse:   22000ms; /* very slow scale pulse for field ring elements        */
+}
+
+/* ─── Ambient environmental drift ───────────────────────────────────────────
+   Slow, nearly invisible Y movement for decorative spatial elements.
+   Amplitude: 4px. Period: 14s. Below perceptual threshold as motion.
+   Applied via AmbientField drift={true} or the .oni-ambient-drift utility.
+   ─────────────────────────────────────────────────────────────────────────── */
+@keyframes oni-ambient-drift {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-4px); }
+}
+
+.oni-ambient-drift {
+  animation: oni-ambient-drift var(--atm-drift, 14000ms) ease-in-out infinite;
+}
+
+/* ─── Atmospheric breathing ──────────────────────────────────────────────────
+   Extremely subtle opacity oscillation for environmental field elements.
+   Applied via AmbientField breathe={true} or the .oni-breath utility.
+   Only for decorative / ornamental layers — never primary content.
+   ─────────────────────────────────────────────────────────────────────────── */
+@keyframes oni-breath {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.78; }
+}
+
+.oni-breath {
+  animation: oni-breath var(--atm-breath, 18000ms) ease-in-out infinite;
+}
+
+/* When both drift and breathe are active on the same element, the two
+   animation shorthand declarations would otherwise cascade (later wins).
+   This combined selector restores both animations simultaneously. */
+.oni-ambient-drift.oni-breath {
+  animation:
+    oni-ambient-drift var(--atm-drift, 14000ms) ease-in-out infinite,
+    oni-breath var(--atm-breath, 18000ms) ease-in-out infinite;
+}
+
+/* ─── Field pulse — scale oscillation for atmospheric ring elements ──────────
+   Extremely slow expansion: 1 → 1.012 → 1 over 22s. Below perceptual
+   threshold as motion; read as spatial breathing rather than animation.
+   Applied via .oni-field-pulse — use only on decorative ring/circle elements.
+   ─────────────────────────────────────────────────────────────────────────── */
+@keyframes oni-field-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.012); }
+}
+
+.oni-field-pulse {
+  animation: oni-field-pulse var(--atm-pulse, 22000ms) ease-in-out infinite;
+}
+
+/* Reduced-motion safety gates */
+@media (prefers-reduced-motion: reduce) {
+  .oni-ambient-drift,
+  .oni-breath,
+  .oni-field-pulse {
+    animation: none !important;
+  }
+}
+
+/* ─── Signal topology — dormant infrastructure surface ───────────────────────
+   SystemArtifact: SYSTEM ARCHITECTURES territory node field.
+   Signal scan path traverses a 162-unit polyline on a 28-second cycle:
+     0–3%   fade in          (0.84s)
+     3–38%  path draws       (9.8s — stroke-dashoffset 162 → 0)
+     38–44% fade out         (1.7s)
+     44–100% invisible hold  (15.7s — dormancy phase)
+   Duty: ~43% active, ~57% dormant. Reads as infrastructure polling.
+   animation-delay: −4200ms — system appears mid-cycle on page load,
+   reinforcing the sense that computation precedes the visitor.
+   ─────────────────────────────────────────────────────────────────────────── */
+@keyframes oni-signal-traverse {
+  0%   { stroke-dashoffset: 162; opacity: 0; }
+  3%   { opacity: 0.5; }
+  38%  { stroke-dashoffset: 0; opacity: 0.5; }
+  44%  { stroke-dashoffset: 0; opacity: 0; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+.oni-signal-traverse {
+  stroke-dashoffset: 162;
+  opacity: 0;
+  animation: oni-signal-traverse 28000ms linear infinite;
+  animation-delay: -4200ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .oni-signal-traverse {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
+
+/* ─── Archive browse — hover elevation (geometry: mediaAspect + BalancedMasonryGrid) ─
+   Raises div[role="listitem"] on hover/focus. Elevation only — no scale, no reflow.
+   See ARCHIVE_OPERATING_LOGIC.md § Canonical Authority Model.
+   ─────────────────────────────────────────────────────────────────────────── */
+[role="listitem"]:has(a:hover),
+[role="listitem"]:has(a:focus-visible) {
+  position: relative;
+  z-index: 10;
+}
+
+/* ─── Archive inspect — evidence-scale shell (separate from browse masonry) ───
+   Occupancy: archiveInspectLayout.ts. Interaction: .archive-inspect__viewport.
+   ─────────────────────────────────────────────────────────────────────────── */
+.archive-inspect {
+  --archive-inspect-stage-max: 42rem;
+}
+
+@media (min-width: 768px) {
+  .archive-inspect {
+    --archive-inspect-stage-max: 44rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .archive-inspect {
+    --archive-inspect-stage-max: 47.5rem;
+  }
+}
+
+.archive-inspect__viewport {
+  position: relative;
+  width: 100%;
+}
+
+.archive-inspect__exhibit {
+  width: 100%;
+  max-width: var(--archive-inspect-stage-max);
+  margin-inline: auto;
+  overflow: visible;
+}
+
+.archive-inspect__artifact {
+  max-width: 100%;
+  overflow: visible;
+}
+
+.archive-inspect__caption {
+  max-width: 42rem;
+  margin-inline: auto;
+}
+
+/* ─── Archive inspect hero — environmental atmosphere (hero only) ─────────────
+   Field layers only — no drop-shadow here (object grounding → media element).
+   See systems/spatial/silhouetteGrounding.ts + AI_RULES.md spatial separation.
+   ─────────────────────────────────────────────────────────────────────────── */
+.archive-hero-atmosphere {
+  position: relative;
+  overflow: visible;
+  margin-bottom: 0.75rem;
+}
+
+/* 1 — Ambient density field */
+.archive-hero-atmosphere::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 0;
+  width: 138%;
+  height: 152%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 56% 52% at 50% 48%,
+    rgba(0, 0, 0, 0.22) 0%,
+    rgba(0, 0, 0, 0.095) 30%,
+    rgba(0, 0, 0, 0.038) 52%,
+    transparent 68%
+  );
+  filter: blur(32px);
+}
+
+/* 2 — Localized edge contrast at object bounds */
+.archive-hero-atmosphere::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 0;
+  width: 104%;
+  height: 108%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 90% 88% at 50% 50%,
+    transparent 58%,
+    rgba(0, 0, 0, 0.03) 76%,
+    rgba(0, 0, 0, 0.072) 88%,
+    rgba(0, 0, 0, 0.026) 96%,
+    transparent 100%
+  );
+  filter: blur(20px);
+}
+
+.archive-hero-optical {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* 3 — Floor grounding */
+.archive-hero-separation {
+  position: absolute;
+  left: 50%;
+  bottom: -5%;
+  z-index: 0;
+  width: 72%;
+  height: 22%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 85% 100% at 50% 0%,
+    rgba(0, 0, 0, 0.19) 0%,
+    rgba(0, 0, 0, 0.075) 42%,
+    transparent 78%
+  );
+  filter: blur(28px);
+}
+
+.archive-hero-media {
+  position: relative;
+  z-index: 2;
+  overflow: visible;
+  background: transparent;
+}
