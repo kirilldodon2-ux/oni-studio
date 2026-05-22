@@ -124,7 +124,7 @@ components/
     NavLogo.tsx           ← Logo link
     NavTelemetry.tsx      ← Ambient annotation, desktop-only, pointer-events-none
     NavMenuTrigger.tsx    ← Menu trigger: MENU label + ONINavigationSigil (3D)
-    NavOverlay.tsx        ← Fullscreen menu overlay (z-50), fade-only reveal (Phase 5)
+    NavOverlay.tsx        ← Adaptive menu overlay (z-50): scrim + plane full-width `< md`, right plane `md+`
 
 public/
   frames/
@@ -549,7 +549,7 @@ All z-index values are formally owned. No undocumented or ad-hoc values.
 | Section atmosphere             | `20`          | Phase 4 section atmosphere systems             |
 | (reserved)                     | `30`          | —                                              |
 | Navigation control surface     | `40` / `50`*  | `components/navigation/index.tsx`              |
-| Menu overlay                   | `50`          | `components/navigation/NavOverlay.tsx`         |
+| Menu overlay                   | `50`          | `components/navigation/NavOverlay.tsx` — full-viewport layer; adaptive plane (full-width `< md`, partial-width right plane `md+`) |
 
 \* The control surface `<header>` is promoted from `z-40` to `z-50` while the overlay is
 active, so the trigger button remains interactive above the overlay. `NavOverlay` renders
@@ -574,7 +574,7 @@ Telemetry is desktop-only (`lg+`), `pointer-events-none`, `aria-hidden`.
 
 The closed control surface is an environmental marker layer, not a visible strip.
 It carries no persistent panel, blur, border, or full-width material treatment.
-The overlay retains its restrained material presence for legibility.
+`NavOverlay` is an **adaptive atmospheric navigation plane** (intentional): a full-viewport scrim plus a navigation plane that is full-width below `md` and a right-aligned partial-width plane on `md+` — see `NAVIGATION_ARCHITECTURE.md` §7.
 
 **ControlSurface `<header>`:**
 
@@ -585,17 +585,27 @@ The overlay retains its restrained material presence for legibility.
 | Border          | none                     | No full-width header edge                       |
 | Pointer events  | `pointer-events-none` on header; trigger opts in | The invisible band does not behave like chrome |
 
-**NavOverlay `<div>`:**
+**NavOverlay — scrim (full viewport):**
 
 | Property        | Value                    | Intent                                          |
 |-----------------|--------------------------|-------------------------------------------------|
-| Background      | `bg-white/[0.97]`        | Near-opaque; 3% bleed-through to page space     |
-| Backdrop filter | `backdrop-blur-[2px]`    | Minimal atmospheric depth below legibility floor|
+| Background      | `bg-black/[0.055]`       | Light tint; page field remains readable         |
+| Backdrop filter | `backdrop-blur-[1.5px]`  | Minimal depth; dismiss on pointer-down          |
+
+**NavOverlay — navigation plane (adaptive):**
+
+| Property        | Value                    | Intent                                          |
+|-----------------|--------------------------|-------------------------------------------------|
+| Width           | `w-full` below `md`; `md:w-[min(76vw,58rem)]`; `lg:w-[min(68vw,64rem)]` | Full-width on narrow viewports; right atmospheric plane on wide |
+| Background      | `bg-white/[0.82]`        | Near-opaque plane; field visible beside plane on `md+` |
+| Backdrop filter | `backdrop-blur-[3px]`    | Minimal atmospheric depth below legibility floor |
+| Motion          | `translateX` from right + opacity | Restrained spatial reveal (~520–760ms)      |
 
 Rules:
 - Do not add background, blur, border, shadow, glow, or gradient styling to the closed control surface
-- Blur values must remain below `6px` on the overlay to stay out of glassmorphism territory
-- No glow, shadow, or gradient may be added to either surface
+- Blur values must remain below `6px` on overlay surfaces to stay out of glassmorphism territory
+- No glow, shadow, or gradient may be added to the closed control surface
+- Preserve the adaptive plane — do not revert to permanent center-nav links on the control surface
 
 ### Component Architecture (Phase 5 — implemented)
 
@@ -606,7 +616,7 @@ components/
     NavLogo.tsx           ← Reserved identity zone; visible sigil disabled
     NavTelemetry.tsx      ← Ambient annotation, desktop-only, pointer-events-none
     NavMenuTrigger.tsx    ← Menu trigger: MENU label + ONINavigationSigil; toggles MENU/CLOSE
-    NavOverlay.tsx        ← Fullscreen menu overlay (z-50), fade-only reveal (implemented)
+    NavOverlay.tsx        ← Adaptive menu overlay (z-50): scrim + plane full-width `< md`, right plane `md+` (implemented)
 ```
 
 `components/SiteHeader.tsx` has been removed. `components/navigation/index.tsx` is the active implementation.

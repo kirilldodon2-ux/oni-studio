@@ -97,7 +97,7 @@ The control surface is divided into three horizontal zones:
 - Same floating behavior and visual character as desktop
 - Horizontal insets: `px-6` → `md:px-10`
 - No bottom navigation bar — bottom nav is a mobile-app and dashboard pattern, incompatible with ONI visual language
-- Menu trigger opens full-viewport overlay (Phase 5)
+- Menu trigger opens `NavOverlay` — full-width navigation plane below `md`; right atmospheric plane at partial width on `md+` (see §7 `NavOverlay`)
 
 ### Scroll Behavior — Both Breakpoints
 
@@ -170,7 +170,7 @@ A section-indexed position indicator that advances as the user scrolls between s
 | Section atmosphere         | `20`    | Phase 4 section atmosphere systems       | Reserved for per-section ambient layers |
 | (reserved)                 | `30`    | —                                        | Available for future system             |
 | Navigation control surface | `40`    | `components/navigation/index.tsx`        | Fixed, floats above all content         |
-| Menu overlay               | `50`    | `components/navigation/NavOverlay.tsx`   | Fixed, full-viewport, highest layer     |
+| Menu overlay               | `50`    | `components/navigation/NavOverlay.tsx`   | Fixed full-viewport layer; adaptive navigation plane (full-width `< md`, partial-width right plane `md+`) |
 
 ### Rules
 
@@ -197,9 +197,10 @@ It is present. It does not entrance-animate. It does not fade in, slide down, or
 
 ### Menu Open / Close
 
-- Slow, spatial reveal — 500–700ms range
-- Fade-based or curtain-reveal — **not** a slide from the side (side-slides are SaaS and mobile-app patterns)
-- The overlay takes over the viewport; it does not insert itself next to content
+- Slow, spatial reveal — ~500–760ms range on plane and links
+- **Adaptive plane (intentional):** below `md`, the navigation plane is full-width; at `md+`, a right-aligned partial-width atmospheric plane (`md:w-[min(76vw,58rem)]`, `lg:w-[min(68vw,64rem)]`) sits over a full-viewport scrim — page field remains partially visible on wide viewports
+- Reveal: restrained **translateX from the right** on the plane plus opacity; link typography staggers in (not a loud drawer snap or bounce)
+- Full-viewport scrim behind the plane — light tint + minimal blur; pointer-down on scrim closes
 - Close transition mirrors open (reversed easing)
 - Easing: ease-out on open, ease-in on close
 
@@ -235,7 +236,7 @@ components/
     NavLogo.tsx           ← Logo link with sizing tokens
     NavTelemetry.tsx      ← Telemetry annotation, desktop-only, ambient
     NavMenuTrigger.tsx    ← Menu open button + consistent glyph
-    NavOverlay.tsx        ← Fullscreen menu overlay (Phase 5 implementation)
+    NavOverlay.tsx        ← Adaptive menu overlay — full-width plane `< md`, right atmospheric plane `md+`
 ```
 
 The existing `components/SiteHeader.tsx` is the **migration target** — it will be replaced by `components/navigation/index.tsx` when Phase 5 begins. It is not removed during planning.
@@ -278,14 +279,25 @@ The existing `components/SiteHeader.tsx` is the **migration target** — it will
 
 ### NavOverlay — `NavOverlay.tsx`
 
-Phase 5 implementation — architecture defined here only:
-- `position: fixed`, `inset-0`, `z-50`
-- Full-viewport takeover — not a sidebar, not a drawer, not a panel
-- Navigation items in large editorial typography (same register as Work section heading scale)
-- White or near-white background (or `backdrop-filter: blur` on a semi-transparent surface)
-- Close: same trigger button (toggled) or ESC key
-- Keyboard trap while open (focus management)
-- `aria-modal="true"`, focus restored on close
+Implemented (Phase 5). Adaptive atmospheric navigation — not permanent center-nav on the control surface.
+
+**Layering:**
+- Outer shell: `position: fixed`, `inset-0`, `z-50` — owns scrim, dismiss target, and scroll lock
+- Scrim: full-viewport, light tint + minimal `backdrop-blur`; click/tap scrim closes
+
+**Adaptive navigation plane (intentional):**
+- **Below `md` (mobile / narrow):** plane is `w-full` — reads as full-viewport navigation
+- **`md+` (desktop / wide):** right-aligned partial-width plane — `md:w-[min(76vw,58rem)]`, `lg:w-[min(68vw,64rem)]`; atmospheric field remains visible left of the plane
+
+**Motion & typography:**
+- Plane: `translateX` from right (`translate-x-full` → `translate-x-0`) with opacity — ~520–760ms, ease-out/in
+- Links: large editorial Bebas scale, bottom-weighted column, staggered opacity/translate on open
+- No loud drawer snap, bounce, or spring choreography
+
+**Interaction & a11y:**
+- Close: `NavMenuTrigger` toggle, ESC, scrim pointer-down
+- `body` scroll locked while open
+- `aria-modal="true"`, `role="dialog"`; focusable links when open (`tabIndex` gated)
 
 ### Hero Architecture Impact — Phase 5 Change
 
@@ -362,7 +374,7 @@ It must remain quiet, atmospheric, and peripheral relative to primary content (e
 ```
 ControlSurface
   → NavMenuTrigger        (action zone — wires hover + click)
-  → NavOverlay            (fullscreen navigation plane)
+  → NavOverlay            (adaptive navigation plane — full-width `< md`, right plane `md+`)
 ```
 
 `NavMenuTrigger` composes spatial primitives; it does not implement artifact motion inline.
@@ -523,7 +535,7 @@ The **action zone** is exempt: it uses artifact revelation per this section, not
 1. Create `components/navigation/` system with all sub-components
 2. Replace `components/SiteHeader.tsx` with the `ControlSurface`
 3. Remove `calc(100svh - var(--oni-header-h))` from Hero, restore full-viewport height
-4. Implement `NavOverlay` (fullscreen menu) with keyboard accessibility
+4. Implement `NavOverlay` (adaptive atmospheric menu plane) with keyboard accessibility
 5. Define and implement scroll state behavior (transparent → subtle surface)
 6. Finalize telemetry content selection
 
@@ -548,8 +560,8 @@ The **action zone** is exempt: it uses artifact revelation per this section, not
 - `bg-white` or any fully opaque background on the control surface at page top
 - `position: sticky` — the surface must float, not displace
 - Permanent visible nav links in the control surface (startup pattern)
-- Side-drawer or slide-in menu panel (SaaS/app pattern)
 - Bottom navigation bar (mobile app/dashboard pattern)
+- Reverting the overlay to permanent center-nav links on the control surface (startup pattern)
 - `z-index: 9999` or undocumented z-index values
 - Entrance animations on the control surface itself
 - Scale or translate transforms on hover outside the action-zone artifact model (§9)

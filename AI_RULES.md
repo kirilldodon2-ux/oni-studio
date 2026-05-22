@@ -101,7 +101,8 @@ The navigation system is a **floating control surface**, not a navbar. These rul
 - never apply `bg-white` or any fully opaque background to the control surface at page top — the atmospheric backdrop must composite through it
 - never use `position: sticky` for the control surface — it must be `position: fixed` and float above content
 - never add permanent visible nav links to the control surface — navigation links belong in `NavOverlay` only
-- never use a side-drawer or slide-in menu panel — the overlay is full-viewport only
+- `NavOverlay` uses an **adaptive atmospheric plane** (intentional): full-viewport scrim at `z-50`; below `md` the navigation plane is **full-width**; at `md+` it is a **right-aligned partial-width plane** (`md:w-[min(76vw,58rem)]`, `lg:w-[min(68vw,64rem)]`) over the scrim — not permanent links on the control surface
+- preserve overlay reveal as restrained **translateX from the right + opacity** (with typography stagger) — not loud slide choreography or startup drawer gimmicks
 - never add a bottom navigation bar — incompatible with ONI visual language
 - never use `z-index` values outside the formally documented table in `ARCHITECTURE.md`
 - never break the three-zone layout (identity / telemetry / action)
@@ -111,7 +112,7 @@ The navigation system is a **floating control surface**, not a navbar. These rul
 - hover states are opacity-only (`hover:opacity-60`) — no scale, no translate, no color change
 - do not remove `--oni-header-h` from `globals.css` without also updating Hero to remove its dependency
 
-Phase 5 is in progress. `components/SiteHeader.tsx` has been replaced by `components/navigation/`. The active ControlSurface v1 is `fixed`, transparent, three-zone layout. `NavOverlay` v1 is implemented — fullscreen fade-only overlay, `z-50`, ESC close, body scroll lock, centered Bebas Neue links. Scroll state behavior (transparent → subtle surface) is the remaining Phase 5 work item.
+Phase 5 is in progress. `components/SiteHeader.tsx` has been replaced by `components/navigation/`. The active ControlSurface v1 is `fixed`, transparent, three-zone layout. `NavOverlay` v1 is implemented — full-viewport scrim, adaptive navigation plane (full-width below `md`, right atmospheric plane at partial width on `md+`), `z-50`, ESC close, body scroll lock, large editorial Bebas links with staggered reveal. Scroll state behavior (transparent → subtle surface) is the remaining Phase 5 work item.
 
 ---
 

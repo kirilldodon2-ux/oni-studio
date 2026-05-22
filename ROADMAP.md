@@ -83,7 +83,7 @@ Goals:
 
 Completed (ShowreelSection):
 - ✓ `ShowreelMediaCard` — cinematic media artifact with metallic frame overlay
-- ✓ Dark field compositing: frame PNG via `mix-blend-mode: screen`
+- ✓ Frame compositing: metallic frame PNG via inline SVG filter `#oni-luma-matte` (contrast-boost → luminanceToAlpha → alpha-gamma → composite) — transparent field, not `mix-blend-mode`
 - ✓ Three-layer motion system: float (CSS, md+) / scale (hover) / parallax (JS rAF)
 - ✓ `oni-showreel-float` keyframe in `globals.css` (prefers-reduced-motion safe)
 - ✓ Reusable structure prepared for video integration, modal expansion, archive usage
@@ -120,16 +120,17 @@ Goals:
 - ✓ implement `ControlSurface` (`fixed`, `z-40`), `NavLogo`, `NavTelemetry`, `NavMenuTrigger`
 - ✓ remove `calc(100svh - var(--oni-header-h))` from Hero; restore full-viewport height
 - ✓ telemetry content: `ONI.STUDIO / MMXXVI` (Option A — static identity thread)
-- ✓ implement `NavOverlay` — fullscreen fade-only menu takeover (`z-50`), HOME / WORKS / SHOWREEL / CONTACT; ESC close; body scroll lock; no sidebar/drawer
+- ✓ implement `NavOverlay` — adaptive atmospheric menu overlay (`z-50`): full-viewport scrim; navigation plane full-width below `md`, right partial-width plane on `md+`; HOME / WORK / STUDIO / CONTACT; translateX+opacity reveal; ESC close; body scroll lock
 - ✓ Atmospheric Polish Layer 1 — static material pass applied (control surface + overlay)
 - implement scroll state behavior (transparent → subtle surface on scroll)
 
 Constraints:
 - control surface must not sever the atmospheric backdrop — no `bg-white` at page top
 - navigation links are not permanently visible — they live in the overlay only
-- no side-drawer, no bottom nav bar, no startup nav patterns
+- overlay uses an intentional adaptive plane: full-width below `md`, right atmospheric partial-width plane on `md+` over a full-viewport scrim (see `NAVIGATION_ARCHITECTURE.md` §7)
+- no bottom nav bar, no startup nav patterns (permanent center-nav on the control surface)
 - single consistent menu glyph across all breakpoints
-- motion: slow, spatial overlay reveal (500–700ms); no slide-in from side
+- motion: slow, spatial overlay reveal (~500–760ms); restrained translateX from the right on the plane plus opacity — not loud drawer snap or bounce
 
 See `NAVIGATION_ARCHITECTURE.md` for full specification.
 
@@ -170,11 +171,24 @@ architecture — the foundational intelligence layer that Phases 6–9 implement
 
 ## Phase 6 — Routing & Page Architecture
 
-**Status: Pending** (requires Phase 5 navigation completion)
+**Status: Pending** (requires Phase 5 navigation completion). **Partial delivery:** archive surface routes and `content/` registry are live ahead of this phase — see below.
 
-Goals:
-- establish Next.js App Router dynamic route structure
-- define stable, permanent URL schema before any content is published
+### Delivered early (archive surface — not Phase 6 complete)
+
+Shipped before archetype routing and page transitions:
+
+- `content/` — `field.ts` registry, `types.ts`, `archiveObjectPaths.ts` (explicit, not auto-discovered)
+- `app/archive/page.tsx` — `/archive` browse (`ArchiveGrid`)
+- `app/archive/[slug]/page.tsx` — `/archive/[slug]` inspect (`ArchiveInspectView`)
+- `systems/archive/` — browse + inspect stack (see `ARCHIVE_OPERATING_LOGIC.md`)
+- `public/archive/objects/[slug]/` — filesystem-native object territory (`CONTENT_SYSTEM.md`)
+
+Phase 6 still owns works/writing/code routes, shared Zod schemas (`shared/content/`), cinematic route transitions, and navigation overlay active states.
+
+### Goals (remaining for Phase 6)
+
+- establish Next.js App Router routes for Works, Writings, and Code Artifacts (archive routes already exist)
+- define stable, permanent URL schema before archetype content is published at scale
 - implement page transition system: cinematic reveal at the route level
 - establish shared page shell templates per content archetype
 - ensure all existing atmospheric infrastructure carries through to content pages
@@ -183,13 +197,16 @@ Goals:
 ### URL Structure
 
 ```
-/works              ← works index
-/works/[slug]       ← individual work
-/writing            ← writings index
-/writing/[slug]     ← individual writing
-/code/[slug]        ← code artifact (no public index — accessed by reference)
-/archive            ← full cross-archetype index (Phase 9)
+/works              ← works index (Phase 6)
+/works/[slug]       ← individual work (Phase 6)
+/writing            ← writings index (Phase 6)
+/writing/[slug]     ← individual writing (Phase 6)
+/code/[slug]        ← code artifact (Phase 6; no public index)
+/archive            ← browse field (delivered early)
+/archive/[slug]     ← inspect view (delivered early)
 ```
+
+Phase 9 may extend `/archive` into a full cross-archetype index — browse and inspect are already operational.
 
 URL slugs are permanent once established. Slug format: hyphenated lowercase title, year
 suffix if required for disambiguation. No category path segments. No tag paths. No

@@ -5,128 +5,123 @@
 ```
 oni-site/
 ├── app/
-│   ├── globals.css         ← layout tokens, viewport safety (overflow-x: clip on html)
-│   ├── layout.tsx          ← root layout, font loading
-│   └── page.tsx            ← page composition (section imports)
+│   ├── globals.css              ← layout tokens, viewport safety (overflow-x: clip on html)
+│   ├── layout.tsx               ← root layout, font loading
+│   ├── page.tsx                 ← home: backdrop, continuity, ControlSurface, sections
+│   └── archive/
+│       ├── page.tsx             ← browse: /archive (ArchiveGrid)
+│       └── [slug]/
+│           └── page.tsx         ← inspect: /archive/[slug] (ArchiveInspectView)
 │
-├── sections/               ← self-contained page sections
+├── content/                     ← archive registry + types (see CONTENT_SYSTEM.md)
+│   ├── field.ts                 ← archiveObjects registry (explicit, not auto-discovered)
+│   ├── types.ts                 ← ArchiveObject schema
+│   ├── archiveObjectPaths.ts    ← canonicalPreviewSrc() for 00-hero paths
+│   ├── README.md                ← directory index
+│   └── sources/                 ← reserved (.gitkeep)
+│
+├── sections/                    ← self-contained page sections
 │   ├── HeroSection/
-│   │   ├── index.tsx       ← cinematic full-viewport artboard
-│   │   ├── Scene.tsx       ← Three.js / R3F 3D scene, Hero-scoped
+│   │   ├── index.tsx            ← cinematic full-viewport artboard
+│   │   ├── HeroAtmosphere.tsx   ← environmental field rings + depth parallax (desktop)
+│   │   ├── Scene.tsx            ← Three.js / R3F 3D scene, Hero-scoped
 │   │   └── ViewWorkLink.tsx
 │   ├── WorkSection/
 │   │   ├── index.tsx
-│   │   └── ProjectCard.tsx
+│   │   └── SystemArtifact.tsx   ← SYSTEM ARCHITECTURES territory media (conditional)
 │   ├── ShowreelSection/
-│   │   ├── index.tsx             ← section shell; SectionLabel + ShowreelMediaCard
-│   │   └── ShowreelMediaCard.tsx ← cinematic media artifact (Phase 4 polish)
-│   └── ContactFooterSection/
+│   │   ├── index.tsx            ← section shell; SectionLabel + ShowreelMediaCard
+│   │   └── ShowreelMediaCard.tsx ← cinematic media artifact (luma-matte frame)
+│   ├── ContactFooterSection/
+│   │   └── index.tsx
+│   └── GhostPopulationSection/  ← present; not composed on app/page.tsx (home)
 │       └── index.tsx
 │
-├── systems/                ← shared infrastructure systems
+├── systems/                     ← shared infrastructure (no section-level UI)
 │   ├── layout/
-│   │   ├── SectionContainer.tsx  ← section shell: overflow-hidden + px cadence
-│   │   └── SectionLabel.tsx      ← section heading + accent bar pattern
+│   │   ├── SectionContainer.tsx ← section shell: overflow-hidden + px cadence
+│   │   └── SectionLabel.tsx     ← section heading + accent bar pattern
 │   ├── backdrop/
-│   │   └── index.tsx             ← global ambient SVG backdrop (Phase 2 complete)
-│   └── atmosphere/               ← atmospheric infrastructure (established)
-│       ├── PresenceLayer.tsx     ← scroll-driven cinematic opacity/translateY emergence
-│       ├── AmbientField.tsx      ← CSS-driven ambient drift + breathing (server component)
-│       ├── RevealPrimitives.tsx  ← FadeIn, RevealUp reveal atoms
-│       ├── useDepthField.ts      ← scroll-driven parallax depth hook
-│       ├── ContinuityField.tsx   ← page-level spatial continuity layer (spatial continuity pass)
-│       └── index.ts              ← barrel export
+│   │   └── index.tsx            ← global ambient SVG backdrop (PageBackdrop)
+│   ├── atmosphere/
+│   │   ├── PresenceLayer.tsx
+│   │   ├── AmbientField.tsx
+│   │   ├── RevealPrimitives.tsx ← FadeIn, RevealUp
+│   │   ├── ContinuityField.tsx
+│   │   ├── useDepthField.ts
+│   │   └── index.ts
+│   ├── spatial/                 ← nav sigil, object grounding, convergence (see ARCHITECTURE.md)
+│   │   ├── ONINavigationSigil.tsx
+│   │   ├── ArtifactConsumptionPair.tsx
+│   │   ├── ConvergencePair.tsx      ← deprecated alias
+│   │   ├── convergenceInteraction.ts
+│   │   ├── silhouetteGrounding.ts
+│   │   └── index.ts
+│   └── archive/                 ← browse + inspect (see ARCHIVE_OPERATING_LOGIC.md)
+│       ├── ArchiveGrid.tsx
+│       ├── ArchiveTile.tsx
+│       ├── ArchiveInspectView.tsx
+│       ├── archiveInspectLayout.ts
+│       ├── ArchiveHeroFrame.tsx
+│       ├── ArchiveEditorialSequence.tsx
+│       ├── ArchiveEditorialPlate.tsx
+│       ├── composeEditorialField.ts
+│       ├── getObjectAssets.ts
+│       ├── probeImageSize.ts
+│       ├── territoryLabels.ts
+│       └── index.ts
 │
-├── components/             ← atomic / global UI (not section-level)
-│   └── navigation/         ← Phase 5: floating control surface system (active)
-│       ├── index.tsx       ← ControlSurface — fixed, z-40/50, three-zone layout
-│       ├── NavLogo.tsx     ← Reserved identity zone; visible sigil disabled
-│       ├── NavTelemetry.tsx ← Ambient annotation, desktop-only, pointer-events-none
-│       ├── NavMenuTrigger.tsx ← MENU + ONINavigationSigil; toggles MENU/CLOSE
-│       └── NavOverlay.tsx  ← Fullscreen menu overlay (z-50), fade-only reveal
+├── components/                  ← atomic / global UI (not section-level)
+│   └── navigation/              ← floating control surface (Phase 5)
+│       ├── index.tsx            ← ControlSurface — fixed, z-40/50, three-zone layout
+│       ├── NavLogo.tsx          ← reserved identity zone; visible sigil disabled
+│       ├── NavTelemetry.tsx     ← ambient annotation, desktop-only, pointer-events-none
+│       ├── NavMenuTrigger.tsx   ← MENU + ONINavigationSigil; toggles MENU/CLOSE
+│       └── NavOverlay.tsx       ← adaptive overlay (z-50): full-viewport scrim; plane full-width `< md`, right plane `md+`; ESC, scroll lock
 │
 └── public/
     ├── archive/
-    │   ├── objects/[slug]/   ← object territory: 00-hero.*, 01+ editorial sequence (see CONTENT_SYSTEM.md)
-    │   └── previews/         ← deprecated — DEPRECATED.md only
+    │   ├── objects/[slug]/    ← object territory: 00-hero.*, 01+ editorial sequence
+    │   └── previews/          ← deprecated — DEPRECATED.md only
     ├── logo/
     │   └── oni_logo_black.svg
     ├── frames/
-    │   └── showreel_frame.png    ← metallic figurative frame (1024×682, luma-matte composite)
+    │   └── showreel_frame.png ← metallic figurative frame (1024×682, luma-matte composite)
     ├── models/
     │   └── ONI_3d_no_texture.glb
     └── png/
-        ├── desktop/        ← desktop reference screenshots
-        └── mobile/         ← mobile reference screenshots
+        ├── desktop/           ← desktop reference screenshots
+        └── mobile/            ← mobile reference screenshots
 ```
 
 ---
 
-## Target Structure (Remaining Phases)
+## Target Structure (Phase 6+)
+
+Only paths not yet present in **Current Structure**. `/archive` and `content/` registry are implemented — see Current.
 
 ```
 oni-site/
-│
 ├── app/
-│   ├── globals.css         ← ✓ established
-│   ├── layout.tsx          ← ✓ established
-│   ├── page.tsx            ← ✓ established (home)
-│   └── (routes)/           ← Phase 6 — dynamic content routes
-│       ├── works/
-│       │   ├── page.tsx              ← works index
-│       │   └── [slug]/
-│       │       └── page.tsx          ← individual work page
-│       ├── writing/
-│       │   ├── page.tsx              ← writings index
-│       │   └── [slug]/
-│       │       └── page.tsx          ← individual writing
-│       └── code/
-│           └── [slug]/
-│               └── page.tsx          ← code artifact page (no public index)
+│   ├── works/                         ← Phase 6
+│   │   ├── page.tsx                   ← /works index
+│   │   └── [slug]/page.tsx            ← /works/[slug]
+│   ├── writing/                       ← Phase 6
+│   │   ├── page.tsx                   ← /writing index
+│   │   └── [slug]/page.tsx            ← /writing/[slug]
+│   └── code/                          ← Phase 6
+│       └── [slug]/page.tsx            ← /code/[slug] (no public index)
 │
-├── content/                ← archive registry + types (see CONTENT_SYSTEM.md — not a CMS)
-│   ├── field.ts            ← archiveObjects registry (explicit, not auto-discovered)
-│   ├── types.ts            ← ArchiveObject schema
-│   ├── archiveObjectPaths.ts ← canonicalPreviewSrc()
-│   └── README.md           ← directory index
-│
-├── systems/
-│   ├── layout/             ← ✓ established
-│   ├── backdrop/           ← ✓ established (Phase 2 complete)
-│   ├── atmosphere/         ← ✓ established (Atmospheric Infrastructure phase)
-│   ├── spatial/            ← infrastructural spatial artifacts + object grounding
-│   │   ├── ONINavigationSigil.tsx  ← canonical 3D menu sigil (`NavMenuTrigger`)
-│   │   ├── ArtifactConsumptionPair.tsx ← interface dissolved by artifact (reusable)
-│   │   ├── ConvergencePair.tsx         ← deprecated alias
-│   │   ├── convergenceInteraction.ts   ← consumption tokens + style helpers
-│   │   ├── silhouetteGrounding.ts
-│   │   └── index.ts
-│   ├── archive/            ← layered browse + inspect (see ARCHIVE_OPERATING_LOGIC.md)
-│   │   ├── ArchiveGrid.tsx           ← browse: BalancedMasonryGrid + Frame(mediaAspect)
-│   │   ├── ArchiveTile.tsx           ← browse optical presentation inside frame
-│   │   ├── ArchiveInspectView.tsx    ← inspect: evidence-scale occupancy
-│   │   ├── archiveInspectLayout.ts   ← inspect occupancy formula (not masonry)
-│   │   ├── ArchiveHeroFrame.tsx      ← inspect atmosphere only
-│   │   ├── ArchiveEditorialSequence.tsx
-│   │   └── getObjectAssets.ts        ← per-slug filesystem assets (inspect)
-│   ├── typography/         ← Phase 7–8 — long-form reading typographic system
-│   └── ornaments/          ← future
-│
-├── shared/                 ← utilities, tokens, schemas (no UI)
-│   ├── content/            ← Phase 6 — Zod schemas + typed content definitions
-│   │   ├── schemas.ts      ← Work, Writing, Artifact, etc.
-│   │   └── types.ts        ← content type exports
+├── shared/                            ← Phase 6 — utilities, tokens, schemas (no UI)
+│   ├── content/
+│   │   ├── schemas.ts                 ← Zod: Work, Writing, Artifact, etc.
+│   │   └── types.ts                   ← archetype type exports
 │   ├── tokens/
-│   └── hooks/
+│   └── hooks/                         ← shared hooks (e.g. nav scroll state)
 │
-└── components/
-    ├── navigation/         ← ✓ established (Phase 5 — NavOverlay implemented)
-    │   ├── index.tsx
-    │   ├── NavLogo.tsx
-    │   ├── NavTelemetry.tsx
-    │   ├── NavMenuTrigger.tsx
-    │   └── NavOverlay.tsx
-    └── (atomic UI only)
+└── systems/
+    ├── typography/                    ← Phase 7–8 — long-form reading typographic system
+    └── ornaments/                     ← future — decorative infrastructure
 ```
 
 ---

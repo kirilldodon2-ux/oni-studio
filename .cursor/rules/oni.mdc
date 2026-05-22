@@ -1,0 +1,122 @@
+---
+description: ONI Studio — project rules for Cursor Agent and Composer
+alwaysApply: true
+---
+
+# ONI — Cursor Operating Rules
+
+## Read First
+
+Before any task — read:
+1. `AI_RULES.md` — behavioral constraints
+2. `ARCHITECTURE.md` — section/system ownership
+3. `FOLDER_MAP.md` — canonical repo structure (current state only)
+
+`ROADMAP.md` = future intent. Do NOT implement roadmap items unless explicitly requested.
+`_archive_graveyard/ONI_MASTER_SYSTEM.md` = archived bootstrap template. Do NOT treat as active implementation guide.
+
+---
+
+## Document Status Protocol
+
+Every doc in this repo has one of these implicit statuses.
+Read them accordingly:
+
+| Status | Docs | Rule |
+|--------|------|------|
+| ACTIVE | `ARCHITECTURE.md`, `AI_RULES.md`, `CONTENT_SYSTEM.md`, `VISUAL_LANGUAGE.md`, `NAVIGATION_ARCHITECTURE.md`, `FOLDER_MAP.md` | Canonical truth — implement from these |
+| OPERATIONAL | `ARCHIVE_SYSTEM.md`, `ARCHIVE_OPERATING_LOGIC.md`, `CONTENT_PHILOSOPHY.md` | Domain authority — follow doctrine |
+| FUTURE | `ROADMAP.md` | Intent only — do not implement |
+| REFERENCE | `_archive_graveyard/ONI_MASTER_SYSTEM.md` | Archived bootstrap — do not implement directly |
+
+---
+
+## Failure Patterns — Never Repeat
+
+**Parallel System Spawning**
+Do not create new hooks, utilities, or motion systems when one already exists.
+Always inspect `systems/` before creating anything new.
+
+**One-Off Script Explosion**
+Do not generate standalone scripts without approval.
+Ask: "Should this be a permanent pipeline utility or a one-time script?" before writing.
+
+**Atmosphere Drift**
+Do not introduce: aggressive hover states, bright surfaces, app-like transitions, engagement-optimized UI.
+ONI aesthetic = cinematic calmness, restraint, perceptual silence.
+
+**Planned Architecture Leakage**
+Do not implement routes, schemas, or systems from ROADMAP.md.
+Current phases: 4 (in progress) + 5 (in progress). Everything else = future.
+
+**Composer Overproduction**
+If scope exceeds 3 files or touches a system boundary — stop and confirm with user first.
+
+**Filesystem Doctrine Violation**
+`public/archive/objects/[slug]/` is canonical territory.
+Do not introduce: parallel registries, shadow metadata, auto-discovery, duplicate asset maps.
+`mediaAspect` = metadata truth. Fix it in `field.ts`, not with CSS patches.
+
+Never delete, overwrite, or substitute media files inside `public/archive/`.
+Real failure: Composer deleted original archive media and replaced with files from unrelated folders.
+Result: irreversible content loss, full manual reconstruction required.
+
+**Media Pipeline Ignorance**
+Archive media = cinematic publishing infrastructure.
+Always: preserve audio (`-an` is forbidden), keep source masters, separate preview from original.
+Preview → grid. Original → inspect page. Never mix.
+
+---
+
+## Structural Rules
+
+- New content sections → must use `SectionContainer`
+- Section headings → must use `SectionLabel`
+- `overflow-x: clip` → owned on `html` in `globals.css` — do not replicate
+- z-index values → only from the table in `ARCHITECTURE.md`
+- Named tokens → always prefer over hardcoded values (`max-w-oni-page` not `max-w-[1500px]`)
+- Navigation → `components/navigation/` only, floating fixed control surface, no sticky, no drawer
+
+---
+
+## Visual Constraints
+
+- Background: `#ffffff` / Foreground: `#000000` / Accent: `#FF4A1A` (sparingly)
+- Fonts: Bebas Neue (display) + Inter (body/UI) — no other typefaces
+- Motion: slow, ambient, intentional — never loud, blocking, or constant
+- Hover: opacity-only (`hover:opacity-60`) — no scale, translate, or color shift
+- Never: startup UI, SaaS gradients, dashboard rhythm, engagement patterns
+
+---
+
+## Archive System
+
+- Browse tile → `ArchiveTile` inside `ArchiveGrid` (masonry)
+- Inspect → `ArchiveInspectView` (evidence-scale occupancy)
+- Preview src → `canonicalPreviewSrc(slug, ext)` from `content/archiveObjectPaths.ts`
+- `public/archive/previews/` → DEPRECATED, do not add files there
+- Video in grid → `preload="none"`, viewport-only playback, poster shown while offscreen
+
+---
+
+## File Safety — Critical
+
+**Never move, rename, or reorganize existing files without explicit approval.**
+Content files, media assets, and registry entries are editorially authored — not scaffolding.
+Moving or restructuring them breaks: git history, import paths, canonical routes, and archive integrity.
+
+Real failure: Composer reorganized archive content files during a task.
+Result: all commits lost, user had to manually reconstruct the entire repo from scratch.
+
+If a task seems to require file reorganization — stop and ask first.
+Propose the change in text. Wait for explicit approval before touching the filesystem.
+
+**Never delete files.** Move to `_archive_graveyard/` if removal is necessary — never `rm`.
+
+---
+
+## Content Rules
+
+No external CMS. No tag taxonomy. No social infrastructure.
+Slugs are permanent once published.
+MDX is static-generated at build time only — no client-side MDX evaluation.

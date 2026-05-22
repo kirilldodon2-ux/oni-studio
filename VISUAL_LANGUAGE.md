@@ -39,11 +39,13 @@
 
 Accent (`#FF4A1A`) is reserved for:
 - section labels
-- CTA buttons
 - accent rules beneath headings
+- environmental activation fields (e.g. ContactFooter poster residue on CTA hover)
 - arrow icons / directional indicators
 
-Never use accent as a background fill beyond the CTA button.
+Primary calls-to-action are **hairline-anchored text links** — not filled accent buttons. Register: `11px` semibold Inter, uppercase, high tracking (`tracking-[0.26em]`), black text, separated by `border-t border-black/[0.06]`. Opacity-only hover on links.
+
+Never use accent as a solid button fill or large opaque background block. The ContactFooter environmental field uses accent at low opacity (`~0.12`) only on CTA activation — not as a default CTA surface.
 
 Selection uses a separate, lower-intensity accent residue (`rgba(255, 98, 0, 0.14)`) — related to the accent family but not interchangeable with `#FF4A1A` fills or rules.
 
@@ -106,12 +108,30 @@ Typography should feel:
 
 ### Scale reference
 
-| Context         | Size                        |
-|-----------------|-----------------------------|
-| Hero display    | `clamp(5.75rem, 20vw, 15rem)` |
-| Contact heading | `clamp(3rem, 13vw, 9rem)`   |
-| Section label   | `11px` / `tracking-[0.28em]` |
-| Body            | `0.9375rem` — `1.02rem`     |
+| Context                      | Size / register                                      |
+|------------------------------|------------------------------------------------------|
+| Hero display                 | `clamp(5.75rem, 20vw, 15rem)`                        |
+| Contact poster heading       | `clamp(5rem, 22vw, 9.5rem)` / `leading-[0.86]` / `tracking-[-0.01em]` |
+| Contact environmental field  | `clamp(3rem, 22vw, 18rem)` — accent, CTA-hover reveal |
+| Contact CTA text link        | `11px` semibold / `tracking-[0.26em]` / black        |
+| Contact annotations          | `11px` / `tracking-[0.18em]` / `neutral-500`         |
+| Footer nav                   | `10px` / `tracking-[0.20em]` / `neutral-400`         |
+| Section label                | `11px` / `tracking-[0.28em]`                         |
+| Body                         | `0.9375rem` — `1.02rem`                              |
+
+### ContactFooter epilogue (implemented)
+
+Reference: `sections/ContactFooterSection/index.tsx`. The lower section is a poster epilogue, not a conventional footer card grid.
+
+**Poster heading** — `font-bebas`, three-line vertical stack (“Let’s / Work / Together”), `text-[clamp(5rem,22vw,9.5rem)]`, `leading-[0.86]`, `tracking-[-0.01em]`, black. Asymmetric line widths; left-column weight, open right field.
+
+**Contact annotations** — flat infrastructural thread: `font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-500`. No border rows or card framing. Hover: `opacity` only (`hover:opacity-40`).
+
+**Primary CTA** — hairline-anchored text link, not a button: wrapper `border-t border-black/[0.06] pt-3 md:pt-5`; link `text-[11px] font-semibold uppercase tracking-[0.26em] text-black`, label “Start a project”, `mailto:hello@oni.studio`. Hover/focus drives environmental activation — not color fill or scale on the link itself.
+
+**Environmental activation field** — decorative `Project` mark behind content: `font-bebas text-[clamp(3rem,22vw,18rem)] text-[#FF4A1A]`, `opacity` 0 → ~0.12 on CTA hover/focus, `clip-path` + `scaleY` reveal (~700–850ms ease-out). `pointer-events-none`, `aria-hidden`.
+
+**Footer cluster** — `border-t border-black/[0.08]` (hairline, below glassmorphism threshold). Navigation: `text-[10px] tracking-[0.20em] text-neutral-400`, slash separators. Archival layer: copyright + authorship at quietest register (`tracking-[0.14em]` / `tracking-[0.08em]`).
 
 ---
 
