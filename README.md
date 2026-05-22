@@ -1,58 +1,55 @@
 # ONI Studio
 
-Cinematic studio system — living archive, experimental publishing space, and editorial
-environment.
+Cinematic studio frontend — living archive, editorial environment, and experimental publishing surface.
 
-## Stack
+## Phase status
 
-- Next.js 14
-- React 18
-- TypeScript
-- Tailwind CSS v3
-- Framer Motion
-- Three.js / React Three Fiber
-- Cloudflare Pages
+| Phase | Scope | Status |
+|-------|--------|--------|
+| 0–3 | Tokens, sections, backdrop, responsive | Complete |
+| 4 | Cinematic polish (Showreel, ContactFooter, atmosphere) | **In progress** |
+| 5 | Floating navigation + adaptive menu overlay | **In progress** |
 
-## Philosophy
+Remaining work is organized in [ROADMAP.md](./ROADMAP.md) as **three layers** (not numbered phases):
 
-- cinematic calmness
-- editorial rhythm
-- restrained motion
-- atmosphere over feature count
-- systems over hacks
+| Layer | Concern | Status |
+|-------|---------|--------|
+| 1 — Infrastructure | Archive, media, CDN, routes, caching, Safari | **In progress** (archive partial) |
+| 2 — Editorial / Spatial | Territory, pacing, motion, traversal, typography | Pending |
+| 3 — Studio / Identity | Landing, contact, ecosystem, ONI/personal cohesion | Pending |
 
-## Current Priority
+`/archive` and `content/` registry shipped early under Layer 1.
 
-Phase 4 — Cinematic Polish (in progress)  
-Phase 5 — Navigation System (in progress)
+## Local development
 
-## Local Development
-
-```
+```bash
 npm install
 npm run dev
 ```
 
-## Documentation
-
-- [ARCHITECTURE.md](./ARCHITECTURE.md) — layout system, section ownership, content architecture
-- [CONTENT_PHILOSOPHY.md](./CONTENT_PHILOSOPHY.md) — content archetypes, archive model, editorial standards
-- [CONTENT_SYSTEM.md](./CONTENT_SYSTEM.md) — filesystem-native archive authoring (object folders, registry, ingestion)
-- [ARCHIVE_SYSTEM.md](./ARCHIVE_SYSTEM.md) — archive object model, territories, surface architecture
-- [ARCHIVE_OPERATING_LOGIC.md](./ARCHIVE_OPERATING_LOGIC.md) — browse/inspect authority, masonry, runtime HOW
-- [VISUAL_LANGUAGE.md](./VISUAL_LANGUAGE.md) — aesthetic direction, typography, motion
-- [NAVIGATION_ARCHITECTURE.md](./NAVIGATION_ARCHITECTURE.md) — navigation system specification
-- [FOLDER_MAP.md](./FOLDER_MAP.md) — repository structure (current vs Phase 6+ target)
-- [AI_RULES.md](./AI_RULES.md) — AI assistant behaviour rules
-- [ROADMAP.md](./ROADMAP.md) — phases, priorities, platform direction
-
-Archive read order: [CONTENT_PHILOSOPHY.md](./CONTENT_PHILOSOPHY.md) → [ARCHIVE_SYSTEM.md](./ARCHIVE_SYSTEM.md) → [ARCHIVE_OPERATING_LOGIC.md](./ARCHIVE_OPERATING_LOGIC.md) (authoring: [CONTENT_SYSTEM.md](./CONTENT_SYSTEM.md)).
+Stack: Next.js 14 · React 18 · TypeScript · Tailwind v3 · Framer Motion · Three.js / R3F · Cloudflare Pages
 
 ## Routes
 
-| Route | Status | Notes |
-|-------|--------|--------|
-| `/` | Live | Home — section stack |
-| `/archive` | Live | Browse field — `ArchiveGrid` |
-| `/archive/[slug]` | Live | Inspect view — `ArchiveInspectView` |
-| `/works`, `/writing`, `/code/[slug]` | Phase 6 | See [ROADMAP.md](./ROADMAP.md) |
+| Route | Status |
+|-------|--------|
+| `/` | Live — home section stack |
+| `/archive` | Live — browse (`ArchiveGrid`) |
+| `/archive/[slug]` | Live — inspect (`ArchiveInspectView`) |
+| `/works`, `/writing`, `/code/[slug]` | Layer 1 — [ROADMAP.md](./ROADMAP.md) |
+
+## Documentation
+
+Read in this order unless your task is narrowly scoped.
+
+**1 — Project ground (always)**  
+[AI_RULES.md](./AI_RULES.md) → [ARCHITECTURE.md](./ARCHITECTURE.md) → [FOLDER_MAP.md](./FOLDER_MAP.md)
+
+**2 — Archive (content + surface)**  
+[CONTENT_PHILOSOPHY.md](./CONTENT_PHILOSOPHY.md) → [ARCHIVE_SYSTEM.md](./ARCHIVE_SYSTEM.md) → [ARCHIVE_OPERATING_LOGIC.md](./ARCHIVE_OPERATING_LOGIC.md)  
+Authoring on disk: [CONTENT_SYSTEM.md](./CONTENT_SYSTEM.md)
+
+**3 — Reference**  
+[VISUAL_LANGUAGE.md](./VISUAL_LANGUAGE.md) · [NAVIGATION_ARCHITECTURE.md](./NAVIGATION_ARCHITECTURE.md) · [ROADMAP.md](./ROADMAP.md) (three layers — do not implement unless asked)
+
+Bootstrap template (archived, not canonical): [_archive_graveyard/ONI_MASTER_SYSTEM.md](./_archive_graveyard/ONI_MASTER_SYSTEM.md)
