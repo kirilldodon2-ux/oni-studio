@@ -93,9 +93,9 @@ Preview → grid. Original → inspect page. Never mix.
 
 - Browse tile → `ArchiveTile` inside `ArchiveGrid` (masonry)
 - Inspect → `ArchiveInspectView` (evidence-scale occupancy)
-- Preview src → `canonicalPreviewSrc(slug, ext)` from `content/archiveObjectPaths.ts`
+- Preview src → `canonicalPreviewSrc(slug, ext)` from `content/archiveObjectPaths.ts` (ontology); resolve at runtime via `resolveArchiveMediaSrc()`
 - `public/archive/previews/` → DEPRECATED, do not add files there
-- Video in grid → `preload="none"`, viewport-only playback, poster shown while offscreen
+- Video in grid → `preload="none"`, viewport-gated playback via `useCinematicVideo`; one-shot gesture unlock (click/scroll/touch) on autoplay block
 
 ---
 

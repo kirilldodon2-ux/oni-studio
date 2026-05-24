@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { resolveArchiveMediaSrc } from "@/content/archiveObjectPaths";
 import { probeImageSize } from "./probeImageSize";
 
 const IMAGE_EXT = new Set([".png", ".jpg", ".jpeg", ".webp", ".avif"]);
@@ -68,7 +69,7 @@ function loadAllAssets(slug: string): ObjectEditorialAsset[] {
     const order = parseOrder(filename);
     assets.push({
       role: resolveRole(filename, order),
-      src: `/archive/objects/${slug}/${filename}`,
+      src: resolveArchiveMediaSrc(`/archive/objects/${slug}/${filename}`),
       filename,
       order,
       width: dims.width,

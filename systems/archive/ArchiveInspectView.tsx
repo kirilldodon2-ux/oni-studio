@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
 import type { ArchiveObject } from "@/content/types";
+import { resolveArchiveMediaSrc } from "@/content/archiveObjectPaths";
 import {
   getInspectHeroOccupancy,
   INSPECT_HERO_IMAGE_SIZES,
@@ -62,7 +63,7 @@ export function ArchiveInspectView({
   const fallbackHeroW = aspectW * 270;
   const fallbackHeroH = aspectH * 270;
 
-  const heroSrc = heroAsset?.src ?? entry.previewSrc;
+  const heroSrc = resolveArchiveMediaSrc(heroAsset?.src ?? entry.previewSrc);
   const imageWidth = heroAsset ? heroWidth : fallbackHeroW;
   const imageHeight = heroAsset ? heroHeight : fallbackHeroH;
 
@@ -238,7 +239,7 @@ export function ArchiveInspectView({
             <ArchiveHeroFrame className="w-full">
               {isVideo && !heroAsset ? (
                 <video
-                  src={entry.previewSrc}
+                  src={heroSrc}
                   controls
                   autoPlay
                   muted

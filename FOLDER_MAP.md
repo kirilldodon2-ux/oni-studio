@@ -16,7 +16,7 @@ oni-site/
 ├── content/                     ← archive registry + types (see CONTENT_SYSTEM.md)
 │   ├── field.ts                 ← archiveObjects registry (explicit, not auto-discovered)
 │   ├── types.ts                 ← ArchiveObject schema
-│   ├── archiveObjectPaths.ts    ← canonicalPreviewSrc() for 00-hero paths
+│   ├── archiveObjectPaths.ts    ← canonicalPreviewSrc() (ontology) + resolveArchiveMediaSrc() (transport)
 │   ├── README.md                ← directory index
 │   └── sources/                 ← reserved (.gitkeep)
 │
@@ -50,6 +50,7 @@ oni-site/
 │   │   ├── ContinuityField.tsx
 │   │   ├── useDepthField.ts
 │   │   └── index.ts
+│   ├── useCinematicVideo.ts     ← viewport-gated browse video playback (ArchiveTile)
 │   ├── spatial/                 ← nav sigil, object grounding, convergence (see ARCHITECTURE.md)
 │   │   ├── ONINavigationSigil.tsx
 │   │   ├── ArtifactConsumptionPair.tsx

@@ -162,9 +162,21 @@ This layer defines **what archive objects are** — not how they are discovered.
 
 Preview ownership is deterministic.
 
+### Ontology (path)
+
 **Helper:** `canonicalPreviewSrc(slug, ext)` in `content/archiveObjectPaths.ts`
 
 **Example output:** `/archive/objects/podcast-cats/00-hero.png`
+
+Registry `previewSrc` values and `field.ts` entries store **site-relative ontology paths** — not CDN hosts.
+
+### Transport (delivery)
+
+**Helper:** `resolveArchiveMediaSrc(path)` in `content/archiveObjectPaths.ts`
+
+Prepends `NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN` when set (production R2/CDN). When unset, returns the path unchanged — local dev and Pages static serving behave as today.
+
+Resolution occurs at DOM `src` boundaries (`ArchiveTile`, `ArchiveInspectView`, `getObjectAssets`) — not in the registry.
 
 The system is **explicit** — not runtime-scanned, filesystem-crawled, dynamically inferred, or auto-generated at browse time.
 

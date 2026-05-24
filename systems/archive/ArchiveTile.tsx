@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ArchiveObject } from "@/content/types";
+import { resolveArchiveMediaSrc } from "@/content/archiveObjectPaths";
 import { useCinematicVideo } from "@/systems/useCinematicVideo";
 
 const TERRITORY_SHORT: Record<string, string> = {
@@ -29,6 +30,7 @@ export function ArchiveTile({ entry }: ArchiveTileProps) {
     threshold: 0.15,
     activationDelay: 80,
   });
+  const previewSrc = resolveArchiveMediaSrc(entry.previewSrc);
 
   return (
     <Link
@@ -40,7 +42,7 @@ export function ArchiveTile({ entry }: ArchiveTileProps) {
         {isCinematicVideo ? (
           <video
             ref={videoRef}
-            src={entry.previewSrc}
+            src={previewSrc}
             width={w * 200}
             height={h * 200}
             muted
@@ -51,7 +53,7 @@ export function ArchiveTile({ entry }: ArchiveTileProps) {
           />
         ) : (
           <Image
-            src={entry.previewSrc}
+            src={previewSrc}
             alt=""
             width={w * 200}
             height={h * 200}

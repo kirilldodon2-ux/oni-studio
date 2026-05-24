@@ -48,3 +48,18 @@ export function canonicalPreviewSrcWithFallback(
 ): string {
   return canonicalPreviewSrc(slug, preferredExt ?? HERO_EXT_FALLBACK[0]);
 }
+
+function archiveMediaOrigin(): string {
+  return (process.env.NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN ?? "").replace(/\/$/, "");
+}
+
+/**
+ * Transport layer — prepends NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN when set.
+ * Ontology paths from canonicalPreviewSrc() stay site-relative in the registry.
+ */
+export function resolveArchiveMediaSrc(path: string): string {
+  if (/^https?:\/\//i.test(path)) return path;
+  const origin = archiveMediaOrigin();
+  if (!origin) return path;
+  return `${origin}${path.startsWith("/") ? path : `/${path}`}`;
+}

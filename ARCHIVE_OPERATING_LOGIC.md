@@ -407,18 +407,21 @@ Creator appears in:
 
 ### Browse artifact — video (browsing surface)
 
+Canonical hook: `systems/useCinematicVideo.ts` — consumed by `ArchiveTile` only.
 
-| State       | Behavior                                                                                  |
-| ----------- | ----------------------------------------------------------------------------------------- |
-| At rest     | `<video>` rendered, `preload="none"`, not playing                                         |
-| Hover       | `.play()` called — muted, `playsInline`, `loop`                                           |
-| Mouse leave | `.pause()` + `currentTime = 0`                                                            |
-| Visual      | Identical to image artifacts — same opacity fade, same metadata overlay, same frame shape |
+| State              | Behavior                                                                                  |
+| ------------------ | ----------------------------------------------------------------------------------------- |
+| Offscreen          | `<video>` in DOM, `preload="none"`, not playing, no network load                          |
+| Near viewport      | `IntersectionObserver` (threshold `0.15`, root margin `200px` bottom) triggers load + play |
+| In viewport        | Muted, `playsInline`, `loop`; `preload` promoted to `metadata` then load; play after 80ms delay |
+| Offscreen again    | `.pause()` — no `currentTime` reset                                                       |
+| Autoplay blocked   | Silent fail; first click / scroll / touch retries `play()` for all intersecting videos (one-shot) |
+| Visual             | Identical to image artifacts — same opacity fade, same metadata overlay, same frame shape |
 
-
-- `preload="none"` defers all network cost until hover.
+- `preload="none"` defers network cost until proximity — not hover.
+- Playback is viewport-gated, not hover-gated. Hover only reveals metadata overlay (opacity).
 - `width` / `height` attributes are set from `mediaAspect` so the browser can allocate space before loading.
-- No autoplay at rest. No audio ever.
+- No audio ever. No autoplay tax on the full browse field.
 - Video browse artifacts do not expand, do not animate outside their masonry frame.
 
 ### Inspect — video
