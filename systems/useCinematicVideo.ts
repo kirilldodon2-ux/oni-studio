@@ -12,6 +12,43 @@
 
 import { useEffect, useRef, useCallback } from "react";
 
+type CinematicVideoRegistration = {
+  video: HTMLVideoElement;
+  isIntersecting: boolean;
+};
+
+const registrations = new Set<CinematicVideoRegistration>();
+let gestureListenersInstalled = false;
+let userHasInteracted = false;
+
+function retryPlayVisibleVideos() {
+  registrations.forEach(({ video, isIntersecting }) => {
+    if (!isIntersecting) return;
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {});
+    }
+  });
+}
+
+function onFirstUserInteraction() {
+  if (userHasInteracted) return;
+  userHasInteracted = true;
+  window.removeEventListener("click", onFirstUserInteraction, true);
+  window.removeEventListener("scroll", onFirstUserInteraction, true);
+  window.removeEventListener("touchstart", onFirstUserInteraction, true);
+  gestureListenersInstalled = false;
+  retryPlayVisibleVideos();
+}
+
+function installGestureUnlockListeners() {
+  if (gestureListenersInstalled || userHasInteracted) return;
+  gestureListenersInstalled = true;
+  window.addEventListener("click", onFirstUserInteraction, { capture: true, passive: true });
+  window.addEventListener("scroll", onFirstUserInteraction, { capture: true, passive: true });
+  window.addEventListener("touchstart", onFirstUserInteraction, { capture: true, passive: true });
+}
+
 interface CinematicVideoOptions {
   /** px before viewport edge to start loading. Default: 200 */
   rootMargin?: string;
@@ -85,6 +122,13 @@ export function useCinematicVideo<T extends HTMLVideoElement = HTMLVideoElement>
     const video = videoRef.current;
     if (!video) return;
 
+    const registration: CinematicVideoRegistration = {
+      video,
+      isIntersecting: false,
+    };
+    registrations.add(registration);
+    installGestureUnlockListeners();
+
     // Ensure no preloading until IntersectionObserver fires
     video.preload = "none";
     video.muted = muted;
@@ -94,6 +138,7 @@ export function useCinematicVideo<T extends HTMLVideoElement = HTMLVideoElement>
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          registration.isIntersecting = entry.isIntersecting;
           if (entry.isIntersecting) {
             loadAndPlay(video);
           } else {
@@ -110,6 +155,7 @@ export function useCinematicVideo<T extends HTMLVideoElement = HTMLVideoElement>
     observerRef.current.observe(video);
 
     return () => {
+      registrations.delete(registration);
       clearTimer();
       observerRef.current?.disconnect();
       // Clean pause on unmount — no stale decode processes
