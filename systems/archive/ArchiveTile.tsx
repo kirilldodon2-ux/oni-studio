@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
 import type { ArchiveObject } from "@/content/types";
+import { useCinematicVideo } from "@/systems/useCinematicVideo";
 
 const TERRITORY_SHORT: Record<string, string> = {
   "spatial-identity": "Spatial Identity",
@@ -22,33 +22,22 @@ type ArchiveTileProps = {
 export function ArchiveTile({ entry }: ArchiveTileProps) {
   const [w, h] = entry.mediaAspect ?? [4, 3];
   const territory = TERRITORY_SHORT[entry.territories[0]] ?? entry.territories[0];
-  const isMotion = entry.mediaType === "motion";
-  const isHoverVideo = entry.mediaType === "video";
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  function handleMouseEnter() {
-    if (isHoverVideo && videoRef.current) {
-      videoRef.current.play().catch(() => {});
-    }
-  }
-
-  function handleMouseLeave() {
-    if (isHoverVideo && videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
-    }
-  }
+  const isCinematicVideo =
+    entry.mediaType === "motion" || entry.mediaType === "video";
+  const videoRef = useCinematicVideo<HTMLVideoElement>({
+    rootMargin: "0px 0px 200px 0px",
+    threshold: 0.15,
+    activationDelay: 80,
+  });
 
   return (
     <Link
       href={`/archive/${entry.slug}`}
       className="group relative block overflow-hidden rounded-[2px] bg-neutral-100 sm:rounded-none focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-black/25"
       aria-label={`${entry.title} — ${territory}, ${entry.year}`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       <div className="relative">
-        {isMotion || isHoverVideo ? (
+        {isCinematicVideo ? (
           <video
             ref={videoRef}
             src={entry.previewSrc}
@@ -57,8 +46,7 @@ export function ArchiveTile({ entry }: ArchiveTileProps) {
             muted
             playsInline
             loop
-            autoPlay={isMotion}
-            preload={isMotion ? "metadata" : "none"}
+            preload="none"
             className="h-auto w-full transition-opacity duration-500 ease-out group-hover:opacity-[0.90]"
           />
         ) : (
