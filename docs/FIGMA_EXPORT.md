@@ -173,6 +173,19 @@ Run after any atmosphere or export change before treating production as authorit
 - [ ] No `ExportModeProvider` side effects
 - [ ] Browse grid / video behavior unchanged
 
+### Cloudflare Pages (`@cloudflare/next-on-pages`)
+
+| Build route | Mode | Adapter note |
+|-------------|------|----------------|
+| `/` | **Dynamic (ƒ)** | `searchParams` for `/?export=1` — requires `export const runtime = 'edge'` in `app/page.tsx` or adapter rejects `/index` |
+| `/archive`, `/archive/[slug]` | Static / SSG | No edge declaration required |
+
+Export mode **intentionally** keeps `/` dynamic: server passes `initialExportMode` into `ExportModeProvider` and `HeroSection` so `/?export=1` freezes on first paint (no client-only flash). This is not an accidental regression.
+
+R3F (`HeroVisual` → `dynamic(Scene, { ssr: false })`) runs in the browser; edge only serves the HTML shell. Archive and export workflows are unchanged by the edge flag.
+
+**Deprecation:** Cloudflare recommends **OpenNext** (`@opennextjs/cloudflare`) over next-on-pages. Migrate in Layer 1 when ready — not required for the one-line edge restore.
+
 ### Stale artifact suspicion
 
 If localhost feels more alive than production with the same commit intent:

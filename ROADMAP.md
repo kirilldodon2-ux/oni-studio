@@ -192,7 +192,8 @@ scale.
 - App Router shells for `/works`, `/writing`, `/code/[slug]`
 - `shared/content/` — Zod schemas per archetype; repository remains source of truth
 - formal performance budget (Three.js + R3F + FM baseline + route increments)
-- Cloudflare Pages config — build, headers, redirects, env
+- Cloudflare Pages config — build, headers, redirects, env  
+  **Audit (2026-05):** `@cloudflare/next-on-pages` fails adapter stage when `/` is dynamic (`searchParams` for `/?export=1`) without `export const runtime = 'edge'` on `app/page.tsx`. Build output: `ƒ /` dynamic, `/archive` + `/archive/[slug]` static/SSG. **Minimal fix:** edge on home only. **Long-term:** migrate to `@opennextjs/cloudflare` (Node runtime on Workers; deprecates next-on-pages). Do not remove export `searchParams` without a reconciliation-approved alternative — server `initialExportMode` is required for correct export first paint.
 - MDX static pipeline (build-time only)
 - Code Artifact sandbox — isolated route, memory-safe experiment boundary
 - video hosting decision before Work pages become primary video surface

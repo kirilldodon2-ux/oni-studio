@@ -7,6 +7,9 @@ import { WorkSection } from "@/sections/WorkSection";
 import { ShowreelSection } from "@/sections/ShowreelSection";
 import { ContactFooterSection } from "@/sections/ContactFooterSection";
 
+/** Required for `@cloudflare/next-on-pages` while `/` uses `searchParams` (dynamic ƒ). */
+export const runtime = "edge";
+
 type HomePageProps = {
   searchParams?: { export?: string | string[] };
 };
