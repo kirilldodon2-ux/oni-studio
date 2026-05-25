@@ -897,6 +897,19 @@ homepage baseline costs (Three.js + React Three Fiber + Framer Motion).
 
 ---
 
+## Perception Reconciliation Workflow
+
+Operational layer for code ↔ Figma ↔ code perception sync on the canonical landing (`/`).
+
+- **Structural truth** — this document, `sections/`, `systems/`, `content/`
+- **Perception laboratory** — Figma (composition experiments, not architecture authority)
+- **Reconciliation** — AI-assisted minimal diffs back into code; not redesign
+
+Implementation: `systems/export/` (`/?export=1` perception freeze on the live home route — no parallel export route).  
+Doctrine: `docs/FIGMA_RECONCILIATION_WORKFLOW.md`. Capture mechanics: `docs/FIGMA_EXPORT.md`.
+
+---
+
 ## Open Infrastructure Items
 
 - No motion system — scroll-driven entrance animation (Phase 4 — partially addressed in ShowreelSection)

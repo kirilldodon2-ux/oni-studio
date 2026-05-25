@@ -4,14 +4,15 @@ import {
   Bounds,
   Center,
   ContactShadows,
-  Environment,
   OrbitControls,
   useGLTF,
 } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { type ReactNode, useMemo, useRef } from "react";
+import { type ReactNode, useLayoutEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { clone as cloneObject } from "three/examples/jsm/utils/SkeletonUtils.js";
+import { PMREMGenerator } from "three";
 
 const MODEL_URL = "/models/ONI_3d_no_texture.glb";
 
@@ -61,7 +62,28 @@ function CinematicOffset({ children }: { children: ReactNode }) {
   return <group position={pos}>{children}</group>;
 }
 
-useGLTF.preload(MODEL_URL);
+/**
+ * Local PMREM environment — same metallic read as studio preset without
+ * fetching studio_small_03_1k.hdr from drei-assets (network failures crash R3F).
+ */
+function HeroRoomEnvironment() {
+  const { scene, gl } = useThree();
+
+  useLayoutEffect(() => {
+    const pmrem = new PMREMGenerator(gl);
+    pmrem.compileEquirectangularShader();
+    const texture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environment = texture;
+
+    return () => {
+      scene.environment = null;
+      texture.dispose();
+      pmrem.dispose();
+    };
+  }, [scene, gl]);
+
+  return null;
+}
 
 /** Larger margin on wide hero canvas keeps the sculpture restrained inside the frame. */
 function ModelFit({ children }: { children: ReactNode }) {
@@ -94,7 +116,7 @@ export function Scene() {
     >
       <ambientLight intensity={0.55} />
       <directionalLight position={[4, 6, 3]} intensity={0.9} />
-      <Environment preset="studio" />
+      <HeroRoomEnvironment />
       <ModelFit>
         <CinematicOffset>
           <SpinOnY>
@@ -120,3 +142,5 @@ export function Scene() {
     </Canvas>
   );
 }
+
+useGLTF.preload(MODEL_URL);

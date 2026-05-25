@@ -4,10 +4,15 @@
 
 ```
 oni-site/
+├── docs/
+│   ├── FIGMA_EXPORT.md                    ← landing capture: ?export=1, metadata, freeze table
+│   └── FIGMA_RECONCILIATION_WORKFLOW.md   ← code ↔ Figma ↔ code perception doctrine
+│
 ├── app/
 │   ├── globals.css              ← layout tokens, viewport safety (overflow-x: clip on html)
+│                                 + html.oni-export perception freeze (?export=1)
 │   ├── layout.tsx               ← root layout, font loading
-│   ├── page.tsx                 ← home: backdrop, continuity, ControlSurface, sections
+│   ├── page.tsx                 ← home: ExportModeProvider, backdrop, continuity, sections
 │   └── archive/
 │       ├── page.tsx             ← browse: /archive (ArchiveGrid)
 │       └── [slug]/
@@ -24,6 +29,8 @@ oni-site/
 │   ├── HeroSection/
 │   │   ├── index.tsx            ← cinematic full-viewport artboard
 │   │   ├── HeroAtmosphere.tsx   ← environmental field rings + depth parallax (desktop)
+│   │   ├── HeroVisual.tsx         ← export gate: fallback | dynamic Scene
+│   │   ├── HeroExportFallback.tsx ← static hero reference (?export=1)
 │   │   ├── Scene.tsx            ← Three.js / R3F 3D scene, Hero-scoped
 │   │   └── ViewWorkLink.tsx
 │   ├── WorkSection/
@@ -49,6 +56,10 @@ oni-site/
 │   │   ├── RevealPrimitives.tsx ← FadeIn, RevealUp
 │   │   ├── ContinuityField.tsx
 │   │   ├── useDepthField.ts
+│   │   └── index.ts
+│   ├── export/                  ← landing perception freeze (?export=1); see docs/FIGMA_*.md
+│   │   ├── exportMode.ts
+│   │   ├── ExportModeProvider.tsx
 │   │   └── index.ts
 │   ├── useCinematicVideo.ts     ← viewport-gated browse video playback (ArchiveTile)
 │   ├── spatial/                 ← nav sigil, object grounding, convergence (see ARCHITECTURE.md)
@@ -140,3 +151,5 @@ oni-site/
 - `shared/` is utilities and tokens — no UI
 - `components/` is atomic/global UI only — no section-level concerns
 - `components/navigation/` is the Phase 5 floating control surface system — replaced `SiteHeader.tsx`; see `NAVIGATION_ARCHITECTURE.md`
+- `systems/export/` — canonical `/?export=1` perception freeze; not a parallel route
+- `docs/FIGMA_EXPORT.md`, `docs/FIGMA_RECONCILIATION_WORKFLOW.md` — OPERATIONAL perception workflow

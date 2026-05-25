@@ -24,6 +24,7 @@ export function ControlSurface() {
     <>
       <NavOverlay isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       <header
+        data-oni-layer="chrome"
         className={[
           "pointer-events-none fixed left-0 right-0 top-0 flex items-center justify-between",
           "px-6 py-5 md:px-10 lg:px-14 lg:py-7",

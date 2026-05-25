@@ -1,35 +1,50 @@
 import { PageBackdrop } from "@/systems/backdrop";
 import { ContinuityField } from "@/systems/atmosphere";
 import { ControlSurface } from "@/components/navigation";
+import { ExportModeProvider, isExportMode } from "@/systems/export";
 import { HeroSection } from "@/sections/HeroSection";
 import { WorkSection } from "@/sections/WorkSection";
 import { ShowreelSection } from "@/sections/ShowreelSection";
 import { ContactFooterSection } from "@/sections/ContactFooterSection";
 
-export default function Home() {
+type HomePageProps = {
+  searchParams?: { export?: string | string[] };
+};
+
+export default function Home({ searchParams }: HomePageProps) {
+  const exportMode = isExportMode(searchParams ?? {});
+
   return (
-    <div className="relative min-h-screen bg-white text-black">
-      {/* Ambient backdrop — deepest layer, page-spanning SVG geometry (z-0) */}
+    <ExportModeProvider initialExportMode={exportMode}>
       <div
-        className="pointer-events-none absolute inset-0 z-0 min-h-full w-full"
-        aria-hidden
+        className="relative min-h-screen bg-white text-black"
+        data-oni-page="landing"
+        data-oni-export={exportMode ? "1" : undefined}
       >
-        <PageBackdrop />
-      </div>
+        {/* Ambient backdrop — deepest layer, page-spanning SVG geometry (z-0) */}
+        <div
+          className="pointer-events-none absolute inset-0 z-0 min-h-full w-full"
+          data-oni-layer="decorative"
+          aria-hidden
+        >
+          <PageBackdrop />
+        </div>
 
-      {/* Spatial continuity field — atmospheric marks in transition zones (z-[5]) */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[5] min-h-full w-full"
-        aria-hidden
-      >
-        <ContinuityField />
-      </div>
+        {/* Spatial continuity field — atmospheric marks in transition zones (z-[5]) */}
+        <div
+          className="pointer-events-none absolute inset-0 z-[5] min-h-full w-full"
+          data-oni-layer="decorative"
+          aria-hidden
+        >
+          <ContinuityField />
+        </div>
 
-      <ControlSurface />
-      <HeroSection />
-      <WorkSection />
-      <ShowreelSection />
-      <ContactFooterSection />
-    </div>
+        <ControlSurface />
+        <HeroSection exportMode={exportMode} />
+        <WorkSection />
+        <ShowreelSection />
+        <ContactFooterSection />
+      </div>
+    </ExportModeProvider>
   );
 }

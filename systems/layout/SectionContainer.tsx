@@ -4,6 +4,8 @@ interface SectionContainerProps {
   id?: string;
   "aria-labelledby"?: string;
   "aria-label"?: string;
+  /** Reconciliation key for code ↔ Figma workflows (landing export prep) */
+  "data-oni-section"?: string;
   className?: string;
   children: ReactNode;
 }
@@ -19,6 +21,7 @@ export function SectionContainer({
   id,
   "aria-labelledby": ariaLabelledBy,
   "aria-label": ariaLabel,
+  "data-oni-section": dataOniSection,
   className,
   children,
 }: SectionContainerProps) {
@@ -27,6 +30,8 @@ export function SectionContainer({
       id={id}
       aria-labelledby={ariaLabelledBy}
       aria-label={ariaLabel}
+      data-oni-section={dataOniSection}
+      data-oni-layer="content"
       className={`relative z-10 overflow-hidden px-6 md:px-10 lg:px-14${className ? ` ${className}` : ""}`}
     >
       {children}

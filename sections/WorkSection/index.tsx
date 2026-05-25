@@ -104,12 +104,14 @@ export function WorkSection() {
   return (
     <SectionContainer
       id="work"
+      data-oni-section="work"
       aria-labelledby="work-heading"
       className="py-20 md:py-24 lg:py-[clamp(5.5rem,10vh,8rem)]"
     >
       {/* Atmospheric cross mark — top-right, echoes backdrop vocabulary */}
       <div
         aria-hidden="true"
+        data-oni-layer="decorative"
         className="pointer-events-none absolute right-14 z-[1] hidden select-none lg:block"
         style={{ top: "2rem" }}
       >
@@ -136,6 +138,7 @@ export function WorkSection() {
       {/* Field annotation — ambient coordinate mark, bottom-left. Desktop only. */}
       <div
         aria-hidden="true"
+        data-oni-layer="decorative"
         className="pointer-events-none absolute left-[7%] bottom-[12%] z-[1] hidden select-none lg:block"
       >
         <AmbientField breathe delay={-9400}>

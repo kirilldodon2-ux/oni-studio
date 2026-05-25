@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useExportMode } from "@/systems/export";
 
 interface PresenceLayerProps {
   children: ReactNode;
@@ -41,8 +42,9 @@ export function PresenceLayer({
   y = 0,
   once = true,
 }: PresenceLayerProps) {
+  const exportMode = useExportMode();
   const ref = useRef<HTMLDivElement>(null);
-  const [present, setPresent] = useState(false);
+  const [present, setPresent] = useState(exportMode);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -52,6 +54,15 @@ export function PresenceLayer({
   }, []);
 
   useEffect(() => {
+    if (exportMode) {
+      setPresent(true);
+      return;
+    }
+  }, [exportMode]);
+
+  useEffect(() => {
+    if (exportMode) return;
+
     const el = ref.current;
     if (!el) return;
 
@@ -69,9 +80,9 @@ export function PresenceLayer({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [threshold, once]);
+  }, [threshold, once, exportMode]);
 
-  const applyTranslate = y !== 0 && !reducedMotion;
+  const applyTranslate = y !== 0 && !reducedMotion && !exportMode;
 
   const transform = applyTranslate
     ? present
@@ -79,23 +90,32 @@ export function PresenceLayer({
       : `translateY(${y}px)`
     : undefined;
 
-  const transition = [
-    `opacity ${duration}ms ${delay}ms cubic-bezier(0.25, 0.1, 0.25, 1)`,
-    applyTranslate &&
-      `transform ${duration}ms ${delay}ms cubic-bezier(0.25, 0.1, 0.25, 1)`,
-  ]
-    .filter(Boolean)
-    .join(", ");
+  const transition = exportMode
+    ? undefined
+    : [
+        `opacity ${duration}ms ${delay}ms cubic-bezier(0.25, 0.1, 0.25, 1)`,
+        applyTranslate &&
+          `transform ${duration}ms ${delay}ms cubic-bezier(0.25, 0.1, 0.25, 1)`,
+      ]
+        .filter(Boolean)
+        .join(", ");
 
   return (
     <div
       ref={ref}
+      data-oni-presence=""
       className={className}
       style={{
         opacity: present ? 1 : 0,
-        transform,
+        transform: exportMode ? undefined : transform,
         transition,
-        willChange: present ? "auto" : applyTranslate ? "opacity, transform" : "opacity",
+        willChange: exportMode
+          ? "auto"
+          : present
+            ? "auto"
+            : applyTranslate
+              ? "opacity, transform"
+              : "opacity",
       }}
     >
       {children}

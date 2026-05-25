@@ -7,6 +7,7 @@ export function ShowreelSection() {
   return (
     <SectionContainer
       id="showreel"
+      data-oni-section="showreel"
       aria-labelledby="showreel-heading"
       className="py-20 pb-28 md:py-24 md:pb-32 lg:py-28 lg:pb-36"
     >
@@ -15,6 +16,7 @@ export function ShowreelSection() {
           Deliberately more minimal than the WorkSection cross — spatial descent. */}
       <div
         aria-hidden="true"
+        data-oni-layer="decorative"
         className="pointer-events-none absolute right-14 z-[1] hidden select-none lg:block"
         style={{ top: "2.25rem" }}
       >

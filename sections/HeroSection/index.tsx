@@ -1,22 +1,19 @@
-import dynamic from "next/dynamic";
 import { FadeIn } from "@/systems/atmosphere";
 import { HeroAtmosphere } from "./HeroAtmosphere";
+import { HeroVisual } from "./HeroVisual";
 import { ViewWorkLink } from "./ViewWorkLink";
 
-const Scene = dynamic(() => import("./Scene").then((m) => m.Scene), {
-  ssr: false,
-  loading: () => (
-    <div className="flex h-[52vh] w-full items-center justify-center bg-transparent lg:h-full">
-      <p className="text-sm text-neutral-400">Loading scene…</p>
-    </div>
-  ),
-});
+type HeroSectionProps = {
+  exportMode?: boolean;
+};
 
-export function HeroSection() {
+export function HeroSection({ exportMode = false }: HeroSectionProps) {
   // Cinematic hero artboard — one spatial field, not a boxed strip
   return (
     <section
       className="relative z-10 min-h-[100svh] overflow-hidden text-black lg:h-[100svh] lg:min-h-0"
+      data-oni-section="hero"
+      data-oni-layer="content"
       aria-label="Hero"
     >
       <div className="relative flex min-h-[100svh] flex-col lg:grid lg:h-full lg:min-h-0 lg:grid-cols-12 lg:grid-rows-1">
@@ -44,7 +41,7 @@ export function HeroSection() {
         </FadeIn>
 
         <div className="oni-webgl relative z-[5] h-[38svh] min-h-[17rem] w-full max-h-[23rem] shrink-0 bg-transparent lg:col-start-5 lg:col-end-13 lg:row-start-1 lg:h-full lg:max-h-none lg:min-h-0 lg:w-full">
-          <Scene />
+          <HeroVisual exportMode={exportMode} />
         </div>
 
         <div className="flex justify-center px-6 pb-8 pt-2 lg:hidden">

@@ -39,6 +39,41 @@ body {
   background: #fff;
 }
 
+/* ─── Landing perception freeze — canonical /?export=1 ───────────────────────
+   Scoped to html.oni-export (set only on landing via ExportModeProvider).
+   Neutralizes motion only; preserves layout and atmosphere DOM. Archive routes
+   never receive this class.
+   ─────────────────────────────────────────────────────────────────────────── */
+html.oni-export [data-oni-page="landing"] [data-oni-presence] {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+  will-change: auto !important;
+}
+
+html.oni-export [data-oni-page="landing"] .oni-ambient-drift,
+html.oni-export [data-oni-page="landing"] .oni-breath,
+html.oni-export [data-oni-page="landing"] .oni-field-pulse,
+html.oni-export [data-oni-page="landing"] .oni-showreel-float,
+html.oni-export [data-oni-page="landing"] .oni-signal-traverse {
+  animation: none !important;
+}
+
+html.oni-export [data-oni-page="landing"] .oni-showreel-float,
+html.oni-export [data-oni-page="landing"] [data-oni-presence],
+html.oni-export [data-oni-page="landing"] [data-oni-hero-fallback] img {
+  transform: none !important;
+}
+
+html.oni-export [data-oni-page="landing"] .group-hover\:scale-\[1\.012\]:hover {
+  transform: none !important;
+}
+
+html.oni-export [data-oni-page="landing"] .oni-cta-field {
+  transition: none !important;
+  will-change: auto !important;
+}
+
 /* ─── Signal selection ───────────────────────────────────────────────────────
    Global text selection — archive inspection / latent metadata exposure.
    CSS-only; no JS. Replaces default browser blue with atmospheric ONI residue.

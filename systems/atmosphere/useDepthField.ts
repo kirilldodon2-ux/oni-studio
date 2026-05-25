@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useExportMode } from "@/systems/export";
 
 /**
  * useDepthField
@@ -22,17 +23,21 @@ import { useEffect, useRef } from "react";
  *   return <div ref={depthRef as React.Ref<HTMLDivElement>} className="...">...</div>;
  */
 export function useDepthField(factor = 0.05, invert = false) {
+  const exportMode = useExportMode();
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (
-      typeof window === "undefined" ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    )
-      return;
-
     const el = ref.current;
     if (!el) return;
+
+    if (
+      exportMode ||
+      typeof window === "undefined" ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      el.style.transform = "";
+      return;
+    }
 
     const sign = invert ? -1 : 1;
     let current = 0;
@@ -63,8 +68,9 @@ export function useDepthField(factor = 0.05, invert = false) {
     return () => {
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(rafId);
+      el.style.transform = "";
     };
-  }, [factor, invert]);
+  }, [factor, invert, exportMode]);
 
   return ref;
 }

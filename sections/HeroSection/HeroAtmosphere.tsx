@@ -3,6 +3,7 @@
 import { useEffect, useState, type RefObject } from "react";
 import { AmbientField } from "@/systems/atmosphere/AmbientField";
 import { useDepthField } from "@/systems/atmosphere/useDepthField";
+import { useExportMode } from "@/systems/export";
 
 /**
  * HeroAtmosphere
@@ -31,10 +32,16 @@ import { useDepthField } from "@/systems/atmosphere/useDepthField";
  * approximately left:69%, top:44% of the hero artboard.
  */
 export function HeroAtmosphere() {
-  const [present, setPresent] = useState(false);
+  const exportMode = useExportMode();
+  const [present, setPresent] = useState(exportMode);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
+    if (exportMode) {
+      setPresent(true);
+      return;
+    }
+
     const rm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     setReducedMotion(rm);
     if (rm) {
@@ -43,7 +50,7 @@ export function HeroAtmosphere() {
     }
     const id = setTimeout(() => setPresent(true), 500);
     return () => clearTimeout(id);
-  }, []);
+  }, [exportMode]);
 
   // Four depth planes — parallax factors create subtle Z-separation on scroll.
   // Outer moves most (reads as furthest); innermost barely moves.
@@ -58,10 +65,11 @@ export function HeroAtmosphere() {
       aria-hidden="true"
       style={{
         opacity: present ? 1 : 0,
-        transition: reducedMotion
-          ? undefined
-          : "opacity 2000ms cubic-bezier(0.25, 0.1, 0.25, 1)",
-        willChange: present ? "auto" : "opacity",
+        transition:
+          exportMode || reducedMotion
+            ? undefined
+            : "opacity 2000ms cubic-bezier(0.25, 0.1, 0.25, 1)",
+        willChange: exportMode ? "auto" : present ? "auto" : "opacity",
       }}
     >
       {/* ── Outer ring ─────────────────────────────────────────────────────

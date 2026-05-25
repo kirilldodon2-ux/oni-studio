@@ -6,6 +6,7 @@ import {
   ONI_SILHOUETTE_CONTACT,
   ONI_SILHOUETTE_LIFT,
 } from "@/systems/spatial/silhouetteGrounding";
+import { useExportMode } from "@/systems/export";
 
 // ─── Frame positioning constants ─────────────────────────────────────────────
 // These map to the metallic frame PNG's inner window (1024×682 source image).
@@ -82,10 +83,17 @@ function PlayIcon() {
  *  and frame-layer. Frame and play control move as a single unit on parallax.
  */
 export function ShowreelMediaCard() {
+  const exportMode = useExportMode();
   const containerRef = useRef<HTMLDivElement>(null); // hover / mouse event target
   const mediaRef = useRef<HTMLDivElement>(null); // parallax target — whole media object
 
   useEffect(() => {
+    const media = mediaRef.current;
+    if (exportMode) {
+      if (media) media.style.transform = "";
+      return;
+    }
+
     if (
       typeof window === "undefined" ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
@@ -94,7 +102,6 @@ export function ShowreelMediaCard() {
       return;
 
     const container = containerRef.current;
-    const media = mediaRef.current;
     if (!container || !media) return;
 
     const MAX_OFFSET = 5; // px — restrained spatial depth cue
@@ -134,8 +141,9 @@ export function ShowreelMediaCard() {
       container.removeEventListener("mousemove", onMove);
       container.removeEventListener("mouseleave", onLeave);
       cancelAnimationFrame(rafId);
+      media.style.transform = "";
     };
-  }, []);
+  }, [exportMode]);
 
   return (
     /* Layer 1 — hover detection context */

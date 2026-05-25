@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useExportMode } from "@/systems/export";
 
 const TEXT_STATES = [
   { a: "proc / idle", b: "build: 0" },
@@ -54,10 +55,13 @@ const SIGNAL_NODES = [1, 2, 3, 6] as const;
  *   - prefers-reduced-motion: all motion suppressed, text states pause
  */
 export function SystemArtifact() {
+  const exportMode = useExportMode();
   const [textIdx, setTextIdx] = useState(0);
   const [activeNode, setActiveNode] = useState<number | null>(null);
 
   useEffect(() => {
+    if (exportMode) return;
+
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
 
@@ -83,7 +87,7 @@ export function SystemArtifact() {
       clearTimeout(initId);
       clearInterval(nodeId);
     };
-  }, []);
+  }, [exportMode]);
 
   return (
     <div className="mt-6 border-t border-black/[0.05] pt-3" aria-hidden>

@@ -18,6 +18,7 @@ export function ContactFooterSection() {
   return (
     <SectionContainer
       id="contact"
+      data-oni-section="contact"
       aria-labelledby="contact-heading"
       className="pt-24 pb-10 md:pt-32 md:pb-20 lg:pt-36 lg:pb-24"
     >
@@ -29,6 +30,7 @@ export function ContactFooterSection() {
       */}
       <div
         aria-hidden="true"
+        data-oni-layer="decorative"
         className="pointer-events-none absolute right-0 top-[65%] -translate-y-1/2 select-none"
       >
         <span
