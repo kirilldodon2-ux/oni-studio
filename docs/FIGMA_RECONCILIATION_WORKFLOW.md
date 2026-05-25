@@ -317,7 +317,7 @@ When adding atmosphere to a section:
 | Perception freeze CSS | `app/globals.css` (`html.oni-export`) |
 | Capture playbook | [FIGMA_EXPORT.md](./FIGMA_EXPORT.md) |
 | Section shell + metadata | `systems/layout/SectionContainer.tsx` |
-| Motion infrastructure | `systems/atmosphere/` |
+| Motion infrastructure | `systems/atmosphere/` — see §13 |
 
 ---
 
@@ -325,8 +325,8 @@ When adding atmosphere to a section:
 
 | Document | Role |
 |----------|------|
-| **This file** | Operational doctrine — philosophy, reconciliation, tool strategy |
-| [FIGMA_EXPORT.md](./FIGMA_EXPORT.md) | Tactical capture — flag, freeze table, metadata, limitations |
+| **This file** | Operational doctrine — philosophy, reconciliation, atmosphere §13, tool strategy |
+| [FIGMA_EXPORT.md](./FIGMA_EXPORT.md) | Tactical capture — flag, freeze table, metadata, deployment checklist |
 | `ARCHITECTURE.md` | Structural ownership — sections, z-index, tokens |
 | `VISUAL_LANGUAGE.md` | Perceptual register — color, type, interaction |
 | `AI_RULES.md` | Agent constraints during reconciliation |
@@ -456,7 +456,126 @@ data-oni-page="landing"
 
 ---
 
-## 13. Evolution
+## 13. Atmospheric runtime — architecture & invariants
+
+The atmosphere system is **alive but restrained**. It is not a separate export subsystem. Export only **freezes** motion when `html.oni-export` is present on landing.
+
+### 13.1 Layer taxonomy
+
+| Layer type | Examples | Motion source | Export freeze |
+|------------|----------|---------------|---------------|
+| **Decorative runtime** | `PageBackdrop`, `ContinuityField`, section `AmbientField` marks, `HeroAtmosphere` rings | CSS keyframes (`oni-ambient-drift`, `oni-breath`) + optional `useDepthField` (hero only) | `animation: none` under `html.oni-export [data-oni-page="landing"]` |
+| **Content emergence** | `PresenceLayer` / `FadeIn` / `RevealUp` | IntersectionObserver + opacity/translateY transition | `[data-oni-presence]` forced visible; transform cleared |
+| **Semantic extraction** | `data-oni-section`, `data-oni-layer`, `data-oni-page` | None (metadata only) | Never frozen — structure preserved |
+| **Export-safe frozen** | Same DOM as production; motion neutralized | CSS + targeted JS guards | Only when `?export=1` |
+
+Archive routes: decorative layers may exist (`PageBackdrop` on browse) but **never** receive `html.oni-export` or `ExportModeProvider`.
+
+### 13.2 Motion stack (canonical)
+
+| System | File | Mechanism | Tuning (do not exceed without review) |
+|--------|------|-----------|--------------------------------------|
+| **Drift** | `globals.css` → `.oni-ambient-drift` | `translateY(0 → -4px → 0)` over `--atm-drift` (14s) | Amplitude 4px; period 14s |
+| **Breath** | `globals.css` → `.oni-breath` | `opacity 1 → 0.78 → 1` over `--atm-breath` (18s) | Peak dip 0.78 |
+| **Combined** | `.oni-ambient-drift.oni-breath` | Both animations on one node | Mid hero ring, continuity micro-dot |
+| **Parallax** | `useDepthField.ts` | `translateY(scrollY × factor)` via rAF, lerp `0.06` | Factors 0.012–0.04; hero only consumer |
+| **Presence** | `PresenceLayer.tsx` | Opacity + optional `translateY(10px)` on reveal | 1200–1400ms; not decorative atmosphere |
+| **Hero onset** | `HeroAtmosphere.tsx` | Container opacity 0→1 over 2000ms after 500ms delay | Desktop-only (`lg:block`) |
+
+**Not used for atmosphere:** `translate3d`, `oni-field-pulse` (defined but no current landing consumer). Parallax uses **`translateY` only** on the depth-anchor node.
+
+### 13.3 Transform ownership rules (critical)
+
+**One node must not own both:**
+
+1. React inline centering (`translate(-50%, -50%)` or Tailwind `-translate-x/y-1/2`)
+2. `useDepthField` scroll writes (`el.style.transform = translateY(...)`)
+3. CSS drift keyframe (`transform` on same element)
+
+**Canonical hero depth-plane stack:**
+
+```
+div.absolute [ref=useDepthField]     ← parallax anchor ONLY (left/top, translateY from scroll)
+  div.-translate-x-1/2 -translate-y-1/2   ← centering ONLY
+    AmbientField.oni-ambient-drift|.oni-breath   ← CSS motion ONLY
+      SVG / mark
+```
+
+**ContinuityField / WorkSection / Showreel marks:** `AmbientField` only — no `useDepthField`. Safe by default.
+
+**Never attach `useDepthField` ref to a node that also carries centering transform or `oni-ambient-drift`.**
+
+### 13.4 Export / runtime separation guarantees
+
+| Guarantee | How enforced |
+|-----------|----------------|
+| Export does not change production CSS tokens | `--atm-*` unchanged; freeze uses `animation: none` only under `html.oni-export` |
+| Export does not run on `/` without flag | `isExportMode(searchParams)` false → no `oni-export` class; provider sets `initialExportMode` from server |
+| Export cannot leak to archive | No provider on archive pages; freeze selectors require `[data-oni-page="landing"]` |
+| `useExportMode()` default is `false` | Context default; only landing wraps provider |
+| Parallax off in export | `useDepthField` early return when `exportMode` |
+| Production WebGL unchanged | `HeroVisual` branch; export skips `Scene` mount only |
+
+**What must NEVER be added to export freeze:**
+
+- Global `*` or `body` animation kills
+- `.oni-ambient-drift` / `.oni-breath` **`transform: none`** on production (freeze uses `animation: none` only — do not block drift transform on live `/`)
+- `PageBackdrop` SVG removal or opacity overrides
+- Archive inspect / masonry / video playback rules
+- Reduced `--atm-drift` / `--atm-breath` values “for cleaner capture” in shared `:root`
+
+**What must NEVER overwrite transform stacks:**
+
+- `useDepthField` on centered nodes (use anchor + inner wrapper pattern)
+- Export CSS `transform: none` on `.oni-ambient-drift` (would kill drift while leaving breath)
+- Inline `transform` on the same element as `AmbientField` drift
+
+### 13.5 Fragile areas (known)
+
+| Area | Risk | Mitigation |
+|------|------|------------|
+| Hero depth planes | `useDepthField` vs centering vs drift | Three-layer stack (§13.3) |
+| `useDepthField` lerp `0.06` | Heavy damping — scroll parallax feels late/subtle | Tune factor before lerp; do not exceed 0.12 factor without review |
+| Outer hero ring | `breathe` only (no drift) — weakest orbital motion | By design; mid ring has drift+breathe+inverted parallax |
+| `PresenceLayer` `data-oni-presence` | Export `transform: none` — correct scope | Do not add class to decorative wrappers |
+| Client import of `AmbientField` in `HeroAtmosphere` | Bundles server component into client tree | Acceptable; CSS classes must remain in bundle |
+| Stale production deploy | Pushed build may lack latest atmosphere fix | See §13.6 |
+
+### 13.6 Localhost vs production parity
+
+The atmosphere system is **not fundamentally broken** if localhost shows drift/breath but production feels flatter.
+
+**Typical causes (check in order):**
+
+1. **Deploy drift** — local commits not pushed/deployed (e.g. hero transform ownership fix in `HeroAtmosphere.tsx` + `useDepthField` comment). Compare `git log origin/main -1` with local `HEAD` and uncommitted diff.
+2. **Stale edge cache** — redeploy or purge CDN after atmosphere fix; hard-refresh production (`Cmd+Shift+R`).
+3. **Viewport** — `HeroAtmosphere` is `hidden lg:block`; mobile has no hero rings. Compare same breakpoint (≥1024px).
+4. **`prefers-reduced-motion`** — production OS/browser setting disables all `.oni-ambient-drift` / `.oni-breath` via `globals.css`.
+5. **Misattributed flattening** — `ContinuityField` threads are opacity-only (~5% peak); hero rings carry orbital tension. Weak hero parallax reads as “dead atmosphere.”
+6. **Not export leak** — verify production `/` has no `html.oni-export` in DevTools → `<html class>`.
+
+**Export stabilization did not globally reduce amplitude** on production `/`: freeze rules apply only when `html.oni-export` is set. The perceptual regression on a pushed build without the transform fix is a **hero parallax/centering collision**, not export CSS mutating live runtime.
+
+### 13.7 Motion tuning constraints (evolutionary polish only)
+
+Allowed without architecture change:
+
+- Adjust `--atm-drift` / `--atm-breath` in `globals.css` (slow direction only — never &lt;8s period)
+- Adjust `useDepthField` factors per plane (hero only)
+- Adjust negative `animationDelay` on `AmbientField` (phase offsets only)
+
+Requires review (not reconciliation-pass drive-by):
+
+- Lerp rate in `useDepthField` (affects orbital “tension” on scroll)
+- Adding `drift` to outer hero ring (changes hero vocabulary)
+- `translate3d` migration (compositing change, not required)
+- Any export freeze expansion beyond §12.4
+
+Visual target: **stable but alive** — motion below conscious threshold but present on sustained viewing.
+
+---
+
+## 14. Evolution
 
 This workflow is **evolving**. First landing capture cycle may surface Tier C needs (wrapper hygiene), archive export extension, or typography token extraction. Each extension must:
 

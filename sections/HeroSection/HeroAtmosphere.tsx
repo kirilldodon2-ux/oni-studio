@@ -78,8 +78,9 @@ export function HeroAtmosphere() {
       <div
         ref={outerRef as RefObject<HTMLDivElement>}
         className="absolute"
-        style={{ left: "69%", top: "44%", transform: "translate(-50%, -50%)" }}
+        style={{ left: "69%", top: "44%" }}
       >
+        <div className="-translate-x-1/2 -translate-y-1/2">
         <AmbientField breathe delay={0}>
           <svg
             width="580"
@@ -94,6 +95,7 @@ export function HeroAtmosphere() {
             />
           </svg>
         </AmbientField>
+        </div>
       </div>
 
       {/* ── Guide axes ─────────────────────────────────────────────────────
@@ -102,8 +104,9 @@ export function HeroAtmosphere() {
       <div
         ref={guideRef as RefObject<HTMLDivElement>}
         className="absolute"
-        style={{ left: "69%", top: "44%", transform: "translate(-50%, -50%)" }}
+        style={{ left: "69%", top: "44%" }}
       >
+        <div className="-translate-x-1/2 -translate-y-1/2">
         <AmbientField breathe delay={-3200}>
           <svg
             width="520"
@@ -124,6 +127,7 @@ export function HeroAtmosphere() {
             />
           </svg>
         </AmbientField>
+        </div>
       </div>
 
       {/* ── Middle ring ────────────────────────────────────────────────────
@@ -133,8 +137,9 @@ export function HeroAtmosphere() {
       <div
         ref={midRef as RefObject<HTMLDivElement>}
         className="absolute"
-        style={{ left: "69%", top: "44%", transform: "translate(-50%, -50%)" }}
+        style={{ left: "69%", top: "44%" }}
       >
+        <div className="-translate-x-1/2 -translate-y-1/2">
         <AmbientField drift breathe delay={-5800}>
           <svg
             width="390"
@@ -149,6 +154,7 @@ export function HeroAtmosphere() {
             />
           </svg>
         </AmbientField>
+        </div>
       </div>
 
       {/* ── Inner ring + cardinal ticks ────────────────────────────────────
@@ -158,8 +164,9 @@ export function HeroAtmosphere() {
       <div
         ref={innerRef as RefObject<HTMLDivElement>}
         className="absolute"
-        style={{ left: "69%", top: "44%", transform: "translate(-50%, -50%)" }}
+        style={{ left: "69%", top: "44%" }}
       >
+        <div className="-translate-x-1/2 -translate-y-1/2">
         <AmbientField drift delay={-9500}>
           <svg
             width="245"
@@ -179,6 +186,7 @@ export function HeroAtmosphere() {
             <line x1="231"   y1="122.5" x2="241" y2="122.5" stroke="#c8c8c8" strokeWidth="0.75" opacity="0.45" />
           </svg>
         </AmbientField>
+        </div>
       </div>
 
       {/* ── Environmental accent marks ─────────────────────────────────────

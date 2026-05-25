@@ -135,3 +135,49 @@ Do not implement Tier C until after evaluating the first Figma export.
 Export affects **landing only** (`app/page.tsx` + `ExportModeProvider`). Archive routes never set `html.oni-export` or export metadata.
 
 Contributor doctrine (canonical truth, allowed freeze, “too invasive” signals): [FIGMA_RECONCILIATION_WORKFLOW.md](./FIGMA_RECONCILIATION_WORKFLOW.md) §12.
+
+Atmospheric runtime (transform ownership, export separation, fragile chains): [FIGMA_RECONCILIATION_WORKFLOW.md](./FIGMA_RECONCILIATION_WORKFLOW.md) §13.
+
+---
+
+## Deployment verification checklist
+
+Run after any atmosphere or export change before treating production as authoritative.
+
+### Build parity
+
+- [ ] `npm run build` succeeds locally
+- [ ] `git status` clean — atmosphere fixes committed (not only on localhost)
+- [ ] Deployed commit SHA matches `git rev-parse HEAD` on release branch
+
+### Production `/` (no query flag)
+
+- [ ] DevTools → `<html>` has **no** `oni-export` class
+- [ ] Desktop width ≥1024px — hero rings visible and centered on sculpture
+- [ ] Subtle opacity breathing visible on hero rings after ~3s (mid ring strongest)
+- [ ] Scroll — faint parallax separation between ring planes (inverted mid ring)
+- [ ] `ContinuityField` horizon threads: opacity-only shimmer (very subtle)
+- [ ] No runtime error overlay; WebGL hero loads (local PMREM, no HDR fetch)
+
+### Production `/?export=1`
+
+- [ ] `<html class="oni-export">` present
+- [ ] `data-oni-export="1"` on page root
+- [ ] Hero shows static fallback — no WebGL spinner
+- [ ] All sections visible without scroll
+- [ ] No CSS drift/breath on decorative nodes (frozen)
+
+### Archive `/archive`
+
+- [ ] No `oni-export` on `<html>`
+- [ ] No `ExportModeProvider` side effects
+- [ ] Browse grid / video behavior unchanged
+
+### Stale artifact suspicion
+
+If localhost feels more alive than production with the same commit intent:
+
+1. Compare deployed SHA vs local `HEAD`
+2. Hard-refresh / purge CDN cache
+3. Confirm desktop viewport and `prefers-reduced-motion` off
+4. Inspect hero depth nodes: parallax anchor must **not** share centering transform with `useDepthField` (see reconciliation doc §13.3)

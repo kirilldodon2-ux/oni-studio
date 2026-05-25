@@ -13,6 +13,9 @@ import { useExportMode } from "@/systems/export";
  * Use for: atmospheric ornaments, section-local geometric marks, decorative SVG layers.
  * Never use on: primary content, interactive elements, layout-bearing containers.
  *
+ * Attach the ref to a positioning anchor only — keep centering transforms on a
+ * child wrapper so this hook's translateY does not overwrite translate(-50%, -50%).
+ *
  * @param factor  Parallax strength — proportion of scrollY applied as translateY.
  *                Range: 0.02 (barely perceptible) to 0.12 (restrained depth).
  *                Default: 0.05.
