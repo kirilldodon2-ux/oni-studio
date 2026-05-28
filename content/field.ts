@@ -23,7 +23,7 @@ export const archiveObjects: ArchiveObject[] = [
     year: 2026,
     previewSrc: canonicalPreviewSrc("alabaster-sound", ".mp4"),
     mediaType: "motion",
-    mediaAspect: [9, 16],
+    mediaAspect: [16, 9],
     archetype: "AtmosphericFragment",
     creator: "@minzvr",
     summary:
@@ -65,7 +65,7 @@ export const archiveObjects: ArchiveObject[] = [
     year: 2026,
     previewSrc: canonicalPreviewSrc("boots-artifact", ".mp4"),
     mediaType: "motion",
-    mediaAspect: [9, 16],
+    mediaAspect: [4, 5],
     archetype: "ProcessArtifact",
     creator: "@minzvr",
     summary:
