@@ -21,7 +21,7 @@ oni-site/
 ├── content/                     ← archive registry + types (see CONTENT_SYSTEM.md)
 │   ├── field.ts                 ← archiveObjects registry (explicit, not auto-discovered)
 │   ├── types.ts                 ← ArchiveObject schema
-│   ├── archiveObjectPaths.ts    ← canonicalPreviewSrc() (ontology) + resolveArchiveMediaSrc() (transport)
+│   ├── archiveObjectPaths.ts    ← canonicalPreviewSrc() (ontology) + resolveArchiveMediaSrc() (transport); R2 ops → CONTENT_SYSTEM.md § Media delivery
 │   ├── README.md                ← directory index
 │   └── sources/                 ← reserved (.gitkeep)
 │

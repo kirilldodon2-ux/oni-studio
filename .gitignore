@@ -26,6 +26,12 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# wrangler / miniflare local R2 emulation (never commit)
+.wrangler/
+
+# ad-hoc upload/debug artifacts
+/test.jpg
+
 # vercel
 .vercel
 

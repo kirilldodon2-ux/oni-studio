@@ -178,9 +178,80 @@ Prepends `NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN` when set (production R2/CDN). When u
 
 Resolution occurs at DOM `src` boundaries (`ArchiveTile`, `ArchiveInspectView`, `getObjectAssets`) — not in the registry.
 
+**Build-time:** `NEXT_PUBLIC_*` is inlined at `next build`. `getObjectAssets` resolves sequence URLs during SSG. Changing the origin requires a Pages rebuild. `next.config.mjs` derives `images.remotePatterns` from the origin hostname at build time.
+
+**Local fallback:** `public/archive/objects/[slug]/` remains canonical on disk and in git. Production may serve the same paths from R2 while the repo keeps hybrid rollback — unset the env and redeploy to revert transport to `public/` without ontology changes.
+
 The system is **explicit** — not runtime-scanned, filesystem-crawled, dynamically inferred, or auto-generated at browse time.
 
 `public/archive/previews/` is deprecated duplicate authority. Do not add new files there.
+
+### Media delivery — operational (Phase A, Cloudflare R2)
+
+**Status:** ACTIVE (transport). Ontology unchanged. Bucket `oni-archive`. Public dev origin (no trailing slash):
+
+`https://pub-9e22320b4cf74cbc852a1ad58e965d9f.r2.dev`
+
+**Pages env:** `NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN` = that origin base URL.
+
+**Object keys** must mirror repo paths under `public/`:
+
+```
+archive/objects/[slug]/00-hero.[ext]
+archive/objects/[slug]/01-….[ext]
+```
+
+Resolved fetch URL pattern: `{ORIGIN}/archive/objects/[slug]/00-hero.[ext]`
+
+**CORS** (R2 bucket): allow `http://localhost:3000` and production Pages origin (e.g. `https://oni-studio.pages.dev`) for video `Range` / cross-origin media.
+
+#### First upload (pilot)
+
+```bash
+wrangler r2 object put oni-archive/archive/objects/[slug]/00-hero.[ext] \
+  --file=public/archive/objects/[slug]/00-hero.[ext] \
+  --content-type=image/jpeg \
+  --cache-control="public, max-age=31536000, immutable" \
+  --remote
+```
+
+Verify (replace `ORIGIN`):
+
+```bash
+curl -sI "$ORIGIN/archive/objects/[slug]/00-hero.[ext]"
+```
+
+Expect `200`, correct `content-type`, `accept-ranges` where applicable.
+
+**Critical:** `wrangler r2 object put` writes to **local Miniflare** unless `--remote` is passed. Local success + public R2 `404` means the object was not uploaded remotely.
+
+#### Bulk upload
+
+From repo root, upload all object-territory files (exclude `.DS_Store`):
+
+```bash
+find public/archive/objects -type f ! -name '.DS_Store' | while read f; do
+  key="${f#public/}"
+  wrangler r2 object put "oni-archive/$key" --file="$f" --remote
+done
+```
+
+Add `--content-type` per extension when MIME matters for inspect/video. Re-upload a key after local editorial replacement; keys are stable.
+
+#### Rollback
+
+1. Clear `NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN` on Cloudflare Pages (or remove from preview env).
+2. Redeploy / rebuild.
+3. Runtime serves site-relative paths from `public/archive/objects/` again.
+
+No `field.ts`, slug, or path changes required.
+
+#### What Phase A does not include (FUTURE)
+
+- Preview vs master transport split
+- Per-object CDN URLs in registry
+- Upload dashboards, manifests, auto-discovery, or CMS ingestion
+- Removing `public/archive/objects` from the repo
 
 ---
 
@@ -303,4 +374,4 @@ The filesystem is part of the authorship. Preserve that philosophy.
 | `content/README.md` | Directory index for `content/` |
 | `content/field.ts` | Live registry |
 | `content/types.ts` | Schema types |
-| `content/archiveObjectPaths.ts` | Deterministic `00-hero` paths |
+| `content/archiveObjectPaths.ts` | Ontology paths + `resolveArchiveMediaSrc()` transport |
