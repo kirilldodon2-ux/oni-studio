@@ -266,19 +266,6 @@ export const archiveObjects: ArchiveObject[] = [
   },
 
   {
-    slug: "podcast-cats",
-    title: "УСАТЫЕ И ПОЛОСАТЫЕ",
-    territories: ["editorial-motion"],
-    year: 2025,
-    previewSrc: canonicalPreviewSrc("podcast-cats", ".png"),
-    mediaAspect: [1, 1],
-    archetype: "Work",
-    creator: "@whytheweakest",
-    summary:
-      "Podcast identity system for a pet media project — covers, carousel, stories and social assets.",
-  },
-
-  {
     slug: "random-fashion-shot",
     title: "RANDOM FASHION SHOT",
     territories: ["editorial-motion", "atmospheric-fragments"],
@@ -318,34 +305,6 @@ export const archiveObjects: ArchiveObject[] = [
     creator: "@somovdes",
     summary:
       "Underground club-event identity fragment — poster cover and vertical teaser motion assembled as nightlife editorial residue.",
-  },
-  
-  {
-    slug: "event-clubshow-instastories",
-    title: "EVENT CLUBSHOW INSTASTORIES",
-    territories: ["editorial-motion", "atmospheric-fragments"],
-    year: 2026,
-    previewSrc: canonicalPreviewSrc("event-clubshow-instastories", ".mp4"),
-    mediaType: "motion",
-    mediaAspect: [9, 16],
-    archetype: "AtmosphericFragment",
-    creator: "@somovdes",
-    summary:
-      "Club-show vertical story fragment — degraded nightlife atmosphere reconstructed through transient social-media motion.",
-  },
-  
-  {
-    slug: "fauna-random",
-    title: "FAUNA RANDOM",
-    territories: ["experimental-media", "archive-research"],
-    year: 2026,
-    previewSrc: canonicalPreviewSrc("fauna-random", ".mp4"),
-    mediaType: "motion",
-    mediaAspect: [16, 9],
-    archetype: "AtmosphericFragment",
-    creator: "@somovdes",
-    summary:
-      "Chaotic fauna typography fragment — unstable audiovisual residue rendered as compressed atmospheric motion.",
   },
   
   {
