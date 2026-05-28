@@ -120,3 +120,16 @@ Propose the change in text. Wait for explicit approval before touching the files
 No external CMS. No tag taxonomy. No social infrastructure.
 Slugs are permanent once published.
 MDX is static-generated at build time only — no client-side MDX evaluation.
+
+---
+
+## External Skills — Usage Protocol
+
+ONI doctrine always overrides external skill defaults.
+
+**impeccable** — use `/impeccable audit` for technical anti-pattern detection only.
+Never apply: `/impeccable bolder`, `/delight`, `/overdrive` — conflicts with ONI restraint.
+
+**taste minimalist-skill** — reference for new component creation only.
+Settings: DESIGN_VARIANCE 8-9 / MOTION_INTENSITY 2-3 / VISUAL_DENSITY 1-2
+Never apply taste defaults to existing ONI systems without explicit approval.
