@@ -246,7 +246,21 @@ Add `--content-type` per extension when MIME matters for inspect/video. Re-uploa
 
 No `field.ts`, slug, or path changes required.
 
-#### What Phase A does not include (FUTURE)
+#### Phase A core — complete when
+
+- Transport abstraction active (`resolveArchiveMediaSrc`, `NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN`)
+- CDN delivery operational (R2 bucket `oni-archive`, keys mirror `archive/objects/…`)
+- Canonical topology preserved (`public/archive/objects/[slug]/`, `00-hero.*`, `field.ts` ontology)
+- Local fallback preserved (unset env → site-relative `public/` paths)
+- Zero ontology/runtime redesign
+
+#### Explicitly outside Phase A core
+
+- **`ROADMAP.md` sync** — optional one-line “delivered early” only; no roadmap restructure
+- **Custom domain** — operational origin URL swap; no resolver or registry semantics change
+- **`git lfs prune`** — repository hygiene only; unrelated to media transport architecture
+
+#### FUTURE (not Phase A)
 
 - Preview vs master transport split
 - Per-object CDN URLs in registry

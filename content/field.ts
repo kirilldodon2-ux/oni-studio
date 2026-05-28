@@ -17,6 +17,62 @@ export const archiveObjects: ArchiveObject[] = [
   },
 
   {
+    slug: "alabaster-sound",
+    title: "ALABASTER SOUND",
+    territories: ["experimental-media", "editorial-motion"],
+    year: 2026,
+    previewSrc: canonicalPreviewSrc("alabaster-sound", ".mp4"),
+    mediaType: "motion",
+    mediaAspect: [9, 16],
+    archetype: "AtmosphericFragment",
+    creator: "@minzvr",
+    summary:
+      "Minimal luminous motion fragment — pale atmospheric abstraction reconstructed as cinematic spatial residue.",
+  },
+  
+  {
+    slug: "car-render",
+    title: "CAR RENDER",
+    territories: ["experimental-media", "spatial-identity"],
+    year: 2026,
+    previewSrc: canonicalPreviewSrc("car-render", ".mp4"),
+    mediaType: "motion",
+    mediaAspect: [16, 9],
+    archetype: "Work",
+    creator: "@minzvr",
+    summary:
+      "High-gloss automotive render fragment — reflective red velocity surfaces rendered as synthetic commercial motion residue.",
+  },
+  
+  {
+    slug: "chrome-hearts",
+    title: "CHROME HEARTS",
+    territories: ["experimental-media", "editorial-motion"],
+    year: 2026,
+    previewSrc: canonicalPreviewSrc("chrome-hearts", ".mp4"),
+    mediaType: "motion",
+    mediaAspect: [9, 16],
+    archetype: "AtmosphericFragment",
+    creator: "@minzvr",
+    summary:
+      "High-contrast chrome object fragment reconstructed as cinematic motion residue.",
+  },
+  
+  {
+    slug: "boots-artifact",
+    title: "BOOTS ARTIFACT",
+    territories: ["archive-research", "experimental-media"],
+    year: 2026,
+    previewSrc: canonicalPreviewSrc("boots-artifact", ".mp4"),
+    mediaType: "motion",
+    mediaAspect: [9, 16],
+    archetype: "ProcessArtifact",
+    creator: "@minzvr",
+    summary:
+      "Monochrome footwear study — isolated boot silhouettes reconstructed as degraded fashion archive residue.",
+  },
+
+  {
     slug: "3d-hoodie-artifact",
     title: "3D HOODIE ARTIFACT",
     territories: ["experimental-media", "editorial-motion"],
