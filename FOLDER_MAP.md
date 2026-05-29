@@ -5,6 +5,7 @@
 ```
 oni-site/
 ├── docs/
+│   ├── DECISIONS.md                       ← architecture decision log (nav, content lanes, control surface)
 │   ├── FIGMA_EXPORT.md                    ← landing capture: ?export=1, metadata, freeze table
 │   └── FIGMA_RECONCILIATION_WORKFLOW.md   ← code ↔ Figma ↔ code perception doctrine
 │
@@ -13,17 +14,24 @@ oni-site/
 │                                 + html.oni-export perception freeze (?export=1)
 │   ├── layout.tsx               ← root layout, font loading
 │   ├── page.tsx                 ← home: ExportModeProvider, backdrop, continuity, sections
-│   └── archive/
-│       ├── page.tsx             ← browse: /archive (ArchiveGrid)
+│   ├── archive/
+│   │   ├── page.tsx             ← browse: /archive (ArchiveGrid)
+│   │   └── [slug]/
+│   │       └── page.tsx         ← inspect: /archive/[slug] (ArchiveInspectView)
+│   └── works/
+│       ├── page.tsx             ← index: /works (WorksIndex)
 │       └── [slug]/
-│           └── page.tsx         ← inspect: /archive/[slug] (ArchiveInspectView)
+│           └── page.tsx         ← detail: /works/[slug] (WorkPageView)
 │
 ├── content/                     ← archive registry + types (see CONTENT_SYSTEM.md)
 │   ├── field.ts                 ← archiveObjects registry (explicit, not auto-discovered)
 │   ├── types.ts                 ← ArchiveObject schema
 │   ├── archiveObjectPaths.ts    ← canonicalPreviewSrc() (ontology) + resolveArchiveMediaSrc() (transport); R2 ops → CONTENT_SYSTEM.md § Media delivery
 │   ├── README.md                ← directory index
-│   └── sources/                 ← reserved (.gitkeep)
+│   ├── sources/                 ← reserved (.gitkeep)
+│   └── works/                   ← works registry (Lean Path — see docs/DECISIONS.md DEC-001)
+│       ├── field.ts             ← worksRegistry
+│       └── types.ts             ← Work type
 │
 ├── sections/                    ← self-contained page sections
 │   ├── HeroSection/
@@ -69,32 +77,38 @@ oni-site/
 │   │   ├── convergenceInteraction.ts
 │   │   ├── silhouetteGrounding.ts
 │   │   └── index.ts
-│   └── archive/                 ← browse + inspect (see ARCHIVE_OPERATING_LOGIC.md)
-│       ├── ArchiveGrid.tsx
-│       ├── ArchiveTile.tsx
-│       ├── ArchiveInspectView.tsx
-│       ├── archiveInspectLayout.ts
-│       ├── ArchiveHeroFrame.tsx
-│       ├── ArchiveEditorialSequence.tsx
-│       ├── ArchiveEditorialPlate.tsx
-│       ├── composeEditorialField.ts
-│       ├── getObjectAssets.ts
-│       ├── probeImageSize.ts
-│       ├── territoryLabels.ts
+│   ├── archive/                 ← browse + inspect (see ARCHIVE_OPERATING_LOGIC.md)
+│   │   ├── ArchiveGrid.tsx
+│   │   ├── ArchiveTile.tsx
+│   │   ├── ArchiveInspectView.tsx
+│   │   ├── archiveInspectLayout.ts
+│   │   ├── ArchiveHeroFrame.tsx
+│   │   ├── ArchiveEditorialSequence.tsx
+│   │   ├── ArchiveEditorialPlate.tsx
+│   │   ├── composeEditorialField.ts
+│   │   ├── getObjectAssets.ts
+│   │   ├── probeImageSize.ts
+│   │   ├── territoryLabels.ts
+│   │   └── index.ts
+│   └── works/                   ← works index + detail (Lean Path — see docs/DECISIONS.md)
+│       ├── WorksIndex.tsx
+│       ├── WorkPageView.tsx
 │       └── index.ts
 │
 ├── components/                  ← atomic / global UI (not section-level)
 │   └── navigation/              ← floating control surface (Phase 5)
-│       ├── index.tsx            ← ControlSurface — fixed, z-40/50, three-zone layout
+│       ├── index.tsx            ← ControlSurface — fixed, z-40/50, always transparent
 │       ├── NavLogo.tsx          ← reserved identity zone; visible sigil disabled
 │       ├── NavTelemetry.tsx     ← ambient annotation, desktop-only, pointer-events-none
 │       ├── NavMenuTrigger.tsx   ← MENU + ONINavigationSigil; toggles MENU/CLOSE
-│       └── NavOverlay.tsx       ← adaptive overlay (z-50): full-viewport scrim; plane full-width `< md`, right plane `md+`; ESC, scroll lock
+│       └── NavOverlay.tsx       ← overlay: HOME / WORK / ARCHIVE / STUDIO / CONTACT
 │
 └── public/
     ├── archive/
     │   ├── objects/[slug]/    ← object territory: 00-hero.*, 01+ editorial sequence
     │   └── previews/          ← deprecated — DEPRECATED.md only
+    ├── works/
+    │   └── [slug]/            ← work territory: 00-cover.* (Lean Path)
     ├── logo/
     │   └── oni_logo_black.svg
     ├── frames/
@@ -110,14 +124,11 @@ oni-site/
 
 ## Target Structure (Phase 6+)
 
-Only paths not yet present in **Current Structure**. `/archive` and `content/` registry are implemented — see Current.
+Only paths not yet present in **Current Structure**. `/archive`, `/works` (Lean Path), and `content/` registries are implemented — see Current.
 
 ```
 oni-site/
 ├── app/
-│   ├── works/                         ← Phase 6
-│   │   ├── page.tsx                   ← /works index
-│   │   └── [slug]/page.tsx            ← /works/[slug]
 │   ├── writing/                       ← Phase 6
 │   │   ├── page.tsx                   ← /writing index
 │   │   └── [slug]/page.tsx            ← /writing/[slug]

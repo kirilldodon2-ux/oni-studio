@@ -573,16 +573,16 @@ Telemetry is desktop-only (`lg+`), `pointer-events-none`, `aria-hidden`.
 ### Environmental Control Layer (Atmospheric Polish Layer 1 — implemented)
 
 The closed control surface is an environmental marker layer, not a visible strip.
-It carries no persistent panel, blur, border, or full-width material treatment.
+It carries no panel, blur, border, or full-width material treatment at any scroll position (`docs/DECISIONS.md` DEC-004).
 `NavOverlay` is an **adaptive atmospheric navigation plane** (intentional): a full-viewport scrim plus a navigation plane that is full-width below `md` and a right-aligned partial-width plane on `md+` — see `NAVIGATION_ARCHITECTURE.md` §7.
 
-**ControlSurface `<header>`:**
+**ControlSurface `<header>` (all scroll positions):**
 
 | Property        | Value                    | Intent                                          |
 |-----------------|--------------------------|-------------------------------------------------|
 | Background      | none                     | No persistent navbar/panel field                |
 | Backdrop filter | none                     | Hero atmosphere remains uninterrupted           |
-| Border          | none                     | No full-width header edge                       |
+| Border          | none                     | No full-width header edge; not a bar            |
 | Pointer events  | `pointer-events-none` on header; trigger opts in | The invisible band does not behave like chrome |
 
 **NavOverlay — scrim (full viewport):**
@@ -602,9 +602,9 @@ It carries no persistent panel, blur, border, or full-width material treatment.
 | Motion          | `translateX` from right + opacity | Restrained spatial reveal (~520–760ms)      |
 
 Rules:
-- Do not add background, blur, border, shadow, glow, or gradient styling to the closed control surface
+- Do not add background, blur, border, shadow, glow, or gradient styling to the closed control surface at any scroll position
+- Do not reintroduce scroll-state (glass or hairline) without `docs/DECISIONS.md` reintroduction gate
 - Blur values must remain below `6px` on overlay surfaces to stay out of glassmorphism territory
-- No glow, shadow, or gradient may be added to the closed control surface
 - Preserve the adaptive plane — do not revert to permanent center-nav links on the control surface
 
 ### Component Architecture (Phase 5 — implemented)

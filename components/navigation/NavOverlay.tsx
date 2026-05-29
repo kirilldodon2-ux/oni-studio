@@ -12,9 +12,15 @@ const NAV_ITEMS = [
   },
   {
     label: "WORK",
-    href: "#work",
+    href: "/works",
     className:
       "text-[clamp(5rem,17vw,11rem)] text-black md:text-[clamp(6rem,10.5vw,11rem)]",
+  },
+  {
+    label: "ARCHIVE",
+    href: "/archive",
+    className:
+      "text-[clamp(4.4rem,14vw,9.25rem)] text-black/80 md:text-[clamp(5rem,8.5vw,9.25rem)]",
   },
   {
     label: "STUDIO",

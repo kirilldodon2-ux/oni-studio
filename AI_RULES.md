@@ -7,6 +7,7 @@ Rules for AI assistants (Cursor, Claude, etc.) working on this codebase.
 ## Before Modifying Structure
 
 - read ARCHITECTURE.md and this file first
+- read `docs/DECISIONS.md` before changing navigation links, content lanes, or control-surface scroll behavior
 - analyze dependencies before moving files
 - preserve responsive behavior at every breakpoint
 - preserve cinematic restraint — do not default to "standard" layouts
@@ -112,7 +113,7 @@ The navigation system is a **floating control surface**, not a navbar. These rul
 - hover states are opacity-only (`hover:opacity-60`) — no scale, no translate, no color change
 - do not remove `--oni-header-h` from `globals.css` without also updating Hero to remove its dependency
 
-Phase 5 is in progress. `components/SiteHeader.tsx` has been replaced by `components/navigation/`. The active ControlSurface v1 is `fixed`, transparent, three-zone layout. `NavOverlay` v1 is implemented — full-viewport scrim, adaptive navigation plane (full-width below `md`, right atmospheric plane at partial width on `md+`), `z-50`, ESC close, body scroll lock, large editorial Bebas links with staggered reveal. Scroll state behavior (transparent → subtle surface) is the remaining Phase 5 work item.
+Phase 5 is in progress. `components/SiteHeader.tsx` has been replaced by `components/navigation/`. The active ControlSurface v1 is `fixed`, transparent at all scroll positions, three-zone layout (`docs/DECISIONS.md` DEC-004). `NavOverlay` v1 — HOME / WORK / ARCHIVE / STUDIO / CONTACT (`DEC-002`). Overlay: full-viewport scrim, adaptive navigation plane, `z-50`, ESC close, body scroll lock.
 
 ---
 

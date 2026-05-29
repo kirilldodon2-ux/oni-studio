@@ -101,8 +101,8 @@ The control surface is divided into three horizontal zones:
 
 ### Scroll Behavior — Both Breakpoints
 
-- At page top: control surface is present and visually minimal — transparent, atmospheric
-- On scroll: subtle surface character shift (Phase 5 motion)
+- At all scroll positions: control surface is present and visually minimal — transparent, atmospheric, **unchanged by scroll** (see `docs/DECISIONS.md` DEC-004)
+- **No scroll-state on the closed surface** — no border, background, or blur in response to `scrollY`
 - **No hide-on-scroll behavior** for Phase 5 — adds complexity without clear benefit for a single-page scrolling site. Revisit if multi-page routing is introduced in future phases.
 - The control surface is ambient infrastructure — it does not perform or react dramatically
 
@@ -206,9 +206,9 @@ It is present. It does not entrance-animate. It does not fade in, slide down, or
 
 ### Scroll State Transition
 
-- If scroll position triggers a visual character shift on the control surface (background opacity change or thin border appearance), the transition must be slow: 400–600ms
-- Driven by scroll position via CSS scroll-linked animation or a minimal scroll hook — not discrete event-triggered jumps
-- The transition must be imperceptible at small scroll distances — only apparent after meaningful scroll depth (~100px)
+**Removed (DEC-004).** The closed control surface does not react to scroll position — no border, background, or backdrop-filter at any depth.
+
+Historical note: an initial Phase 5 pass used glass fill + blur (rejected, DEC-003 lineage); border-only was superseded for the same reason — closed surface is not orientation chrome. Reintroduction requires explicit ONI-specific need (e.g. scroll-indexed telemetry per §4 Option D), not generic scroll feedback.
 
 ### Telemetry Animation
 
@@ -298,6 +298,18 @@ Implemented (Phase 5). Adaptive atmospheric navigation — not permanent center-
 - Close: `NavMenuTrigger` toggle, ESC, scrim pointer-down
 - `body` scroll locked while open
 - `aria-modal="true"`, `role="dialog"`; focusable links when open (`tabIndex` gated)
+
+**Primary links (`NAV_ITEMS`) — multi-route baseline (2026-05-29, `docs/DECISIONS.md` DEC-002):**
+
+| Label | href | Notes |
+|-------|------|-------|
+| HOME | `/` | |
+| WORK | `/works` | Studio output index — not homepage `#work` |
+| ARCHIVE | `/archive` | Cross-archetype browse field |
+| STUDIO | `#showreel` | Home section anchor (cross-route fix deferred) |
+| CONTACT | `#contact` | Home section anchor (cross-route fix deferred) |
+
+WORK retains dominant typography tier and `md:-ml-3`. ARCHIVE uses STUDIO’s mid-weight tier. Decorative corner copy `ARCHIVE OPEN` is not a link.
 
 ### Hero Architecture Impact — Phase 5 Change
 
@@ -536,7 +548,7 @@ The **action zone** is exempt: it uses artifact revelation per this section, not
 2. Replace `components/SiteHeader.tsx` with the `ControlSurface`
 3. Remove `calc(100svh - var(--oni-header-h))` from Hero, restore full-viewport height
 4. Implement `NavOverlay` (adaptive atmospheric menu plane) with keyboard accessibility
-5. Define and implement scroll state behavior (transparent → subtle surface)
+5. ~~Define and implement scroll state behavior~~ — removed; closed surface always transparent (DEC-004)
 6. Finalize telemetry content selection
 
 ### Not in Phase 5

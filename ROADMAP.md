@@ -120,9 +120,9 @@ Goals:
 - ✓ implement `ControlSurface` (`fixed`, `z-40`), `NavLogo`, `NavTelemetry`, `NavMenuTrigger`
 - ✓ remove `calc(100svh - var(--oni-header-h))` from Hero; restore full-viewport height
 - ✓ telemetry content: `ONI.STUDIO / MMXXVI` (Option A — static identity thread)
-- ✓ implement `NavOverlay` — adaptive atmospheric menu overlay (`z-50`): full-viewport scrim; navigation plane full-width below `md`, right partial-width plane on `md+`; HOME / WORK / STUDIO / CONTACT; translateX+opacity reveal; ESC close; body scroll lock
+- ✓ implement `NavOverlay` — adaptive atmospheric menu overlay (`z-50`): full-viewport scrim; navigation plane full-width below `md`, right partial-width plane on `md+`; HOME / WORK / ARCHIVE / STUDIO / CONTACT; translateX+opacity reveal; ESC close; body scroll lock
 - ✓ Atmospheric Polish Layer 1 — static material pass applied (control surface + overlay)
-- ✓ scroll state behavior (transparent → subtle surface on scroll) — `useControlSurfaceScroll`, border + ambient blur after ~100px
+- ✓ scroll state on closed surface — **removed**; always transparent (see `docs/DECISIONS.md` DEC-004; supersedes DEC-003 glass/border experiments)
 
 Constraints:
 - control surface must not sever the atmospheric backdrop — no `bg-white` at page top
@@ -158,11 +158,12 @@ Already live before full layer completion:
 - `public/archive/objects/[slug]/` — object territory
 - `resolveArchiveMediaSrc()` + Cloudflare R2 delivery (`oni-archive`, `NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN`)
 - Browse video — `useCinematicVideo` (viewport-gated playback, gesture unlock)
+- **Works Lean Path (Batch 2)** — `content/works/`, `/works`, `/works/[slug]`, `systems/works/`, `public/works/[slug]/` — parallel registry + typographic index + document shell; no MDX/Zod yet (see `docs/DECISIONS.md` DEC-001)
 
 ### URL targets (permanent slugs)
 
 ```
-/works, /works/[slug]     ← studio works (pending)
+/works, /works/[slug]     ← Lean Path delivered (Batch 2); MDX interior pending
 /writing, /writing/[slug] ← writings (pending)
 /code/[slug]              ← code artifacts, no public index (pending)
 /archive, /archive/[slug] ← delivered early
@@ -191,7 +192,7 @@ scale.
 
 ### Routing and schema (from former Phase 6–9)
 
-- App Router shells for `/works`, `/writing`, `/code/[slug]`
+- App Router shells for `/works` *(Lean Path done)*, `/writing`, `/code/[slug]`
 - `shared/content/` — Zod schemas per archetype; repository remains source of truth
 - formal performance budget (Three.js + R3F + FM baseline + route increments)
 - Cloudflare Pages config — build, headers, redirects, env  
