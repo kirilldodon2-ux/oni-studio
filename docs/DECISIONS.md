@@ -7,6 +7,27 @@ Operational decision log. Read before changing navigation, content lanes, or con
 
 ---
 
+## DEC-005 — Navigation route awareness (2026-05-30)
+
+**Context:** Multi-route baseline (`/`, `/works`, `/works/[slug]`, `/archive`, `/archive/[slug]`) shipped with Layer 1. Overlay and telemetry were still documented as home-static (static `MMXXVI`, decorative `ARCHIVE OPEN`). Visitors had no infrastructural signal of current lane.
+
+**Decision:** **Route consciousness on the control surface** — read `pathname` via Next.js `usePathname()` in navigation client components. No new systems, no scroll-state, no route transitions.
+
+| Surface | Behavior |
+|---------|----------|
+| **NavTelemetry** | `ONI.STUDIO / {lane}` — `HOME` on `/`; `WORKS` when path starts with `/works`; `ARCHIVE` when path starts with `/archive`; `MMXXVI` fallback elsewhere |
+| **NavOverlay links** | `aria-current="page"` when href matches current route (`/` exact; `/works` and `/archive` include subpaths; `#showreel` / `#contact` current only on `/`) |
+| **NavOverlay links (visual)** | Non-current items at reduced opacity until hover/focus (overlay interaction unchanged) |
+| **NavOverlay footer annotation** | Route-specific third line: `HOME FIELD` · `WORKS INDEX` · `WORK OPEN` · `ARCHIVE FIELD` · `ARCHIVE OPEN` · `ONI STUDIO` fallback |
+
+**Rejected:** Reintroducing scroll-state on the closed control surface for orientation (DEC-004). Folding Works media into `resolveArchiveMediaSrc()` (archive R2 scope — see `CONTENT_SYSTEM.md` Works lane).
+
+**Implementation:** `components/navigation/NavTelemetry.tsx`, `components/navigation/NavOverlay.tsx`.
+
+**See also:** `NAVIGATION_ARCHITECTURE.md` §4 Telemetry · §7 NavOverlay · `ROADMAP.md` Layer 2 navigation consciousness (partial — scroll-state item cancelled by DEC-004)
+
+---
+
 ## DEC-004 — ControlSurface: no scroll-state (2026-05-29)
 
 **Supersedes:** DEC-003
@@ -97,3 +118,4 @@ Overlay order: **HOME · WORK · ARCHIVE · STUDIO · CONTACT**
 | `NAVIGATION_ARCHITECTURE.md` | Navigation runtime spec |
 | `ARCHITECTURE.md` | Infrastructure truth |
 | `AI_RULES.md` | Agent constraints — points here for nav/content lane decisions |
+| `CONTENT_SYSTEM.md` | Archive authoring + Works Pages-static delivery |

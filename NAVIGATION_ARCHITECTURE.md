@@ -2,44 +2,26 @@
 
 ## Planning Status
 
-**Phase:** Navigation control surface (Phase 5 — implemented) + artifact interaction grammar (implemented)
-**Runtime:** `components/navigation/` — `ControlSurface`, `NavOverlay`, `NavMenuTrigger`
+**Phase:** Navigation control surface (Phase 5 — implemented) + artifact interaction grammar (implemented) + route awareness (DEC-005)
+**Runtime:** `components/navigation/` — `ControlSurface`, `NavTelemetry`, `NavOverlay`, `NavMenuTrigger`
 **Artifact semantics:** `systems/spatial/` — §9 below; see also `ARCHITECTURE.md` (Navigation Sigil)
+**Retired:** `components/SiteHeader.tsx` — removed; do not reintroduce
 
 ---
 
-## 1. SiteHeader Audit — Current Limitations
+## 1. Historical — SiteHeader (replaced)
 
-Current implementation: `components/SiteHeader.tsx`
+> **Status:** Historical context only. Migration complete. Active runtime is `components/navigation/`.
 
-### Structural Issues
+The former `components/SiteHeader.tsx` was a sticky, opaque top bar with permanent center links (WORK, STUDIO, SERVICES, CONTACT). It severed the atmospheric backdrop, coupled Hero height to header dimensions, and read as conventional SaaS chrome.
 
-- `sticky top-0` means the header participates in document flow and displaces all content below it
-- `bg-white` creates a fully opaque bar that severs the atmospheric backdrop from the upper viewport — the ambient SVG system is invisible behind a white wall at the top of every page
-- Hero height is compensated via `calc(100svh - var(--oni-header-h))`, coupling the Hero layout directly to the header's existence and dimensions
-- `absolute left-1/2 -translate-x-1/2` nav centering is fragile — depends on the container being wide enough; breaks at unusual widths or if items change
-- No safe-zone for content scrolling beneath a fixed surface — currently unnecessary only because the header is sticky (in-flow)
+**Why it was replaced:** ONI navigation is a floating control surface (`position: fixed`), transparent at all scroll positions (DEC-004), with links in `NavOverlay` only — not a structural band in document flow.
 
-### Interaction Issues
-
-- MENU button has no state and no interaction logic — it is decorative
-- `MenuGlyph` switches between a 4-dot matrix (desktop, `lg:grid`) and a 3-bar hamburger (mobile) — inconsistent control language with no documented reason for the distinction
-- No scroll awareness — the header never reacts to page position
-- No concept of transparency or surface compositing against the atmospheric backdrop
-
-### Identity and Aesthetic Issues
-
-- A solid white bar is the opposite of a floating control surface — it creates a hard horizontal seam at the viewport top
-- Navigation links permanently visible in the center (WORK, STUDIO, SERVICES, CONTACT) is the signature visual pattern of startup and SaaS sites; misaligned with ONI visual language
-- `z-40` is undocumented and informal — there is no z-index ownership system
-
-### Summary
-
-The current SiteHeader is a functional structural placeholder. It does not express the ONI visual language, severs the atmospheric system, couples Hero layout to its own dimensions, and reads as a conventional sticky navbar. It must be replaced — not refined.
+Do not restore `SiteHeader` patterns: `position: sticky`, `bg-white` on the closed surface, permanent center-nav links, or scroll-state on the closed surface.
 
 ---
 
-## 2. Target Navigation Architecture
+## 2. Navigation Architecture (implemented)
 
 ### Philosophy
 
@@ -53,7 +35,7 @@ The language of the control surface is the same as the ONI backdrop vocabulary �
 
 `position: fixed` — not sticky.
 
-The control surface floats above all content layers. Sections scroll beneath it. The surface never moves. This is an architectural departure from the current implementation and has a critical structural consequence:
+The control surface floats above all content layers. Sections scroll beneath it. The surface never moves. Structural consequence (implemented):
 
 **Hero no longer compensates for header height.** Hero returns to `100svh` or `100dvh`. The `--oni-header-h` CSS token transitions from a structural dependency to an advisory-only value for safe-zone content planning.
 
@@ -116,13 +98,30 @@ Telemetry is atmospheric annotation — it reinforces the editorial and instrume
 
 The register is identical to the backdrop annotation system: `PRSM 001`, `ONI`, `MOVEMENT BY CONNECTION` — same weight, same scale, same neutrality.
 
-### Content Options
+### Shipped behavior (route lane awareness — DEC-005)
 
-**Option A — Static identity thread (recommended for Phase 5 baseline)**
+`NavTelemetry.tsx` reads `usePathname()` and renders:
+
+```
+ONI.STUDIO / {lane}
+```
+
+| Pathname | Lane suffix |
+|----------|-------------|
+| `/` | `HOME` |
+| starts with `/works` | `WORKS` |
+| starts with `/archive` | `ARCHIVE` |
+| other | `MMXXVI` |
+
+Lane updates are instantaneous (no animation). `pointer-events-none`, `aria-hidden="true"`.
+
+### Historical — content options evaluated at Phase 5 baseline
+
+**Option A — Static identity thread**
 ```
 ONI.STUDIO / MMXXVI
 ```
-Simple. Never changes. Consistent with backdrop annotation vocabulary. Zero implementation risk.
+Shipped initially; superseded for multi-route lanes by DEC-005 (table above).
 
 **Option B — Live timestamp**
 ```
@@ -140,9 +139,9 @@ Studio location coordinates. Geographical anchor. Architectural and specific. Im
 ```
 — 042 —
 ```
-A section-indexed position indicator that advances as the user scrolls between sections. Reinforces the instrument/HUD character. More complex to implement — deferred to later Phase 5 iteration.
+A section-indexed position indicator that advances as the user scrolls between sections. Reinforces the instrument/HUD character. More complex to implement — deferred; reintroduction gate in DEC-004 (must be ONI-specific, not generic scroll chrome).
 
-**Recommendation:** Option A for Phase 5 baseline. Options B and C are atmosphere variants to evaluate visually during implementation. Option D is a future refinement.
+Options B and C remain atmosphere variants for a future pass. Option D is not authorized without a new DEC.
 
 ### Typography
 
@@ -166,6 +165,7 @@ A section-indexed position indicator that advances as the user scrolls between s
 | Layer                      | z-index | Owner                                    | Notes                                   |
 |----------------------------|---------|------------------------------------------|-----------------------------------------|
 | Ambient backdrop           | `0`     | `systems/backdrop/index.tsx`             | Fixed, decorative, pointer-events-none  |
+| Spatial continuity field   | `[5]`   | `systems/atmosphere/ContinuityField.tsx` | Landing only — between backdrop and sections |
 | Section content            | `10`    | `SectionContainer` (`relative z-10`)     | Each section creates its own context    |
 | Section atmosphere         | `20`    | Phase 4 section atmosphere systems       | Reserved for per-section ambient layers |
 | (reserved)                 | `30`    | —                                        | Available for future system             |
@@ -185,7 +185,7 @@ A section-indexed position indicator that advances as the user scrolls between s
 - The control surface (`fixed`, `z-40`) creates its own stacking context — content within it cannot exceed `z-50`
 - The menu overlay (`fixed`, `z-50`) creates its own stacking context — highest context in the page
 - Section stacking contexts (`SectionContainer`, `relative z-10`) are entirely below the navigation system
-- The backdrop has no z-index declaration — it sits at document natural stacking order (below `z-10`)
+- Backdrop is explicitly `z-0`; `ContinuityField` is `z-[5]` on the landing route (`ARCHITECTURE.md` z-index table)
 
 ---
 
@@ -225,7 +225,7 @@ Historical note: an initial Phase 5 pass used glass fill + blur (rejected, DEC-0
 
 ---
 
-## 7. Component Architecture Proposal
+## 7. Component Architecture (implemented)
 
 ### Directory Structure
 
@@ -238,8 +238,6 @@ components/
     NavMenuTrigger.tsx    ← Menu open button + consistent glyph
     NavOverlay.tsx        ← Adaptive menu overlay — full-width plane `< md`, right atmospheric plane `md+`
 ```
-
-The existing `components/SiteHeader.tsx` is the **migration target** — it will be replaced by `components/navigation/index.tsx` when Phase 5 begins. It is not removed during planning.
 
 ### ControlSurface — `index.tsx`
 
@@ -254,7 +252,7 @@ The existing `components/SiteHeader.tsx` is the **migration target** — it will
 **Does not own:**
 - Any section layout or section overflow
 - Hero height compensation
-- Scroll event logic (belongs in a hook inside `shared/hooks/`)
+- Scroll event logic on the closed surface (DEC-004 — no scroll-state)
 
 ### NavLogo — `NavLogo.tsx`
 
@@ -265,7 +263,7 @@ The existing `components/SiteHeader.tsx` is the **migration target** — it will
 ### NavTelemetry — `NavTelemetry.tsx`
 
 - Rendered only at `lg+` breakpoint
-- Contains the telemetry annotation string (Phase 5 content decision)
+- Route lane suffix via `usePathname()` — see §4 Shipped behavior (DEC-005)
 - `pointer-events-none` — never interactive
 - `aria-hidden="true"` — decorative, screen reader silent
 
@@ -309,15 +307,19 @@ Implemented (Phase 5). Adaptive atmospheric navigation — not permanent center-
 | STUDIO | `#showreel` | Home section anchor (cross-route fix deferred) |
 | CONTACT | `#contact` | Home section anchor (cross-route fix deferred) |
 
-WORK retains dominant typography tier and `md:-ml-3`. ARCHIVE uses STUDIO’s mid-weight tier. Decorative corner copy `ARCHIVE OPEN` is not a link.
+WORK retains dominant typography tier and `md:-ml-3`. ARCHIVE uses STUDIO’s mid-weight tier.
 
-### Hero Architecture Impact — Phase 5 Change
+**Route awareness (DEC-005):**
+- `aria-current="page"` on the matching `NAV_ITEMS` link
+- Non-current links at `opacity-[0.38]` until pointer hover/focus (overlay scale interaction unchanged)
+- Footer annotation (desktop, bottom-right): third line reflects current route — `HOME FIELD` · `WORKS INDEX` · `WORK OPEN` · `ARCHIVE FIELD` · `ARCHIVE OPEN` · `ONI STUDIO` fallback; not a link
 
-When Phase 5 navigation implementation begins:
-- Remove `calc(100svh - var(--oni-header-h))` from `sections/HeroSection/index.tsx`
-- Hero returns to `height: 100svh` or `height: 100dvh`
-- `--oni-header-h` token is kept in `globals.css` but becomes advisory-only (for safe-zone content planning, not structural layout)
-- Document this change in `ARCHITECTURE.md` when implemented
+### Hero Architecture Impact (implemented)
+
+- `calc(100svh - var(--oni-header-h))` removed from `sections/HeroSection/index.tsx`
+- Hero is `min-h-[100svh]` / `lg:h-[100svh]`
+- `--oni-header-h` is advisory-only in `globals.css` (safe-zone clearance, not structural layout)
+- Documented in `ARCHITECTURE.md` Navigation System → Hero Impact
 
 ---
 
@@ -542,28 +544,22 @@ The **action zone** is exempt: it uses artifact revelation per this section, not
 
 ## Implementation Boundaries
 
-### Phase 5 Scope — Navigation Implementation
+### Phase 5 — delivered
 
-1. Create `components/navigation/` system with all sub-components
-2. Replace `components/SiteHeader.tsx` with the `ControlSurface`
-3. Remove `calc(100svh - var(--oni-header-h))` from Hero, restore full-viewport height
-4. Implement `NavOverlay` (adaptive atmospheric menu plane) with keyboard accessibility
-5. ~~Define and implement scroll state behavior~~ — removed; closed surface always transparent (DEC-004)
-6. Finalize telemetry content selection
+1. ✓ `components/navigation/` — `ControlSurface`, `NavLogo`, `NavTelemetry`, `NavMenuTrigger`, `NavOverlay`
+2. ✓ `SiteHeader` removed — `ControlSurface` is the only navigation chrome
+3. ✓ Hero full-viewport height — no header height subtraction
+4. ✓ `NavOverlay` — adaptive plane, keyboard accessibility, DEC-002 routes
+5. ✓ Closed surface always transparent — no scroll-state (DEC-004)
+6. ✓ Route lane telemetry + overlay route awareness (DEC-005)
 
-### Not in Phase 5
+### Not in scope / deferred
 
-- Scroll-driven entrance motion for sections (Phase 4)
-- Section-local atmosphere systems (Phase 4)
+- Scroll-driven entrance motion for sections (Phase 4 — partial)
 - CMS integration (future)
-- Per-page navigation active states (future, depends on routing system)
-- Hide-on-scroll behavior (future, revisit if multi-page routing is introduced)
-
-### Phase Prerequisites
-
-- Phase 4 motion system (`systems/motion/`) should be established before Phase 5 motion is applied to the navigation
-- Phase 4 may define scroll behavior context (scroll hooks, motion tokens) that informs how the control surface scroll state is implemented
-- Phase 5 can begin independently of Phase 4 if the scroll state behavior is implemented statically first and the motion layer added after
+- Cross-route STUDIO / CONTACT links (still `#showreel` / `#contact` from overlay — home anchors only)
+- Hide-on-scroll behavior (future)
+- Scroll-state on closed control surface (rejected — DEC-004)
 
 ---
 

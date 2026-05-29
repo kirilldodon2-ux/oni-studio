@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
   {
@@ -36,6 +37,24 @@ const NAV_ITEMS = [
   },
 ] as const;
 
+function isNavItemCurrent(href: string, pathname: string): boolean {
+  if (href === "/") return pathname === "/";
+  if (href.startsWith("/")) {
+    return pathname === href || pathname.startsWith(`${href}/`);
+  }
+  if (href.startsWith("#")) return pathname === "/";
+  return false;
+}
+
+function overlayFieldAnnotation(pathname: string): string {
+  if (pathname === "/") return "HOME FIELD";
+  if (pathname === "/works") return "WORKS INDEX";
+  if (pathname.startsWith("/works/")) return "WORK OPEN";
+  if (pathname === "/archive") return "ARCHIVE FIELD";
+  if (pathname.startsWith("/archive/")) return "ARCHIVE OPEN";
+  return "ONI STUDIO";
+}
+
 interface NavOverlayProps {
   isOpen: boolean;
   onClose: () => void;
@@ -50,6 +69,8 @@ interface NavOverlayProps {
  * Body scroll is locked while open.
  */
 export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
+  const pathname = usePathname();
+  const fieldAnnotation = overlayFieldAnnotation(pathname);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const touchActivationRef = useRef(false);
 
@@ -122,7 +143,7 @@ export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
         >
           <span className="block">MMXXVI</span>
           <span className="mt-1 block">ONI STUDIO</span>
-          <span className="mt-1 block text-neutral-300">ARCHIVE OPEN</span>
+          <span className="mt-1 block text-neutral-300">{fieldAnnotation}</span>
         </div>
 
         <nav
@@ -142,10 +163,15 @@ export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
           </p>
 
           <ul className="flex flex-col items-start gap-0">
-            {NAV_ITEMS.map(({ label, href, className }, index) => (
+            {NAV_ITEMS.map(({ label, href, className }, index) => {
+              const isCurrent = isNavItemCurrent(href, pathname);
+              const isHovered = activeIndex === index;
+
+              return (
               <li key={label} className={index === 1 ? "md:-ml-3" : ""}>
                 <Link
                   href={href}
+                  aria-current={isCurrent ? "page" : undefined}
                   onPointerEnter={(event) => {
                     if (event.pointerType !== "touch") setActiveIndex(index);
                   }}
@@ -180,6 +206,7 @@ export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
                     activeIndex === index
                       ? "pb-0 pt-[clamp(0.95rem,3.2vh,3rem)]"
                       : "py-0",
+                    !isCurrent && !isHovered ? "opacity-[0.38]" : "",
                     className,
                   ].join(" ")}
                   style={{
@@ -201,7 +228,8 @@ export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
                   </span>
                 </Link>
               </li>
-            ))}
+              );
+            })}
           </ul>
         </nav>
       </div>

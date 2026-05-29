@@ -1,4 +1,4 @@
-import { resolveArchiveMediaSrc } from "@/content/archiveObjectPaths";
+import Link from "next/link";
 import type { Work, WorkDomain } from "@/content/works/types";
 import { FadeIn, RevealUp } from "@/systems/atmosphere";
 import { SectionLabel } from "@/systems/layout/SectionLabel";
@@ -21,10 +21,15 @@ interface WorkPageViewProps {
 }
 
 export function WorkPageView({ work }: WorkPageViewProps) {
-  const coverSrc = resolveArchiveMediaSrc(work.coverSrc);
-
   return (
     <article className="mx-auto max-w-oni-page">
+      <Link
+        href="/works"
+        className="mb-6 inline-block font-sans text-[9px] font-medium uppercase tracking-[0.4em] text-neutral-400 transition-colors duration-200 hover:text-black"
+      >
+        ← Works
+      </Link>
+
       <RevealUp>
         <header className="mb-10 md:mb-14">
           <p className="mb-6 font-sans text-[9px] font-medium uppercase tracking-[0.32em] text-neutral-300">
@@ -46,7 +51,7 @@ export function WorkPageView({ work }: WorkPageViewProps) {
         <figure className="mb-10 md:mb-14">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={coverSrc}
+            src={work.coverSrc}
             alt=""
             className="h-auto w-full max-w-[47.5rem] border border-black/[0.06]"
           />

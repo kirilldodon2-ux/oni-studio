@@ -170,13 +170,13 @@ Preview ownership is deterministic.
 
 Registry `previewSrc` values and `field.ts` entries store **site-relative ontology paths** — not CDN hosts.
 
-### Transport (delivery)
+### Archive transport (delivery)
 
 **Helper:** `resolveArchiveMediaSrc(path)` in `content/archiveObjectPaths.ts`
 
-Prepends `NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN` when set (production R2/CDN). When unset, returns the path unchanged — local dev and Pages static serving behave as today.
+**Archive-only.** Prepends `NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN` when set (production R2/CDN). When unset, returns the path unchanged — local dev and Pages static serving behave as today.
 
-Resolution occurs at DOM `src` boundaries (`ArchiveTile`, `ArchiveInspectView`, `getObjectAssets`) — not in the registry.
+Resolution occurs at DOM `src` boundaries for the **archive lane only** (`ArchiveTile`, `ArchiveInspectView`, `getObjectAssets`) — not in the registry. Do not pass Works `coverSrc` paths through this helper (see Works lane below).
 
 **Build-time:** `NEXT_PUBLIC_*` is inlined at `next build`. `getObjectAssets` resolves sequence URLs during SSG. Changing the origin requires a Pages rebuild. `next.config.mjs` derives `images.remotePatterns` from the origin hostname at build time.
 
@@ -194,7 +194,7 @@ The system is **explicit** — not runtime-scanned, filesystem-crawled, dynamica
 
 **Pages env:** `NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN` = that origin base URL.
 
-**Object keys** must mirror repo paths under `public/`:
+**Object keys** must mirror repo paths under `public/` for the **archive lane only**:
 
 ```
 archive/objects/[slug]/00-hero.[ext]
@@ -202,6 +202,8 @@ archive/objects/[slug]/01-….[ext]
 ```
 
 Resolved fetch URL pattern: `{ORIGIN}/archive/objects/[slug]/00-hero.[ext]`
+
+Works territory (`public/works/[slug]/`) is **not** part of Phase A R2 upload scope (`docs/DECISIONS.md` DEC-001).
 
 **CORS** (R2 bucket): allow `http://localhost:3000` and production Pages origin (e.g. `https://oni-studio.pages.dev`) for video `Range` / cross-origin media.
 
@@ -268,6 +270,38 @@ No `field.ts`, slug, or path changes required.
 - Per-object CDN URLs in registry
 - Upload dashboards, manifests, auto-discovery, or CMS ingestion
 - Removing `public/archive/objects` from the repo
+- Works lane CDN / `resolveWorksMediaSrc()` — deferred until a separate delivery decision
+
+---
+
+## Works lane — media delivery
+
+**Status:** ACTIVE (Lean Path). Parallel registry — not a filter of archive objects (`docs/DECISIONS.md` DEC-001).
+
+| Layer | Location |
+|-------|----------|
+| Registry | `content/works/field.ts` + `content/works/types.ts` |
+| Territory | `public/works/[slug]/` — `00-cover.*` |
+| Routes | `/works`, `/works/[slug]` — static SSG |
+| Render | `systems/works/` — typographic index + document shell |
+
+### Ontology (path)
+
+Registry `coverSrc` values are **site-relative** paths, e.g. `/works/system-architectures/00-cover.svg`.
+
+### Delivery (transport)
+
+Works covers are served as **Cloudflare Pages static assets** from `public/works/`. The browser `src` uses the registry path unchanged at the DOM boundary (`WorkPageView`).
+
+**Do not** call `resolveArchiveMediaSrc()` on Works paths. That helper prepends `NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN` (archive R2). Works assets are not uploaded to `oni-archive` under `works/…` in the current model — passing Works paths through archive transport produces R2 URLs that 404.
+
+### Explicitly deferred (DEC-001)
+
+MDX narrative, Zod validation, `shared/content/`, evidence sequences, R2 upload for works assets, archive cross-links.
+
+### Future Works CDN (not authorized yet)
+
+If Works media moves off-repo, require a **lane-specific** decision: documented R2 key prefix (`works/[slug]/00-cover.*`), optional `NEXT_PUBLIC_WORKS_MEDIA_ORIGIN`, and a dedicated resolver — not reuse of archive transport without an explicit DEC.
 
 ---
 
@@ -390,4 +424,7 @@ The filesystem is part of the authorship. Preserve that philosophy.
 | `content/README.md` | Directory index for `content/` |
 | `content/field.ts` | Live registry |
 | `content/types.ts` | Schema types |
-| `content/archiveObjectPaths.ts` | Ontology paths + `resolveArchiveMediaSrc()` transport |
+| `content/archiveObjectPaths.ts` | Archive ontology paths + `resolveArchiveMediaSrc()` (archive transport only) |
+| `content/works/field.ts` | Works registry (parallel lane) |
+| `content/works/types.ts` | Works schema types |
+| `docs/DECISIONS.md` | DEC-001 Works Lean Path · DEC-005 nav route awareness |

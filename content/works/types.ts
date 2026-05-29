@@ -15,7 +15,7 @@ export type Work = {
   year: number;
   territories: ArchiveTerritoryId[];
   domain: WorkDomain[];
-  /** Site-relative cover path — transport resolved at DOM boundary. */
+  /** Site-relative cover path — served from public/works/ via Pages static assets (no archive R2 transport). */
   coverSrc: string;
   intro?: string;
 };

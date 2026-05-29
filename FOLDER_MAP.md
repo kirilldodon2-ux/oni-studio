@@ -139,8 +139,8 @@ oni-site/
 │   ├── content/
 │   │   ├── schemas.ts                 ← Zod: Work, Writing, Artifact, etc.
 │   │   └── types.ts                   ← archetype type exports
-│   ├── tokens/
-│   └── hooks/                         ← shared hooks (e.g. nav scroll state)
+│   └── tokens/
+│   # No nav scroll-state hook — closed ControlSurface has no scroll listener (DEC-004)
 │
 └── systems/
     ├── typography/                    ← Phase 7–8 — long-form reading typographic system
@@ -161,6 +161,7 @@ oni-site/
 - `content/` — archive registry and types; filesystem-native authoring, not auto-discovery
 - `shared/` is utilities and tokens — no UI
 - `components/` is atomic/global UI only — no section-level concerns
-- `components/navigation/` is the Phase 5 floating control surface system — replaced `SiteHeader.tsx`; see `NAVIGATION_ARCHITECTURE.md`
+- `components/navigation/` is the Phase 5 floating control surface — `SiteHeader.tsx` removed; route awareness DEC-005; no scroll-state DEC-004; see `NAVIGATION_ARCHITECTURE.md`
+- `content/works/` + `public/works/[slug]/` — Works lane; covers are Pages-static — do not use `resolveArchiveMediaSrc()` (`CONTENT_SYSTEM.md`)
 - `systems/export/` — canonical `/?export=1` perception freeze; not a parallel route
 - `docs/FIGMA_EXPORT.md`, `docs/FIGMA_RECONCILIATION_WORKFLOW.md` — OPERATIONAL perception workflow

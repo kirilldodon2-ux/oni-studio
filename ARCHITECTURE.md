@@ -79,10 +79,13 @@ app/
                        + CSS utilities: .oni-ambient-drift, .oni-breath, .oni-field-pulse
                        + combined rule: .oni-ambient-drift.oni-breath (stacks both animations)
   layout.tsx        ← root layout, fonts
-  page.tsx          ← page composition (section imports)
-                       + PageBackdrop at z-0
-                       + ContinuityField at z-[5] (spatial continuity pass)
-                       + section stack at z-10
+  page.tsx          ← home: ExportModeProvider, PageBackdrop, ContinuityField, sections
+  archive/
+    page.tsx          ← browse: /archive (ArchiveGrid)
+    [slug]/page.tsx   ← inspect: /archive/[slug] (ArchiveInspectView)
+  works/
+    page.tsx          ← index: /works (WorksIndex)
+    [slug]/page.tsx   ← detail: /works/[slug] (WorkPageView)
 
 sections/
   HeroSection/
@@ -115,18 +118,33 @@ systems/
     AmbientField.tsx      ← CSS-driven ambient drift + breathing wrapper (server)
     RevealPrimitives.tsx  ← FadeIn, RevealUp atoms (built on PresenceLayer)
     useDepthField.ts      ← scroll-driven parallax depth hook
-    ContinuityField.tsx   ← page-level spatial continuity layer (spatial continuity pass)
+    ContinuityField.tsx   ← page-level spatial continuity layer (landing only)
     index.ts              ← barrel export
+  export/                 ← landing perception freeze (?export=1)
+  spatial/                ← nav sigil, silhouette grounding, convergence grammar
+  archive/                ← browse + inspect (ArchiveGrid, ArchiveInspectView, …)
+  works/                  ← works index + detail (Lean Path — DEC-001)
+  useCinematicVideo.ts    ← viewport-gated browse video (ArchiveTile)
+
+content/
+  field.ts                ← archiveObjects registry
+  types.ts                ← ArchiveObject schema
+  archiveObjectPaths.ts   ← canonicalPreviewSrc + resolveArchiveMediaSrc (archive only)
+  works/
+    field.ts              ← worksRegistry (parallel lane)
+    types.ts              ← Work schema
 
 components/
   navigation/
     index.tsx             ← ControlSurface — fixed floating nav, z-40/50 owner (Phase 5)
-    NavLogo.tsx           ← Logo link
-    NavTelemetry.tsx      ← Ambient annotation, desktop-only, pointer-events-none
+    NavLogo.tsx           ← reserved identity zone
+    NavTelemetry.tsx      ← route lane annotation (DEC-005), desktop-only
     NavMenuTrigger.tsx    ← Menu trigger: MENU label + ONINavigationSigil (3D)
-    NavOverlay.tsx        ← Adaptive menu overlay (z-50): scrim + plane full-width `< md`, right plane `md+`
+    NavOverlay.tsx        ← Adaptive menu overlay (z-50): route awareness (DEC-005)
 
 public/
+  archive/objects/[slug]/ ← object territory (00-hero.*, editorial sequence)
+  works/[slug]/           ← work territory (00-cover.*)
   frames/
     showreel_frame.png    ← metallic figurative frame overlay (1024×682, black bg,
                             composited via SVG luminance-matte → transparent)
@@ -535,7 +553,7 @@ shared/
 
 The navigation control surface uses `position: fixed` — it floats above all content and does not participate in document flow. Sections scroll beneath it.
 
-This replaces the current `position: sticky` `SiteHeader`. As a result, **Hero no longer compensates for header height**. The `--oni-header-h` token is advisory-only once Phase 5 is implemented.
+Replaced the former sticky `SiteHeader` (removed). **Hero no longer compensates for header height.** The `--oni-header-h` token is advisory-only (Phase 5 implemented).
 
 ### Z-Index Ownership
 
@@ -777,18 +795,22 @@ Border: `border-black/[0.08]` — intentionally minimal, below glassmorphism thr
 
 ---
 
-## Content Architecture (Phase 6+)
+## Content Architecture
 
 The content layer sits above the frontend systems layer. It defines what material the
 site holds, how it is structured, how it is rendered, and how it relates to the
-atmospheric infrastructure. This section documents architectural intent — not current
-implementation, which does not yet exist.
+atmospheric infrastructure.
+
+**Shipped (Layer 1 — partial):** archive lane (`content/field.ts`, `/archive`, `/archive/[slug]`, R2 transport) and Works Lean Path (`content/works/`, `/works`, `/works/[slug]`, Pages-static covers). See `docs/DECISIONS.md` DEC-001.
+
+**Deferred (maturity work):** Zod schemas, `shared/content/`, MDX interiors, evidence sequences, writings/code routes, route transitions. See `ROADMAP.md` Layer 1 routing/schema track and Layers 2–3.
 
 See `CONTENT_PHILOSOPHY.md` for the full editorial position and archetype definitions.
+See `CONTENT_SYSTEM.md` for filesystem-native authoring, archive transport, and Works delivery model.
 See `ARCHIVE_SYSTEM.md` for the canonical archive object model, schema direction, territorial
 behavior, contributor logic, and surface layer architecture. See `ARCHIVE_OPERATING_LOGIC.md` for
 layered browse/inspect authority (`mediaAspect`, masonry geometry, optics, occupancy) and masonry
-integration rules. See `ROADMAP.md` Phases 6–9 for implementation sequencing.
+integration rules.
 
 ---
 
@@ -807,13 +829,14 @@ environment.
 
 ### Archetype → Template Mapping
 
-| Archetype            | Route Pattern          | Template              | Atmosphere Level |
-|----------------------|------------------------|-----------------------|------------------|
-| Works                | `/works/[slug]`        | Full spatial page     | Full             |
-| Process Artifacts    | attached to Works      | Minimal grid          | Reduced          |
-| Writings             | `/writing/[slug]`      | Long-form editorial   | Typographic      |
-| Code Artifacts       | `/code/[slug]`         | Experiment surface    | Minimal          |
-| Atmospheric Fragments| contextual embedding   | Encounter-based       | Native           |
+| Archetype            | Route Pattern          | Template              | Delivery status |
+|----------------------|------------------------|-----------------------|-----------------|
+| Archive objects      | `/archive/[slug]`      | Browse + inspect      | **Shipped**     |
+| Works                | `/works/[slug]`        | Typographic document shell | **Shipped** (Lean Path) |
+| Process Artifacts    | attached to Works      | Minimal grid          | Deferred        |
+| Writings             | `/writing/[slug]`      | Long-form editorial   | Pending         |
+| Code Artifacts       | `/code/[slug]`         | Experiment surface    | Pending         |
+| Atmospheric Fragments| contextual embedding   | Encounter-based       | Deferred        |
 
 ---
 
@@ -829,40 +852,49 @@ query-string navigation.
 /writing            writings index
 /writing/[slug]     individual writing
 /code/[slug]        code artifact (no public index — accessed by reference)
-/archive            full cross-archetype index (Phase 9)
+/archive            cross-archetype browse field (shipped)
+/archive/[slug]     object inspect (shipped)
 ```
 
 ---
 
-### Current Systems Supporting Content Direction
+### Shipped content infrastructure
 
-| System                        | Content Relevance                                                         |
-|-------------------------------|---------------------------------------------------------------------------|
-| `systems/atmosphere/`         | All content pages inherit atmospheric infrastructure without modification  |
-| `systems/layout/`             | `SectionContainer` + `SectionLabel` apply directly to content page shells |
-| `systems/backdrop/`           | Global backdrop extends to all routes — no per-page backdrop logic needed |
-| `components/navigation/`      | Control surface + overlay apply to all routes; active states needed in Phase 6 |
-| `ShowreelMediaCard`           | Reference implementation for cinematic media treatment in Work pages      |
-| `systems/spatial/`            | Object grounding (`silhouetteGrounding.ts`) + `ONINavigationSigil` (nav infrastructure) |
-| `RevealPrimitives`            | `FadeIn` / `RevealUp` apply to all content typography reveals             |
-| `useDepthField`               | Applicable to feature imagery in Work pages                               |
+| Lane / surface | Registry | Territory | Render | Media delivery |
+|----------------|----------|-----------|--------|----------------|
+| Archive | `content/field.ts` | `public/archive/objects/[slug]/` | `systems/archive/` | `resolveArchiveMediaSrc()` → R2 or `public/` |
+| Works | `content/works/field.ts` | `public/works/[slug]/` (`00-cover.*`) | `systems/works/` | Site-relative paths — **Pages static only** (no archive transport) |
+
+Works lane is a **parallel registry**, not a filter of `archiveObjects` (DEC-001).
 
 ---
 
-### Infrastructure Required (Not Yet Built)
+### Systems supporting content routes
 
-| System                        | Purpose                                                     | Phase |
+| System                        | Content Relevance                                                         |
+|-------------------------------|---------------------------------------------------------------------------|
+| `systems/atmosphere/`         | `FadeIn` / `RevealUp` on Works detail; atmosphere extends to content routes |
+| `systems/layout/`             | `SectionLabel` on Works detail; archive/works shells use route-local chrome |
+| `systems/backdrop/`           | `PageBackdrop` on `/archive`, `/works`, and work detail routes              |
+| `components/navigation/`      | All routes; route awareness via `usePathname()` (DEC-005)                   |
+| `systems/spatial/`            | `ONI_SILHOUETTE_FILTER` on archive inspect hero; nav sigil infrastructure   |
+| `ShowreelMediaCard`           | Reference for future Work evidence / cinematic media (not wired to Lean Path) |
+
+---
+
+### Deferred content maturity (not yet built)
+
+| System                        | Purpose                                                     | Track |
 |-------------------------------|-------------------------------------------------------------|-------|
-| Page transition system        | Route-level cinematic reveal (opacity, continuous backdrop) | 6     |
-| Content schema layer          | Typed, Zod-validated schema definitions per archetype       | 6–7   |
-| `shared/content/`             | Schema definitions, content loading utilities               | 6     |
-| Work page template            | Full spatial treatment: editorial heading + image + body    | 7     |
-| Works index component         | Non-feed spatial surface: title, year, domain classification| 7     |
-| `systems/typography/`         | Shared typographic system for long-form reading (65–75ch)   | 7–8   |
-| MDX rendering pipeline        | Long-form text with component composition capability        | 8     |
-| Writings index component      | Minimal editorial index: title, year, duration              | 8     |
-| Experiment sandbox system     | Isolated interactive content rendering                      | 9     |
-| Cross-reference system        | Associative content relationships (proximity, not tags)     | 9+    |
+| Page transition system        | Route-level cinematic reveal (opacity, continuous backdrop) | Layer 2 |
+| Content schema layer          | Typed, Zod-validated schema definitions per archetype       | Layer 1 |
+| `shared/content/`             | Schema definitions, content loading utilities               | Layer 1 |
+| Works MDX interior + evidence | Full spatial Work pages beyond Lean Path shell              | Layer 1 / 2 |
+| `systems/typography/`         | Shared typographic system for long-form reading (65–75ch)   | Layer 2 |
+| MDX rendering pipeline        | Long-form text with component composition capability        | Layer 1 |
+| Writings / code routes        | `/writing`, `/code/[slug]` shells                           | Layer 1 |
+| Experiment sandbox system     | Isolated interactive content rendering                      | Layer 1 |
+| Cross-reference system        | Associative content relationships (proximity, not tags)     | Layer 2+ |
 
 ---
 
@@ -912,8 +944,12 @@ Doctrine: `docs/FIGMA_RECONCILIATION_WORKFLOW.md`. Capture mechanics: `docs/FIGM
 
 ## Open Infrastructure Items
 
-- No motion system — scroll-driven entrance animation (Phase 4 — partially addressed in ShowreelSection)
-- Navigation control surface — floating, fixed, atmospheric (Phase 5)
+- Scroll-driven entrance on all homepage sections (Phase 4 — partial; ShowreelSection + atmosphere primitives shipped)
+- Route transitions — opacity dissolve between routes (Layer 2; not started)
+- Content maturity — Zod, MDX, writings/code routes, Works evidence sequences (Layer 1 deferred per DEC-001)
+- Cross-route STUDIO / CONTACT overlay targets (home hash anchors only)
+
+**Shipped:** floating control surface + `NavOverlay` (Phase 5); archive + Works Lean Path routes; nav route awareness (DEC-005).
 
 ---
 
