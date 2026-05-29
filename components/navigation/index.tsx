@@ -5,6 +5,7 @@ import { NavLogo } from "./NavLogo";
 import { NavTelemetry } from "./NavTelemetry";
 import { NavMenuTrigger } from "./NavMenuTrigger";
 import { NavOverlay } from "./NavOverlay";
+import { useControlSurfaceScroll } from "./useControlSurfaceScroll";
 
 /**
  * ControlSurface — floating navigation instrument.
@@ -19,16 +20,21 @@ import { NavOverlay } from "./NavOverlay";
  */
 export function ControlSurface() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const scrolled = useControlSurfaceScroll();
 
   return (
     <>
       <NavOverlay isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       <header
         data-oni-layer="chrome"
+        data-scrolled={scrolled ? "true" : "false"}
         className={[
           "pointer-events-none fixed left-0 right-0 top-0 flex items-center justify-between",
           "px-6 py-5 md:px-10 lg:px-14 lg:py-7",
-          // No material strip: the control surface is only floating markers.
+          "transition-[border-color,background-color,backdrop-filter] duration-500 ease-out motion-reduce:transition-none",
+          scrolled
+            ? "border-b border-black/[0.06] bg-white/[0.03] backdrop-blur-[2px]"
+            : "border-b border-transparent bg-transparent",
           menuOpen ? "z-50" : "z-40",
         ].join(" ")}
       >

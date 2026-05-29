@@ -1,0 +1,18 @@
+# Cloudflare Pages — response headers (verified against production before tuning)
+# HTML: home lacked Cache-Control; /archive already had must-revalidate
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Next.js static assets — production already serves immutable; explicit for clarity
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Public static assets (not R2 — R2 cache is object metadata at upload time)
+/models/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/frames/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/logo/*
+  Cache-Control: public, max-age=31536000, immutable

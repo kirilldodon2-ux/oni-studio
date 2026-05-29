@@ -238,6 +238,8 @@ done
 
 Add `--content-type` per extension when MIME matters for inspect/video. Re-upload a key after local editorial replacement; keys are stable.
 
+Add `--cache-control="public, max-age=31536000, immutable"` on upload when absent — production R2 responses may omit `Cache-Control` if bulk upload skipped it (verify with `curl -I`).
+
 #### Rollback
 
 1. Clear `NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN` on Cloudflare Pages (or remove from preview env).

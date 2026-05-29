@@ -122,7 +122,7 @@ Goals:
 - ✓ telemetry content: `ONI.STUDIO / MMXXVI` (Option A — static identity thread)
 - ✓ implement `NavOverlay` — adaptive atmospheric menu overlay (`z-50`): full-viewport scrim; navigation plane full-width below `md`, right partial-width plane on `md+`; HOME / WORK / STUDIO / CONTACT; translateX+opacity reveal; ESC close; body scroll lock
 - ✓ Atmospheric Polish Layer 1 — static material pass applied (control surface + overlay)
-- implement scroll state behavior (transparent → subtle surface on scroll)
+- ✓ scroll state behavior (transparent → subtle surface on scroll) — `useControlSurfaceScroll`, border + ambient blur after ~100px
 
 Constraints:
 - control surface must not sever the atmospheric backdrop — no `bg-white` at page top
@@ -156,6 +156,8 @@ Already live before full layer completion:
 - `content/` — `field.ts`, `types.ts`, `archiveObjectPaths.ts`
 - `/archive`, `/archive/[slug]` — browse + inspect (`systems/archive/`)
 - `public/archive/objects/[slug]/` — object territory
+- `resolveArchiveMediaSrc()` + Cloudflare R2 delivery (`oni-archive`, `NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN`)
+- Browse video — `useCinematicVideo` (viewport-gated playback, gesture unlock)
 
 ### URL targets (permanent slugs)
 
@@ -170,21 +172,21 @@ Already live before full layer completion:
 
 ## Layer 1 — Infrastructure
 
-**Status: In progress** (archive surface partial). Technical reliability, media truth,
+**Status: In progress** (archive delivery operational; stabilization sprint in flight). Technical reliability, media truth,
 routing shells, and deployment — the site must carry weight before editorial systems
 scale.
 
 ### Core track
 
 - archive optimization — grid performance, `mediaAspect` integrity, masonry stability at scale
-- Safari stability — compositing, video, scroll, overlay, WebGL edge cases
+- Safari stability — compositing, video, scroll, overlay, WebGL edge cases *(Chromium pass: no code fixes; iOS Safari manual QA recommended)*
 - media pipeline — ingest, type detection, hero canonical paths, variant strategy
-- deferred playback — browse vs inspect load policy; no autoplay tax on the field
-- external storage — object assets off-repo or hybrid; URL contract stable in `field.ts`
+- deferred playback — browse vs inspect load policy; no autoplay tax on the field *(browse: done)*
+- external storage — object assets off-repo or hybrid; URL contract stable in `field.ts` *(R2 Phase A: done)*
 - inspect / master separation — browse previews vs inspect editorial sequence authority
-- CDN logic — cache keys, immutable assets, video origin rules (Cloudflare Stream / Mux TBD)
-- mobile behavior — touch, overflow, overlay plane, archive density on narrow viewports
-- caching — route-level and asset-level strategy on Cloudflare Pages
+- CDN logic — cache keys, immutable assets, video origin rules (Cloudflare Stream / Mux TBD) *(R2 origin: done; cache headers: sprint)*
+- mobile behavior — touch, overflow, overlay plane, archive density on narrow viewports *(390px pass: no code fixes)*
+- caching — route-level and asset-level strategy on Cloudflare Pages *( `public/_headers` added; R2 object Cache-Control: operational re-upload if needed)*
 - preload strategy — hero and inspect critical path without flooding the browse field
 
 ### Routing and schema (from former Phase 6–9)
