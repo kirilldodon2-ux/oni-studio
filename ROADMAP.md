@@ -113,16 +113,20 @@ Constraints:
 
 ## Phase 5 — Navigation System
 
-**Status: In Progress**
+**Status: Complete (baseline)**
 
 Goals:
 - ✓ replace `components/SiteHeader.tsx` with `components/navigation/` floating control surface
 - ✓ implement `ControlSurface` (`fixed`, `z-40`), `NavLogo`, `NavTelemetry`, `NavMenuTrigger`
 - ✓ remove `calc(100svh - var(--oni-header-h))` from Hero; restore full-viewport height
-- ✓ telemetry content: `ONI.STUDIO / MMXXVI` (Option A — static identity thread)
+- ✓ route-aware telemetry — `NavTelemetry`: `ONI.STUDIO / {lane}` (`HOME` · `WORKS` · `ARCHIVE` · `MMXXVI` fallback); see `docs/DECISIONS.md` DEC-005
+- ✓ route-aware overlay — `aria-current` on primary links, non-current opacity, route-specific footer annotation (`HOME FIELD` · `WORKS INDEX` · `WORK OPEN` · `ARCHIVE FIELD` · `ARCHIVE OPEN`); DEC-005
 - ✓ implement `NavOverlay` — adaptive atmospheric menu overlay (`z-50`): full-viewport scrim; navigation plane full-width below `md`, right partial-width plane on `md+`; HOME / WORK / ARCHIVE / STUDIO / CONTACT; translateX+opacity reveal; ESC close; body scroll lock
 - ✓ Atmospheric Polish Layer 1 — static material pass applied (control surface + overlay)
 - ✓ scroll state on closed surface — **removed**; always transparent (see `docs/DECISIONS.md` DEC-004; supersedes DEC-003 glass/border experiments)
+
+Remaining (not Phase 5 blockers):
+- cross-route STUDIO / CONTACT overlay targets (`#showreel` / `#contact` — home hash anchors only on `/`)
 
 Constraints:
 - control surface must not sever the atmospheric backdrop — no `bg-white` at page top
