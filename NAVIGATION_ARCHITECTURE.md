@@ -68,7 +68,7 @@ The control surface is divided into three horizontal zones:
 ### Desktop (≥ 1024px)
 
 - All three zones active: identity, telemetry, action
-- Nav links (WORK, STUDIO, SERVICES, CONTACT) are **not** permanently visible in the control surface — permanent center-nav is the startup pattern
+- Nav links (HOME, CAPABILITIES, ARCHIVE, BRANDBOOK, CONTACT) are **not** permanently visible in the control surface — permanent center-nav is the startup pattern
 - Links live inside the menu overlay, opened via the action zone trigger
 - The control surface is clean, slim, and atmospheric by default
 - Horizontal insets follow the section padding cadence: `lg:px-14`
@@ -111,6 +111,7 @@ ONI.STUDIO / {lane}
 | `/` | `HOME` |
 | starts with `/works` | `WORKS` |
 | starts with `/archive` | `ARCHIVE` |
+| starts with `/brandbook` | `BRAND BOOK / {section}` — section index from brandbook context when on route |
 | other | `MMXXVI` |
 
 Lane updates are instantaneous (no animation). `pointer-events-none`, `aria-hidden="true"`.
@@ -297,22 +298,28 @@ Implemented (Phase 5). Adaptive atmospheric navigation — not permanent center-
 - `body` scroll locked while open
 - `aria-modal="true"`, `role="dialog"`; focusable links when open (`tabIndex` gated)
 
-**Primary links (`NAV_ITEMS`) — multi-route baseline (2026-05-29, `docs/DECISIONS.md` DEC-002):**
+**Primary links (`NAV_ITEMS`) — editorial index (2026-05-30):**
 
-| Label | href | Notes |
-|-------|------|-------|
-| HOME | `/` | |
-| WORK | `/works` | Studio output index — not homepage `#work` |
-| ARCHIVE | `/archive` | Cross-archetype browse field |
-| STUDIO | `#showreel` | Home section anchor (cross-route fix deferred) |
-| CONTACT | `#contact` | Home section anchor (cross-route fix deferred) |
+| Label | href | Tier | Notes |
+|-------|------|------|-------|
+| HOME | `/` | S · muted | Bookend |
+| CAPABILITIES | `#work` | **M · primary** | Full opacity; `md:-ml-3`; homepage `#work` until dedicated route |
+| ARCHIVE | `/archive` | L · 80% | Secondary field |
+| BRANDBOOK | `/brandbook` | M · 80% | Tertiary proof block |
+| CONTACT | `#contact` | S · muted | Bookend |
 
-WORK retains dominant typography tier and `md:-ml-3`. ARCHIVE uses STUDIO’s mid-weight tier.
+**Overlay order:** HOME · CAPABILITIES · ARCHIVE · BRANDBOOK · CONTACT
+
+**Typography hierarchy** — single-line labels only; hierarchy via scale, opacity, and spacing:
+- **Group spacing:** margin before CAPABILITIES (after HOME); margin before CONTACT (after BRANDBOOK); tight field spacing between ARCHIVE and BRANDBOOK
+- No editorial word splitting or line breaks inside labels
+
+CAPABILITIES primary at M scale (full opacity). ARCHIVE secondary at L scale (80% opacity). BRANDBOOK tertiary at M scale (80% opacity). HOME and CONTACT remain quiet bookends.
 
 **Route awareness (DEC-005):**
 - `aria-current="page"` on the matching `NAV_ITEMS` link
 - Non-current links at `opacity-[0.38]` until pointer hover/focus (overlay scale interaction unchanged)
-- Footer annotation (desktop, bottom-right): third line reflects current route — `HOME FIELD` · `WORKS INDEX` · `WORK OPEN` · `ARCHIVE FIELD` · `ARCHIVE OPEN` · `ONI STUDIO` fallback; not a link
+- Footer annotation (desktop, bottom-right): third line reflects current route — `HOME FIELD` · `BRANDBOOK OPEN` · `WORKS INDEX` · `WORK OPEN` · `ARCHIVE FIELD` · `ARCHIVE OPEN` · `ONI STUDIO` fallback; not a link
 
 ### Hero Architecture Impact (implemented)
 
@@ -557,7 +564,7 @@ The **action zone** is exempt: it uses artifact revelation per this section, not
 
 - Scroll-driven entrance motion for sections (Phase 4 — partial)
 - CMS integration (future)
-- Cross-route STUDIO / CONTACT links (still `#showreel` / `#contact` from overlay — home anchors only)
+- Cross-route `/works` remains reachable by URL; overlay no longer lists it (CAPABILITIES → `#work` on homepage)
 - Hide-on-scroll behavior (future)
 - Scroll-state on closed control surface (rejected — DEC-004)
 

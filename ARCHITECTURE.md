@@ -86,6 +86,9 @@ app/
   works/
     page.tsx          ← index: /works (WorksIndex)
     [slug]/page.tsx   ← detail: /works/[slug] (WorkPageView)
+  brandbook/
+    layout.tsx        ← route-scoped Outfit + JetBrains Mono; metadata
+    page.tsx          ← /brandbook: ControlSurface + BrandbookExperience island
 
 sections/
   HeroSection/
@@ -124,6 +127,9 @@ systems/
   spatial/                ← nav sigil, silhouette grounding, convergence grammar
   archive/                ← browse + inspect (ArchiveGrid, ArchiveInspectView, …)
   works/                  ← works index + detail (Lean Path — DEC-001)
+  brandbook/              ← interactive brandbook (Phase 1 — docs/BRANDBOOK_INTEGRATION.md)
+                            scroll-snap orchestrator, section context/nav, six sections,
+                            hero metallic drift (motion/react; route-local only)
   useCinematicVideo.ts    ← viewport-gated browse video (ArchiveTile)
 
 content/
@@ -138,13 +144,16 @@ components/
   navigation/
     index.tsx             ← ControlSurface — fixed floating nav, z-40/50 owner (Phase 5)
     NavLogo.tsx           ← reserved identity zone
-    NavTelemetry.tsx      ← route lane annotation (DEC-005), desktop-only
+    NavTelemetry.tsx      ← route lane annotation (DEC-005), desktop-only;
+                            optional BrandbookSectionContext on /brandbook for section index
     NavMenuTrigger.tsx    ← Menu trigger: MENU label + ONINavigationSigil (3D)
-    NavOverlay.tsx        ← Adaptive menu overlay (z-50): route awareness (DEC-005)
+    NavOverlay.tsx        ← Adaptive menu overlay (z-50): route awareness (DEC-005);
+                            editorial index incl. BRANDBOOK → /brandbook
 
 public/
   archive/objects/[slug]/ ← object territory (00-hero.*, editorial sequence)
   works/[slug]/           ← work territory (00-cover.*)
+  brandbook/              ← hero-wire.png, about-wire.png (wire-art backgrounds)
   frames/
     showreel_frame.png    ← metallic figurative frame overlay (1024×682, black bg,
                             composited via SVG luminance-matte → transparent)
@@ -803,6 +812,8 @@ atmospheric infrastructure.
 
 **Shipped (Layer 1 — partial):** archive lane (`content/field.ts`, `/archive`, `/archive/[slug]`, R2 transport) and Works Lean Path (`content/works/`, `/works`, `/works/[slug]`, Pages-static covers). See `docs/DECISIONS.md` DEC-001.
 
+**Shipped (Layer 3 — partial):** brandbook identity surface (`/brandbook`, `systems/brandbook/`, `public/brandbook/`). No content registry — route-local experience port. See `docs/BRANDBOOK_INTEGRATION.md`.
+
 **Deferred (maturity work):** Zod schemas, `shared/content/`, MDX interiors, evidence sequences, writings/code routes, route transitions. See `ROADMAP.md` Layer 1 routing/schema track and Layers 2–3.
 
 See `CONTENT_PHILOSOPHY.md` for the full editorial position and archetype definitions.
@@ -837,6 +848,7 @@ environment.
 | Writings             | `/writing/[slug]`      | Long-form editorial   | Pending         |
 | Code Artifacts       | `/code/[slug]`         | Experiment surface    | Pending         |
 | Atmospheric Fragments| contextual embedding   | Encounter-based       | Deferred        |
+| Brandbook (identity) | `/brandbook`           | Scroll-snap experience | **Shipped** (Phase 1) |
 
 ---
 
@@ -854,6 +866,7 @@ query-string navigation.
 /code/[slug]        code artifact (no public index — accessed by reference)
 /archive            cross-archetype browse field (shipped)
 /archive/[slug]     object inspect (shipped)
+/brandbook          interactive identity surface (shipped — Phase 1)
 ```
 
 ---
@@ -864,8 +877,10 @@ query-string navigation.
 |----------------|----------|-----------|--------|----------------|
 | Archive | `content/field.ts` | `public/archive/objects/[slug]/` | `systems/archive/` | `resolveArchiveMediaSrc()` → R2 or `public/` |
 | Works | `content/works/field.ts` | `public/works/[slug]/` (`00-cover.*`) | `systems/works/` | Site-relative paths — **Pages static only** (no archive transport) |
+| Brandbook | — (no registry) | `public/brandbook/` (wire-art PNGs) | `systems/brandbook/` | Pages static; route-scoped fonts in `app/brandbook/layout.tsx` |
 
 Works lane is a **parallel registry**, not a filter of `archiveObjects` (DEC-001).
+Brandbook is a **studio identity surface**, not an archive archetype lane.
 
 ---
 
@@ -875,8 +890,9 @@ Works lane is a **parallel registry**, not a filter of `archiveObjects` (DEC-001
 |-------------------------------|---------------------------------------------------------------------------|
 | `systems/atmosphere/`         | `FadeIn` / `RevealUp` on Works detail; atmosphere extends to content routes |
 | `systems/layout/`             | `SectionLabel` on Works detail; archive/works shells use route-local chrome |
-| `systems/backdrop/`           | `PageBackdrop` on `/archive`, `/works`, and work detail routes              |
-| `components/navigation/`      | All routes; route awareness via `usePathname()` (DEC-005)                   |
+| `systems/backdrop/`           | `PageBackdrop` on `/archive`, `/works`, and work detail routes — **not** on `/brandbook` |
+| `components/navigation/`      | All routes; route awareness via `usePathname()` (DEC-005); brandbook section lane via optional context |
+| `systems/brandbook/`          | `/brandbook` only — internal scroll-snap, section nav (z-30), `motion/react` hero drift |
 | `systems/spatial/`            | `ONI_SILHOUETTE_FILTER` on archive inspect hero; nav sigil infrastructure   |
 | `ShowreelMediaCard`           | Reference for future Work evidence / cinematic media (not wired to Lean Path) |
 
@@ -947,9 +963,9 @@ Doctrine: `docs/FIGMA_RECONCILIATION_WORKFLOW.md`. Capture mechanics: `docs/FIGM
 - Scroll-driven entrance on all homepage sections (Phase 4 — partial; ShowreelSection + atmosphere primitives shipped)
 - Route transitions — opacity dissolve between routes (Layer 2; not started)
 - Content maturity — Zod, MDX, writings/code routes, Works evidence sequences (Layer 1 deferred per DEC-001)
-- Cross-route STUDIO / CONTACT overlay targets (home hash anchors only)
+- Cross-route hash overlay targets (`#work`, `#contact`) from non-home routes — deferred
 
-**Shipped:** floating control surface + `NavOverlay` (Phase 5); archive + Works Lean Path routes; nav route awareness (DEC-005).
+**Shipped:** floating control surface + `NavOverlay` (Phase 5); archive + Works Lean Path routes; nav route awareness (DEC-005); brandbook route (Phase 1 — `docs/BRANDBOOK_INTEGRATION.md`).
 
 ---
 

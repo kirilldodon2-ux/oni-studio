@@ -12,6 +12,7 @@
     "@masonry-grid/react": "^1.1.1",
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^8.18.0",
+    "motion": "^12.23.24",
     "next": "14.2.35",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

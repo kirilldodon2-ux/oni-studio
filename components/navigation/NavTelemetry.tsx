@@ -1,17 +1,32 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import {
+  formatBrandbookSectionIndex,
+  useBrandbookSectionOptional,
+} from "@/systems/brandbook/BrandbookSectionContext";
 
-function telemetryLane(pathname: string): string {
+function telemetryLane(pathname: string, brandbookSection: number | null): string {
   if (pathname === "/") return "HOME";
   if (pathname.startsWith("/works")) return "WORKS";
   if (pathname.startsWith("/archive")) return "ARCHIVE";
+  if (pathname.startsWith("/brandbook")) {
+    const index =
+      brandbookSection !== null
+        ? formatBrandbookSectionIndex(brandbookSection)
+        : "01";
+    return `BRAND BOOK / ${index}`;
+  }
   return "MMXXVI";
 }
 
 export function NavTelemetry() {
   const pathname = usePathname();
-  const lane = telemetryLane(pathname);
+  const brandbookCtx = useBrandbookSectionOptional();
+  const lane = telemetryLane(
+    pathname,
+    brandbookCtx?.activeSection ?? null
+  );
 
   return (
     <span

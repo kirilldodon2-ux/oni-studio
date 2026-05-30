@@ -4,8 +4,14 @@
 
 ```
 oni-site/
+├── _archive/                              ← reference-only exports (not runtime — see _archive/README.md)
+│   └── brandbook-make-export/             ← Figma Make Vite source; production = app/brandbook/
+│
+├── _archive_graveyard/                    ← deprecated site scaffolding (never delete)
+│
 ├── docs/
 │   ├── DECISIONS.md                       ← architecture decision log (nav, content lanes, control surface)
+│   ├── BRANDBOOK_INTEGRATION.md           ← /brandbook port, atmosphere pass, Phase 1 release (OPERATIONAL)
 │   ├── FIGMA_EXPORT.md                    ← landing capture: ?export=1, metadata, freeze table
 │   └── FIGMA_RECONCILIATION_WORKFLOW.md   ← code ↔ Figma ↔ code perception doctrine
 │
@@ -18,10 +24,13 @@ oni-site/
 │   │   ├── page.tsx             ← browse: /archive (ArchiveGrid)
 │   │   └── [slug]/
 │   │       └── page.tsx         ← inspect: /archive/[slug] (ArchiveInspectView)
-│   └── works/
-│       ├── page.tsx             ← index: /works (WorksIndex)
-│       └── [slug]/
-│           └── page.tsx         ← detail: /works/[slug] (WorkPageView)
+│   ├── works/
+│   │   ├── page.tsx             ← index: /works (WorksIndex)
+│   │   └── [slug]/
+│   │       └── page.tsx         ← detail: /works/[slug] (WorkPageView)
+│   └── brandbook/
+│       ├── layout.tsx           ← route fonts (Outfit, JetBrains Mono) + metadata
+│       └── page.tsx             ← /brandbook (ControlSurface + BrandbookExperience)
 │
 ├── content/                     ← archive registry + types (see CONTENT_SYSTEM.md)
 │   ├── field.ts                 ← archiveObjects registry (explicit, not auto-discovered)
@@ -90,10 +99,16 @@ oni-site/
 │   │   ├── probeImageSize.ts
 │   │   ├── territoryLabels.ts
 │   │   └── index.ts
-│   └── works/                   ← works index + detail (Lean Path — see docs/DECISIONS.md)
-│       ├── WorksIndex.tsx
-│       ├── WorkPageView.tsx
-│       └── index.ts
+│   ├── works/                   ← works index + detail (Lean Path — see docs/DECISIONS.md)
+│   │   ├── WorksIndex.tsx
+│   │   ├── WorkPageView.tsx
+│   │   └── index.ts
+│   └── brandbook/               ← interactive brandbook (Phase 1 — see docs/BRANDBOOK_INTEGRATION.md)
+│       ├── BrandbookExperience.tsx
+│       ├── BrandbookSectionContext.tsx
+│       ├── BrandbookSectionNav.tsx
+│       ├── components/          ← six scroll-snap sections + hero metallic drift
+│       └── imports/             ← hero + logo SVG paths
 │
 ├── components/                  ← atomic / global UI (not section-level)
 │   └── navigation/              ← floating control surface (Phase 5)
@@ -101,7 +116,7 @@ oni-site/
 │       ├── NavLogo.tsx          ← reserved identity zone; visible sigil disabled
 │       ├── NavTelemetry.tsx     ← ambient annotation, desktop-only, pointer-events-none
 │       ├── NavMenuTrigger.tsx   ← MENU + ONINavigationSigil; toggles MENU/CLOSE
-│       └── NavOverlay.tsx       ← overlay: HOME / WORK / ARCHIVE / STUDIO / CONTACT
+│       └── NavOverlay.tsx       ← overlay: HOME · CAPABILITIES · ARCHIVE · BRANDBOOK · CONTACT
 │
 └── public/
     ├── archive/
@@ -109,6 +124,9 @@ oni-site/
     │   └── previews/          ← deprecated — DEPRECATED.md only
     ├── works/
     │   └── [slug]/            ← work territory: 00-cover.* (Lean Path)
+    ├── brandbook/
+    │   ├── hero-wire.png      ← cover section metallic wire art
+    │   └── about-wire.png     ← about section wire art
     ├── logo/
     │   └── oni_logo_black.svg
     ├── frames/
@@ -162,6 +180,8 @@ oni-site/
 - `shared/` is utilities and tokens — no UI
 - `components/` is atomic/global UI only — no section-level concerns
 - `components/navigation/` is the Phase 5 floating control surface — `SiteHeader.tsx` removed; route awareness DEC-005; no scroll-state DEC-004; see `NAVIGATION_ARCHITECTURE.md`
+- `systems/brandbook/` + `app/brandbook/` — interactive brandbook route (Phase 1); no `PageBackdrop`; route-scoped fonts; see `docs/BRANDBOOK_INTEGRATION.md`
+- `_archive/brandbook-make-export/` — Figma Make reference export only; excluded from typecheck; production is `app/brandbook/`
 - `content/works/` + `public/works/[slug]/` — Works lane; covers are Pages-static — do not use `resolveArchiveMediaSrc()` (`CONTENT_SYSTEM.md`)
 - `systems/export/` — canonical `/?export=1` perception freeze; not a parallel route
 - `docs/FIGMA_EXPORT.md`, `docs/FIGMA_RECONCILIATION_WORKFLOW.md` — OPERATIONAL perception workflow

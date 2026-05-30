@@ -16,9 +16,10 @@ Remaining work is organized in [ROADMAP.md](./ROADMAP.md) as **three layers** (n
 |-------|---------|--------|
 | 1 — Infrastructure | Archive, Works Lean Path, media, CDN, routes, caching, Safari | **In progress** |
 | 2 — Editorial / Spatial | Territory, pacing, motion, traversal, typography | Pending |
-| 3 — Studio / Identity | Landing, contact, ecosystem, ONI/personal cohesion | Pending |
+| 3 — Studio / Identity | Landing, contact, ecosystem, ONI/personal cohesion | **In progress** — `/brandbook` Phase 1 shipped |
 
-`/archive`, `/works`, and `content/` registries shipped under Layer 1 (Works Lean Path — see `docs/DECISIONS.md` DEC-001).
+`/archive`, `/works`, and `content/` registries shipped under Layer 1 (Works Lean Path — see `docs/DECISIONS.md` DEC-001).  
+`/brandbook` shipped under Layer 3 (interactive identity surface — see `docs/BRANDBOOK_INTEGRATION.md`).
 
 ## Local development
 
@@ -27,7 +28,7 @@ npm install
 npm run dev
 ```
 
-Stack: Next.js 14 · React 18 · TypeScript · Tailwind v3 · Three.js / R3F · Cloudflare Pages
+Stack: Next.js 14 · React 18 · TypeScript · Tailwind v3 · Three.js / R3F · Motion · Cloudflare Pages
 
 ## Routes
 
@@ -38,6 +39,7 @@ Stack: Next.js 14 · React 18 · TypeScript · Tailwind v3 · Three.js / R3F · 
 | `/archive/[slug]` | Live — inspect (`ArchiveInspectView`) |
 | `/works` | Live — typographic index (`WorksIndex`) |
 | `/works/[slug]` | Live — document shell (`WorkPageView`; Lean Path) |
+| `/brandbook` | Live — interactive identity surface (`BrandbookExperience`; scroll-snap) |
 | `/writing`, `/code/[slug]` | Layer 1 — pending ([ROADMAP.md](./ROADMAP.md)) |
 
 ## Documentation
@@ -53,5 +55,8 @@ Authoring on disk: [CONTENT_SYSTEM.md](./CONTENT_SYSTEM.md)
 
 **3 — Reference**  
 [VISUAL_LANGUAGE.md](./VISUAL_LANGUAGE.md) · [NAVIGATION_ARCHITECTURE.md](./NAVIGATION_ARCHITECTURE.md) · [ROADMAP.md](./ROADMAP.md) (three layers — do not implement unless asked)
+
+**4 — Brandbook (route-local)**  
+[docs/BRANDBOOK_INTEGRATION.md](./docs/BRANDBOOK_INTEGRATION.md) — Phase 1 port, navigation surfacing, atmosphere pass
 
 Bootstrap template (archived, not canonical): [_archive_graveyard/ONI_MASTER_SYSTEM.md](./_archive_graveyard/ONI_MASTER_SYSTEM.md)

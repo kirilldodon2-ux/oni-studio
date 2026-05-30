@@ -1,7 +1,8 @@
 import Link from "next/link";
 import type { Work, WorkDomain } from "@/content/works/types";
+import { ArchiveHeroFrame } from "@/systems/archive/ArchiveHeroFrame";
 import { FadeIn, RevealUp } from "@/systems/atmosphere";
-import { SectionLabel } from "@/systems/layout/SectionLabel";
+import { ONI_SILHOUETTE_FILTER } from "@/systems/spatial/silhouetteGrounding";
 
 const DOMAIN_LABEL: Record<WorkDomain, string> = {
   spatial: "SPATIAL",
@@ -35,7 +36,12 @@ export function WorkPageView({ work }: WorkPageViewProps) {
           <p className="mb-6 font-sans text-[9px] font-medium uppercase tracking-[0.32em] text-neutral-300">
             ONI — Work
           </p>
-          <SectionLabel id="work-title">{work.title}</SectionLabel>
+          <h1
+            id="work-title"
+            className="font-bebas text-[clamp(2rem,6vw,3.5rem)] uppercase leading-[0.9] tracking-[0.02em] text-black"
+          >
+            {work.title}
+          </h1>
           <div className="mt-8 flex flex-col gap-2 md:flex-row md:items-baseline md:gap-8">
             <p className="font-sans text-[10px] font-medium tabular-nums uppercase tracking-[0.28em] text-neutral-400">
               {work.year}
@@ -49,12 +55,15 @@ export function WorkPageView({ work }: WorkPageViewProps) {
 
       <FadeIn delay={120}>
         <figure className="mb-10 md:mb-14">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={work.coverSrc}
-            alt=""
-            className="h-auto w-full max-w-[47.5rem] border border-black/[0.06]"
-          />
+          <ArchiveHeroFrame className="max-w-[47.5rem]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={work.coverSrc}
+              alt=""
+              className="block h-auto w-full"
+              style={{ filter: ONI_SILHOUETTE_FILTER }}
+            />
+          </ArchiveHeroFrame>
         </figure>
       </FadeIn>
 
