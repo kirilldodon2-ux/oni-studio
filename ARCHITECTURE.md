@@ -32,7 +32,7 @@ Defined in `tailwind.config.ts` under `theme.extend.maxWidth`:
 
 | Token            | Value   | Used in              |
 |------------------|---------|----------------------|
-| `oni-page`       | 1500px  | WorkSection          |
+| `oni-page`       | 1500px  | CapabilitiesSection  |
 | `oni-showreel`   | 1100px  | ShowreelSection      |
 | `oni-contact`    | 1400px  | ContactFooterSection |
 
@@ -80,7 +80,7 @@ app/
                        + combined rule: .oni-ambient-drift.oni-breath (stacks both animations)
   layout.tsx        ← root layout, fonts
   page.tsx          ← home: ExportModeProvider, PageBackdrop, ContinuityField, sections
-                      Hero → Work → Archive Fragment → Brand Identity → Showreel → Contact Footer
+                      Hero → Capabilities → Archive Fragment → Brand Identity → Showreel → Contact Footer
   archive/
     page.tsx          ← browse: /archive (ArchiveGrid)
     [slug]/page.tsx   ← inspect: /archive/[slug] (ArchiveInspectView)
@@ -97,7 +97,7 @@ sections/
     HeroAtmosphere.tsx  ← environmental field layer: rings, guide axes, depth parallax
     Scene.tsx           ← R3F / Three.js 3D scene, Hero-scoped
     ViewWorkLink.tsx
-  WorkSection/
+  CapabilitiesSection/
     index.tsx           ← RevealUp (heading) + FadeIn (content) + section-local cross mark
     SystemArtifact.tsx  ← territory media: node topology SVG + signal traverse (SYSTEM ARCHITECTURES)
   ArchivePreviewSection/
@@ -238,7 +238,7 @@ Phase 4 cinematic polish they should be extracted into each section's own atmosp
 | Target section              | Elements to migrate                                        |
 |-----------------------------|------------------------------------------------------------|
 | `HeroSection` atmosphere    | Upper diagonal lines, concentric rings, hero accent marks  |
-| `WorkSection` atmosphere    | Mid-page lines, mid circle, work accent marks              |
+| `CapabilitiesSection` atmosphere    | Mid-page lines, mid circle, capabilities accent marks      |
 | `ShowreelSection` atmosphere| Lower diagonal line, lower circle, showreel accent marks   |
 | `ContactFooterSection` atmosphere | Deep-page lines, micro notation marks              |
 
@@ -359,9 +359,9 @@ import { FadeIn, RevealUp } from "@/systems/atmosphere";
 |--------------------------|-----------------------------|--------------------------------------------|
 | `HeroSection`            | `FadeIn`                    | Text column (materializes on page load; threshold=0) |
 | `HeroSection`            | `HeroAtmosphere`            | Environmental field rings + depth parallax  |
-| `WorkSection`            | `RevealUp`                  | SectionLabel heading                        |
-| `WorkSection`            | `FadeIn delay=150`          | Content grid + archive link                 |
-| `WorkSection`            | `AmbientField breathe`      | Section-local cross mark, top-right padding zone, desktop-only |
+| `CapabilitiesSection`            | `RevealUp`                  | SectionLabel heading                        |
+| `CapabilitiesSection`            | `FadeIn delay=150`          | Content grid + archive link                 |
+| `CapabilitiesSection`            | `AmbientField breathe`      | Section-local cross mark, top-right padding zone, desktop-only |
 | `ArchivePreviewSection`  | `RevealUp`                  | SectionLabel + field index line             |
 | `ArchivePreviewSection`  | `FadeIn delay=80`           | Fragment field + footer threshold           |
 | `ArchivePreviewSection`  | `AmbientField breathe`      | Desktop `residual index` annotation, top-right |
@@ -398,7 +398,7 @@ Spatial continuity is achieved through three complementary mechanisms:
    create the sense that the environment continues beyond each section's edge.
 
 3. **Section-local atmospheric marks** — minimal environmental notations within
-   each section's top-right padding zone. A cross mark in WorkSection and a dot
+   each section's top-right padding zone. A cross mark in CapabilitiesSection and a dot
    mark in ShowreelSection create a visual thread that descends through the
    page — not a pattern, but a spatial echo.
 
@@ -468,11 +468,11 @@ mark (orange square or black dot) echoing the backdrop's existing mark language.
 
 ### Section-local marks
 
-WorkSection: a faint cross mark (`opacity: 0.44` on `#cfcfcf`) in the top-right
+CapabilitiesSection: a faint cross mark (`opacity: 0.44` on `#cfcfcf`) in the top-right
 padding zone. `AmbientField breathe delay={-5200}` — never in sync with hero rings.
 
 ShowreelSection: a single dot (`opacity: 0.15` on `#000`) in the top-right gutter.
-More minimal than the WorkSection mark — the environmental notation descends and
+More minimal than the CapabilitiesSection mark — the environmental notation descends and
 simplifies as the page deepens toward the footer.
 
 **Descent rhythm** — cross → dot → nothing (ContactFooterSection already has the
@@ -501,7 +501,7 @@ z-index: `z-[1]` — below WebGL scene (`z-[5]`) and text column (`z-20`).
 
 ### Philosophy
 
-Territories in WorkSection are not static text declarations. They are latent computational fields
+Territories in CapabilitiesSection are not static text declarations. They are latent computational fields
 that may carry living media behavior — not as decoration, but as environmental residue of the work
 that happens inside each territory.
 
@@ -520,7 +520,7 @@ Territory media must never:
 
 ### SystemArtifact — SYSTEM ARCHITECTURES territory
 
-`sections/WorkSection/SystemArtifact.tsx` — client component, conditionally rendered in `WorkSection/index.tsx`
+`sections/CapabilitiesSection/SystemArtifact.tsx` — client component, conditionally rendered in `CapabilitiesSection/index.tsx`
 when `territory.id === "system-architectures"`.
 
 **Visual form:** an 8-node sparse routing topology in a `200×50` SVG viewport. 8 infrastructure
@@ -555,7 +555,7 @@ CSS transition (1200ms ease-in-out). Initial activation delayed 3.6s after mount
 
 Reduced-motion: CSS animation suppressed + `opacity: 0` forced. React text cycling paused.
 
-**Isolation:** `SystemArtifact` is fully removable — the `{territory.id === "system-architectures" && <SystemArtifact />}` conditional in `WorkSection/index.tsx` is the only coupling point.
+**Isolation:** `SystemArtifact` is fully removable — the `{territory.id === "system-architectures" && <SystemArtifact />}` conditional in `CapabilitiesSection/index.tsx` is the only coupling point.
 
 ---
 

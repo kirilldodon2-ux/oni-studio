@@ -3,7 +3,7 @@ import { ContinuityField } from "@/systems/atmosphere";
 import { ControlSurface } from "@/components/navigation";
 import { ExportModeProvider, isExportMode } from "@/systems/export";
 import { HeroSection } from "@/sections/HeroSection";
-import { WorkSection } from "@/sections/WorkSection";
+import { CapabilitiesSection } from "@/sections/CapabilitiesSection";
 import { ArchivePreviewSection } from "@/sections/ArchivePreviewSection";
 import { BrandIdentitySection } from "@/sections/BrandIdentitySection";
 import { ShowreelSection } from "@/sections/ShowreelSection";
@@ -46,7 +46,7 @@ export default function Home({ searchParams }: HomePageProps) {
 
         <ControlSurface />
         <HeroSection exportMode={exportMode} />
-        <WorkSection />
+        <CapabilitiesSection />
         <ArchivePreviewSection />
         <BrandIdentitySection />
         <ShowreelSection />

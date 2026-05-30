@@ -100,7 +100,7 @@ Completed (BrandIdentitySection):
 
 Remaining:
 - scroll-driven entrance motion for remaining sections (Archive Fragment + Brand Identity use section-local motion)
-- HeroSection, WorkSection atmospheric polish
+- HeroSection, CapabilitiesSection atmospheric polish
 
 Completed (ContactFooterSection — CTA + Footer Editorial Refinement):
 - ✓ Heading migrated to `font-bebas` — genuine condensed display poster language

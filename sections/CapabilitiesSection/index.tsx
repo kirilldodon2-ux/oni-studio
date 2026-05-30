@@ -13,23 +13,23 @@ import { SystemArtifact } from "./SystemArtifact";
  * source order. Grid auto-placement processes items in order-N sequence,
  * producing three asymmetric rows:
  *
- *   Row 1 — SPATIAL IDENTITY (cols 1–8)  |  SYSTEM ARCHITECTURES (cols 9–12)
- *   Row 2 — EDITORIAL MOTION (cols 1–5)  |  EXPERIMENTAL MEDIA (cols 7–11)
- *   Row 3 — ARCHIVE RESEARCH (cols 3–7)  |  ATMOSPHERIC FRAGMENTS (cols 10–12)
+ *   Row 1 — IDENTITY (cols 1–8)  |  MOTION (cols 9–12)
+ *   Row 2 — IMAGE (cols 1–5)     |  SPATIAL (cols 7–11)
+ *   Row 3 — DIGITAL (cols 3–7)   |  SYSTEMS (cols 10–12)
  *
  * titleSize clamp: min is the mobile-native scale, vw preferred climbs to
  * desktop weight, max caps the large-screen ceiling. This keeps hierarchy
  * legible on 375px without the mobile minimum being a collapsed desktop value.
  *
- * Ghost-tier (ATMOSPHERIC FRAGMENTS) uses responsive color utilities:
+ * Ghost-tier (SYSTEMS) uses responsive color utilities:
  * mobile reads neutral-400/500 for legibility; desktop recedes to neutral-300/400.
  */
 const TERRITORIES = [
   {
     id: "spatial-identity",
     field: "FIELD / 01",
-    name: "SPATIAL IDENTITY",
-    disciplines: "campaigns / graphics / world systems",
+    name: "IDENTITY",
+    disciplines: "logos / systems / brand worlds",
     titleSize: "clamp(3rem,11vw,10.5rem)",
     position: "lg:order-1 lg:col-start-1 lg:col-end-9",
     borderColor: "border-black/[0.14]",
@@ -40,8 +40,8 @@ const TERRITORIES = [
   {
     id: "editorial-motion",
     field: "FIELD / 03",
-    name: "EDITORIAL MOTION",
-    disciplines: "typography / motion / interfaces",
+    name: "IMAGE",
+    disciplines: "posters / campaigns / visual language",
     titleSize: "clamp(2.1rem,5.5vw,5.5rem)",
     position: "lg:order-3 lg:col-start-1 lg:col-end-6 lg:mt-14",
     borderColor: "border-black/[0.09]",
@@ -52,8 +52,8 @@ const TERRITORIES = [
   {
     id: "archive-research",
     field: "FIELD / 05",
-    name: "ARCHIVE RESEARCH",
-    disciplines: "writings / investigations / visual essays",
+    name: "DIGITAL",
+    disciplines: "web / interactive / experiences",
     titleSize: "clamp(1.7rem,4.5vw,4.5rem)",
     position: "lg:order-4 lg:col-start-3 lg:col-end-8 lg:mt-12",
     borderColor: "border-black/[0.09]",
@@ -64,8 +64,8 @@ const TERRITORIES = [
   {
     id: "system-architectures",
     field: "FIELD / 02",
-    name: "SYSTEM ARCHITECTURES",
-    disciplines: "automation / platforms / bots",
+    name: "MOTION",
+    disciplines: "animation / kinetics / sequences",
     titleSize: "clamp(1.35rem,3vw,3rem)",
     position: "lg:order-2 lg:col-start-9 lg:col-end-13 lg:mt-16",
     borderColor: "border-black/[0.09]",
@@ -76,8 +76,8 @@ const TERRITORIES = [
   {
     id: "experimental-media",
     field: "FIELD / 04",
-    name: "EXPERIMENTAL MEDIA",
-    disciplines: "touchdesigner / mixed media / installations",
+    name: "SPATIAL",
+    disciplines: "3D / environments / objects",
     titleSize: "clamp(1.2rem,2.5vw,2.5rem)",
     position: "lg:order-5 lg:col-start-7 lg:col-end-12 lg:mt-32",
     borderColor: "border-black/[0.06]",
@@ -88,8 +88,8 @@ const TERRITORIES = [
   {
     id: "atmospheric-fragments",
     field: "FIELD / 06",
-    name: "ATMOSPHERIC FRAGMENTS",
-    disciplines: "ambient residue / field material",
+    name: "SYSTEMS",
+    disciplines: "pipelines / generative / R&D",
     titleSize: "clamp(0.9rem,1.8vw,1.6rem)",
     position: "lg:order-6 lg:col-start-10 lg:col-end-13 lg:mt-4",
     borderColor: "border-black/[0.04]",
@@ -100,12 +100,12 @@ const TERRITORIES = [
   },
 ];
 
-export function WorkSection() {
+export function CapabilitiesSection() {
   return (
     <SectionContainer
       id="work"
       data-oni-section="work"
-      aria-labelledby="work-heading"
+      aria-labelledby="capabilities-heading"
       className="py-20 md:py-24 lg:py-[clamp(5.5rem,10vh,8rem)]"
     >
       {/* Atmospheric cross mark — top-right, echoes backdrop vocabulary */}
@@ -150,8 +150,8 @@ export function WorkSection() {
 
       <div className="mx-auto max-w-oni-page">
         <RevealUp>
-          <SectionLabel id="work-heading" className="mb-10 md:mb-14 lg:mb-12">
-            WORK
+          <SectionLabel id="capabilities-heading" className="mb-10 md:mb-14 lg:mb-12">
+            CAPABILITIES
           </SectionLabel>
         </RevealUp>
 

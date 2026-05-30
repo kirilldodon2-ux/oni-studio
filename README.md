@@ -35,7 +35,7 @@ Stack: Next.js 14 · React 18 · TypeScript · Tailwind v3 · Three.js / R3F · 
 
 | Route | Status |
 |-------|--------|
-| `/` | Live — Hero → Work → Archive Fragment → Brand Identity → Showreel → Contact Footer |
+| `/` | Live — Hero → Capabilities → Archive Fragment → Brand Identity → Showreel → Contact Footer |
 | `/archive` | Live — browse (`ArchiveGrid`) |
 | `/archive/[slug]` | Live — inspect (`ArchiveInspectView`) |
 | `/works` | Live — typographic index (`WorksIndex`) |

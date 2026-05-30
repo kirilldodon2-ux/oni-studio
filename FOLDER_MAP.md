@@ -52,7 +52,7 @@ oni-site/
 │   │   ├── HeroExportFallback.tsx ← static hero reference (?export=1)
 │   │   ├── Scene.tsx            ← Three.js / R3F 3D scene, Hero-scoped
 │   │   └── ViewWorkLink.tsx
-│   ├── WorkSection/
+│   ├── CapabilitiesSection/
 │   │   ├── index.tsx
 │   │   └── SystemArtifact.tsx   ← SYSTEM ARCHITECTURES territory media (conditional)
 │   ├── ArchivePreviewSection/
