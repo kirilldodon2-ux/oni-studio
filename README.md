@@ -7,7 +7,7 @@ Cinematic studio frontend — living archive, editorial environment, and experim
 | Phase | Scope | Status |
 |-------|--------|--------|
 | 0–3 | Tokens, sections, backdrop, responsive | Complete |
-| 4 | Cinematic polish (Showreel, ContactFooter, atmosphere) | **In progress** |
+| 4 | Cinematic polish (Showreel, ContactFooter, Archive Fragment, Brand Identity, atmosphere) | **In progress** |
 | 5 | Floating navigation + adaptive menu overlay | **Complete (baseline)** — transparent closed surface (DEC-004); route-aware telemetry + overlay (DEC-005) |
 
 Remaining work is organized in [ROADMAP.md](./ROADMAP.md) as **three layers** (not numbered phases):
@@ -16,10 +16,11 @@ Remaining work is organized in [ROADMAP.md](./ROADMAP.md) as **three layers** (n
 |-------|---------|--------|
 | 1 — Infrastructure | Archive, Works Lean Path, media, CDN, routes, caching, Safari | **In progress** |
 | 2 — Editorial / Spatial | Territory, pacing, motion, traversal, typography | Pending |
-| 3 — Studio / Identity | Landing, contact, ecosystem, ONI/personal cohesion | **In progress** — `/brandbook` Phase 1 shipped |
+| 3 — Studio / Identity | Landing, contact, ecosystem, ONI/personal cohesion | **In progress** — `/brandbook` Phase 1 + homepage Brand Identity section shipped |
 
 `/archive`, `/works`, and `content/` registries shipped under Layer 1 (Works Lean Path — see `docs/DECISIONS.md` DEC-001).  
-`/brandbook` shipped under Layer 3 (interactive identity surface — see `docs/BRANDBOOK_INTEGRATION.md`).
+`/brandbook` shipped under Layer 3 (interactive identity surface — see `docs/BRANDBOOK_INTEGRATION.md`).  
+Homepage `#identity` threshold → `/brandbook` (see `docs/BRAND_IDENTITY_SECTION.md`).
 
 ## Local development
 
@@ -34,7 +35,7 @@ Stack: Next.js 14 · React 18 · TypeScript · Tailwind v3 · Three.js / R3F · 
 
 | Route | Status |
 |-------|--------|
-| `/` | Live — home section stack |
+| `/` | Live — Hero → Work → Archive Fragment → Brand Identity → Showreel → Contact Footer |
 | `/archive` | Live — browse (`ArchiveGrid`) |
 | `/archive/[slug]` | Live — inspect (`ArchiveInspectView`) |
 | `/works` | Live — typographic index (`WorksIndex`) |
@@ -58,5 +59,9 @@ Authoring on disk: [CONTENT_SYSTEM.md](./CONTENT_SYSTEM.md)
 
 **4 — Brandbook (route-local)**  
 [docs/BRANDBOOK_INTEGRATION.md](./docs/BRANDBOOK_INTEGRATION.md) — Phase 1 port, navigation surfacing, atmosphere pass
+
+**5 — Homepage sections (operational)**  
+[docs/ARCHIVE_FRAGMENT_V2.md](./docs/ARCHIVE_FRAGMENT_V2.md) — Archive Fragment field glimpse  
+[docs/BRAND_IDENTITY_SECTION.md](./docs/BRAND_IDENTITY_SECTION.md) — Brand Identity poster threshold → `/brandbook`
 
 Bootstrap template (archived, not canonical): [_archive_graveyard/ONI_MASTER_SYSTEM.md](./_archive_graveyard/ONI_MASTER_SYSTEM.md)

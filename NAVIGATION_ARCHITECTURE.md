@@ -234,7 +234,8 @@ Historical note: an initial Phase 5 pass used glass fill + blur (rejected, DEC-0
 components/
   navigation/
     index.tsx             ← ControlSurface — root floating container, z-index owner
-    NavLogo.tsx           ← Logo link with sizing tokens
+    NavHome.tsx           ← HOME link on `/`, `/archive*`, `/brandbook`; else NavLogo spacer
+    NavLogo.tsx           ← Reserved identity-zone spacer; no visible sigil
     NavTelemetry.tsx      ← Telemetry annotation, desktop-only, ambient
     NavMenuTrigger.tsx    ← Menu open button + consistent glyph
     NavOverlay.tsx        ← Adaptive menu overlay — full-width plane `< md`, right atmospheric plane `md+`
@@ -254,6 +255,12 @@ components/
 - Any section layout or section overflow
 - Hero height compensation
 - Scroll event logic on the closed surface (DEC-004 — no scroll-state)
+
+### NavHome — `NavHome.tsx`
+
+- Persistent **HOME** text link on `/`, `/archive`, and `/brandbook` routes
+- Returns to `/`; `aria-current="page"` when on landing
+- All other routes: renders `NavLogo` spacer (same safe-zone geometry, no visible mark)
 
 ### NavLogo — `NavLogo.tsx`
 
@@ -553,7 +560,7 @@ The **action zone** is exempt: it uses artifact revelation per this section, not
 
 ### Phase 5 — delivered
 
-1. ✓ `components/navigation/` — `ControlSurface`, `NavLogo`, `NavTelemetry`, `NavMenuTrigger`, `NavOverlay`
+1. ✓ `components/navigation/` — `ControlSurface`, `NavHome`, `NavLogo`, `NavTelemetry`, `NavMenuTrigger`, `NavOverlay`
 2. ✓ `SiteHeader` removed — `ControlSurface` is the only navigation chrome
 3. ✓ Hero full-viewport height — no header height subtraction
 4. ✓ `NavOverlay` — adaptive plane, keyboard accessibility, DEC-002 routes

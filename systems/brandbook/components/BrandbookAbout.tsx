@@ -14,29 +14,26 @@ export function BrandbookAbout() {
       className="relative overflow-hidden bg-[#070707]"
       style={{ height: "100vh", scrollSnapAlign: "start", flexShrink: 0 }}
     >
-      <div className="absolute inset-0">
+      <div className="absolute inset-0" aria-hidden>
+        {/* Mobile — atmosphere behind copy, not competing with text */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/brandbook/about-wire.png"
           alt=""
-          className="absolute object-cover opacity-60"
-          style={{ top: "-8%", right: "-5%", width: "55%", height: "115%" }}
+          className="pointer-events-none absolute -right-[48%] top-[2%] h-[88%] w-[68%] object-cover opacity-[0.38] blur-[7px] md:hidden"
+          draggable={false}
+        />
+        {/* Desktop — source composition */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/brandbook/about-wire.png"
+          alt=""
+          className="absolute -right-[5%] -top-[8%] hidden h-[115%] w-[55%] object-cover opacity-60 md:block"
           draggable={false}
         />
       </div>
 
-      <motion.span
-        className="absolute right-10 top-10 font-mono text-[11px] tracking-[0.3em] text-[#B2B2B2]"
-        style={{ fontFamily: "var(--font-mono)" }}
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.2 }}
-        viewport={{ once: false }}
-      >
-        02 / 06
-      </motion.span>
-
-      <div className="relative z-10 flex h-full flex-col justify-between px-[5.2%] py-[9%]">
+      <div className="relative z-10 flex h-full flex-col justify-between px-[6%] py-[8%] max-md:py-[7%] md:px-[5.2%] md:py-[9%] max-md:[text-shadow:0_1px_24px_rgba(0,0,0,0.85)]">
         <div>
           <div className="overflow-hidden">
             <motion.h2
@@ -44,7 +41,7 @@ export function BrandbookAbout() {
               style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 800,
-                fontSize: "clamp(60px, 8vw, 130px)",
+                fontSize: "clamp(72px, 14vw, 130px)",
               }}
               initial={{ y: "110%" }}
               whileInView={{ y: "0%" }}
@@ -60,7 +57,7 @@ export function BrandbookAbout() {
               style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 800,
-                fontSize: "clamp(60px, 8vw, 130px)",
+                fontSize: "clamp(72px, 14vw, 130px)",
               }}
               initial={{ y: "110%" }}
               whileInView={{ y: "0%" }}
@@ -80,7 +77,7 @@ export function BrandbookAbout() {
               style={{
                 fontFamily: "var(--font-mono)",
                 fontWeight: 300,
-                fontSize: "clamp(13px, 1.5vw, 18px)",
+                fontSize: "clamp(14px, 3.6vw, 18px)",
                 lineHeight: 1.7,
               }}
               initial={{ opacity: 0, y: 20 }}

@@ -25,16 +25,6 @@ export function BrandbookLinks() {
       className="relative overflow-hidden bg-white"
       style={{ height: "100vh", scrollSnapAlign: "start", flexShrink: 0 }}
     >
-      <motion.span
-        className="absolute left-10 top-10 text-[11px] tracking-[0.3em] text-[#B2B2B2]"
-        style={{ fontFamily: "var(--font-mono)" }}
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        06 / 06
-      </motion.span>
-
       <div className="absolute right-[5%] top-8">
         <div className="overflow-hidden">
           <motion.h2
@@ -42,7 +32,7 @@ export function BrandbookLinks() {
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 800,
-              fontSize: "clamp(52px, 9vw, 130px)",
+              fontSize: "clamp(60px, 13vw, 130px)",
             }}
             initial={{ y: "110%" }}
             animate={isInView ? { y: "0%" } : { y: "110%" }}
@@ -57,7 +47,7 @@ export function BrandbookLinks() {
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 800,
-              fontSize: "clamp(52px, 9vw, 130px)",
+              fontSize: "clamp(60px, 13vw, 130px)",
             }}
             initial={{ y: "110%" }}
             animate={isInView ? { y: "0%" } : { y: "110%" }}
@@ -70,8 +60,7 @@ export function BrandbookLinks() {
 
       <div
         ref={contentRef}
-        className="absolute bottom-0 left-[6.5%]"
-        style={{ top: "75%" }}
+        className="absolute bottom-0 left-[6.5%] top-[58%] md:top-[75%]"
       >
         <div className="absolute bottom-0 left-0 top-0 w-[2px]">
           <motion.div
@@ -94,7 +83,7 @@ export function BrandbookLinks() {
           </motion.div>
         </div>
 
-        <div className="flex h-full flex-col justify-center gap-6 pl-10">
+        <div className="flex h-full flex-col justify-center gap-8 pl-10 max-md:gap-9 md:gap-6">
           {LINKS.map((link, i) => (
             <motion.a
               key={link.platform}
@@ -111,7 +100,7 @@ export function BrandbookLinks() {
                 className="text-black"
                 style={{
                   fontFamily: "var(--font-mono)",
-                  fontSize: "clamp(14px, 1.8vw, 24px)",
+                  fontSize: "clamp(16px, 4.2vw, 24px)",
                   fontWeight: 400,
                 }}
               >

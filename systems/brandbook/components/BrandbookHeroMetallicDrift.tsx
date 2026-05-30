@@ -63,7 +63,7 @@ export function BrandbookHeroMetallicDrift() {
         <img
           src="/brandbook/hero-wire.png"
           alt=""
-          className="h-full w-full object-cover opacity-70"
+          className="h-full w-full object-cover opacity-[0.52] md:opacity-70"
           draggable={false}
         />
       </motion.div>

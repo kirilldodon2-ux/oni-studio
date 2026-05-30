@@ -262,9 +262,9 @@ not CSS masks. Do not use forced `h-full` / `object-cover` on browse previews to
 | 1     | Complete    | Section architecture — extraction + layout systems            |
 | 2     | Complete    | PageBackdrop decoupling → `systems/backdrop/`                 |
 | 3     | Complete    | Responsive stabilization + overflow containment               |
-| 4     | In Progress | Cinematic polish — ShowreelSection complete; others pending   |
-| 5     | In Progress | Navigation — floating control surface system                  |
-| 6     | Pending     | Routing & page architecture — dynamic routes + transitions    |
+| 4     | In Progress | Cinematic polish — Showreel, Archive Fragment, Brand Identity shipped; Hero/Work atmosphere pending |
+| 5     | Complete    | Navigation — floating control surface + adaptive overlay (DEC-004/005) |
+| 6     | Pending     | Routing & page architecture — writings/code routes, transitions (partial: archive + works shipped) |
 | 7     | Pending     | Work archive — individual Work pages + Works index            |
 | 8     | Pending     | Written content — Writings + MDX pipeline + typography system |
 | 9     | Pending     | Experiment layer — Code Artifacts + sandbox architecture      |

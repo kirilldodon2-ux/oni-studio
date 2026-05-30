@@ -201,12 +201,84 @@ html.oni-export [data-oni-page="landing"] .oni-cta-field {
   animation: oni-field-pulse var(--atm-pulse, 22000ms) ease-in-out infinite;
 }
 
+/* ─── Archive Fragment — ghost core (V3 field gravity) ─────────────────────
+   ONI nucleus: dark silver, huge, discovered not announced.
+   Desktop opacity ~0.03–0.08 · mobile ~0.08–0.14 · 16s breathe + scale drift.
+   ─────────────────────────────────────────────────────────────────────────── */
+@keyframes oni-archive-ghost-core {
+  0%,
+  100% {
+    opacity: var(--oni-ghost-opacity-lo, 0.04);
+    transform: scale(1);
+    filter: blur(10px) grayscale(1)
+      drop-shadow(0 0 48px rgba(120, 120, 128, 0.08));
+  }
+  50% {
+    opacity: var(--oni-ghost-opacity-hi, 0.07);
+    transform: scale(1.01);
+    filter: blur(14px) grayscale(1)
+      drop-shadow(0 0 64px rgba(120, 120, 128, 0.12));
+  }
+}
+
+.oni-archive-ghost-core {
+  --oni-ghost-opacity-lo: 0.035;
+  --oni-ghost-opacity-hi: 0.065;
+  animation: oni-archive-ghost-core 16s ease-in-out infinite;
+  animation-delay: -4200ms;
+}
+
+@media (max-width: 1023px) {
+  .oni-archive-ghost-core {
+    --oni-ghost-opacity-lo: 0.05;
+    --oni-ghost-opacity-hi: 0.08;
+  }
+}
+
+/* ─── Archive Fragment — field emergence (V3) ───────────────────────────────
+   Fragments surface into rest — fog / memory, not showcase entrance.
+   ─────────────────────────────────────────────────────────────────────────── */
+@keyframes oni-fragment-emerge {
+  0% {
+    opacity: 0;
+    transform: translate(var(--oni-emerge-x, 0), var(--oni-emerge-y, 10px))
+      scale(0.992);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.oni-fragment-field[data-emerged="false"] .oni-fragment-tile-wrap {
+  opacity: 0;
+}
+
+.oni-fragment-field[data-emerged="true"] .oni-fragment-tile-wrap {
+  animation: oni-fragment-emerge var(--oni-emerge-duration, 1.4s) ease-out
+    forwards;
+}
+
 /* Reduced-motion safety gates */
 @media (prefers-reduced-motion: reduce) {
   .oni-ambient-drift,
   .oni-breath,
-  .oni-field-pulse {
+  .oni-field-pulse,
+  .oni-archive-ghost-core {
     animation: none !important;
+  }
+
+  .oni-fragment-field[data-emerged="false"] .oni-fragment-tile-wrap {
+    opacity: 1;
+  }
+
+  .oni-fragment-field[data-emerged="true"] .oni-fragment-tile-wrap {
+    animation: none;
+    opacity: 1;
+    filter: none;
+    transform: none;
   }
 }
 

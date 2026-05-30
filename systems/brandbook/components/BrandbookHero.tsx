@@ -14,17 +14,7 @@ export function BrandbookHero() {
     >
       <BrandbookHeroMetallicDrift />
 
-      <motion.span
-        className="absolute left-10 top-10 font-mono text-[11px] tracking-[0.3em] text-[#B2B2B2]"
-        style={{ fontFamily: "var(--font-mono)" }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.8 }}
-      >
-        01 / 06
-      </motion.span>
-
-      <div className="relative z-10 flex flex-col items-center">
+      <div className="relative z-10 flex flex-col items-center px-6">
         <motion.div
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -32,7 +22,7 @@ export function BrandbookHero() {
         >
           <svg
             viewBox="0 0 272 312.18"
-            className="h-auto w-28"
+            className="h-auto w-[8.25rem] md:w-28"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -46,11 +36,11 @@ export function BrandbookHero() {
           </svg>
         </motion.div>
 
-        <div className="mt-6 flex flex-col items-center gap-0.5">
+        <div className="mt-5 flex flex-col items-center gap-0.5 md:mt-6">
           {TITLE_LINES.map((line, i) => (
             <div key={line} className="overflow-hidden">
               <motion.p
-                className="text-center text-[13px] tracking-[0.35em] text-[#B2B2B2]"
+                className="text-center text-[11px] tracking-[0.35em] text-[#B2B2B2] md:text-[13px]"
                 style={{
                   fontFamily: "var(--font-display)",
                   fontStyle: "normal",
@@ -71,7 +61,7 @@ export function BrandbookHero() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2">
+      <div className="absolute bottom-0 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex">
         <motion.div
           className="overflow-hidden"
           initial={{ height: 0 }}

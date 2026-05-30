@@ -80,6 +80,7 @@ app/
                        + combined rule: .oni-ambient-drift.oni-breath (stacks both animations)
   layout.tsx        ← root layout, fonts
   page.tsx          ← home: ExportModeProvider, PageBackdrop, ContinuityField, sections
+                      Hero → Work → Archive Fragment → Brand Identity → Showreel → Contact Footer
   archive/
     page.tsx          ← browse: /archive (ArchiveGrid)
     [slug]/page.tsx   ← inspect: /archive/[slug] (ArchiveInspectView)
@@ -99,6 +100,16 @@ sections/
   WorkSection/
     index.tsx           ← RevealUp (heading) + FadeIn (content) + section-local cross mark
     SystemArtifact.tsx  ← territory media: node topology SVG + signal traverse (SYSTEM ARCHITECTURES)
+  ArchivePreviewSection/
+    index.tsx             ← RevealUp (heading) + FadeIn (field + footer threshold)
+    ArchiveFragmentField.tsx ← clipped field window, emergence observer, ghost core
+    ArchiveFragmentTile.tsx  ← browse-adjacent tile optics
+    ArchiveFragmentGhostCore.tsx ← sub-perceptual ONI nucleus (field gravity)
+    curatedWindow.ts        ← section-local slug + placement maps (desktop / mobile)
+  BrandIdentitySection/
+    index.tsx             ← RevealUp (heading) + FadeIn (poster link + footer threshold)
+    IdentityManifesto.tsx ← client poster: ОНИ + black mass, GSAP reveal, cursor parallax
+    manifestoLines.ts     ← layout + motion constants
   ShowreelSection/
     index.tsx             ← RevealUp (heading) + FadeIn (card, annotation) + section-local dot mark
     ShowreelMediaCard.tsx ← unified cinematic media artifact: transparent field,
@@ -128,8 +139,8 @@ systems/
   archive/                ← browse + inspect (ArchiveGrid, ArchiveInspectView, …)
   works/                  ← works index + detail (Lean Path — DEC-001)
   brandbook/              ← interactive brandbook (Phase 1 — docs/BRANDBOOK_INTEGRATION.md)
-                            scroll-snap orchestrator, section context/nav, six sections,
-                            hero metallic drift (motion/react; route-local only)
+                            scroll-snap orchestrator, section context/nav, six sections;
+                            cover = BrandbookHero + BrandbookHeroMetallicDrift (same artifact desktop/mobile)
   useCinematicVideo.ts    ← viewport-gated browse video (ArchiveTile)
 
 content/
@@ -143,7 +154,8 @@ content/
 components/
   navigation/
     index.tsx             ← ControlSurface — fixed floating nav, z-40/50 owner (Phase 5)
-    NavLogo.tsx           ← reserved identity zone
+    NavHome.tsx           ← HOME link on `/`, `/archive*`, `/brandbook`; else NavLogo spacer
+    NavLogo.tsx           ← Reserved identity-zone spacer (fallback)
     NavTelemetry.tsx      ← route lane annotation (DEC-005), desktop-only;
                             optional BrandbookSectionContext on /brandbook for section index
     NavMenuTrigger.tsx    ← Menu trigger: MENU label + ONINavigationSigil (3D)
@@ -350,6 +362,11 @@ import { FadeIn, RevealUp } from "@/systems/atmosphere";
 | `WorkSection`            | `RevealUp`                  | SectionLabel heading                        |
 | `WorkSection`            | `FadeIn delay=150`          | Content grid + archive link                 |
 | `WorkSection`            | `AmbientField breathe`      | Section-local cross mark, top-right padding zone, desktop-only |
+| `ArchivePreviewSection`  | `RevealUp`                  | SectionLabel + field index line             |
+| `ArchivePreviewSection`  | `FadeIn delay=80`           | Fragment field + footer threshold           |
+| `ArchivePreviewSection`  | `AmbientField breathe`      | Desktop `residual index` annotation, top-right |
+| `BrandIdentitySection`   | `RevealUp`                  | SectionLabel heading                        |
+| `BrandIdentitySection`   | `FadeIn delay=80`           | Poster link + footer threshold              |
 | `ShowreelSection`        | `RevealUp`                  | SectionLabel heading                        |
 | `ShowreelSection`        | `FadeIn delay=200`          | Media card                                  |
 | `ShowreelSection`        | `FadeIn delay=80`           | Year annotation (absolute; positioned via className) |
@@ -399,13 +416,15 @@ rather than as "animation."
 
 `systems/atmosphere/ContinuityField.tsx` — server component, zero JS.
 
-Three zones keyed to approximate section transition depths:
+Three mechanisms create spatial continuity (five transition zones on the landing scroll):
 
 | Zone | Transition            | Depth (approx.) | Elements                             |
 |------|-----------------------|-----------------|--------------------------------------|
 | A    | Hero → Work           | `100svh`        | Horizon thread + orange mark + dot   |
-| B    | Work → Showreel       | `175svh`        | Horizon thread + orange mark         |
-| C    | Showreel → Contact    | `252svh`        | Horizon thread + black dot           |
+| B    | Work → Archive        | `175svh`        | Horizon thread + orange mark         |
+| C    | Archive → Brand Identity | `228svh`     | Horizon thread + black dot           |
+| C′   | Brand Identity → Showreel | `252svh`    | Horizon thread + black dot           |
+| D    | Showreel → Contact    | `305svh`        | Horizon thread + black dot           |
 
 **Horizon threads** — 1px gradient dividers spanning ~80% of viewport width,
 offset horizontally per zone (so each zone feels distinct). Peak opacity: ~0.05.
@@ -417,7 +436,8 @@ with HeroAtmosphere.
 
 **Depth positioning** — `top: calc(Xsvh)` where X is a multiple of the viewport
 height. At a 900px viewport: Zone A = 900px (hero end), Zone B ≈ 1575px (work
-end), Zone C ≈ 2268px (showreel end). These are approximate and intentional —
+end), Zone C ≈ 2052px (archive end), Zone C′ ≈ 2268px (brand identity end),
+Zone D ≈ 2745px (showreel end). These are approximate and intentional —
 environmental marks do not need pixel-perfect alignment with section boundaries.
 
 ### Backdrop spatial continuity enhancements
@@ -640,7 +660,8 @@ Rules:
 components/
   navigation/
     index.tsx             ← ControlSurface — fixed floating container, z-40/50 owner
-    NavLogo.tsx           ← Reserved identity zone; visible sigil disabled
+    NavHome.tsx           ← HOME link on `/`, `/archive*`, `/brandbook`; else NavLogo spacer
+    NavLogo.tsx           ← Reserved identity-zone spacer (fallback)
     NavTelemetry.tsx      ← Ambient annotation, desktop-only, pointer-events-none
     NavMenuTrigger.tsx    ← Menu trigger: MENU label + ONINavigationSigil; toggles MENU/CLOSE
     NavOverlay.tsx        ← Adaptive menu overlay (z-50): scrim + plane full-width `< md`, right plane `md+` (implemented)
@@ -892,7 +913,7 @@ Brandbook is a **studio identity surface**, not an archive archetype lane.
 | `systems/layout/`             | `SectionLabel` on Works detail; archive/works shells use route-local chrome |
 | `systems/backdrop/`           | `PageBackdrop` on `/archive`, `/works`, and work detail routes — **not** on `/brandbook` |
 | `components/navigation/`      | All routes; route awareness via `usePathname()` (DEC-005); brandbook section lane via optional context |
-| `systems/brandbook/`          | `/brandbook` only — internal scroll-snap, section nav (z-30), `motion/react` hero drift |
+| `systems/brandbook/`          | `/brandbook` only — scroll-snap, section nav (z-30), unified cover hero + metallic drift; design spec → `docs/BRANDBOOK_INTEGRATION.md` |
 | `systems/spatial/`            | `ONI_SILHOUETTE_FILTER` on archive inspect hero; nav sigil infrastructure   |
 | `ShowreelMediaCard`           | Reference for future Work evidence / cinematic media (not wired to Lean Path) |
 

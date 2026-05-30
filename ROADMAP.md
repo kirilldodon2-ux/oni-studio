@@ -89,10 +89,18 @@ Completed (ShowreelSection):
 - ✓ Reusable structure prepared for video integration, modal expansion, archive usage
 - ✓ Frame inner window constants — tunable when asset changes
 
+Completed (ArchivePreviewSection — Archive Fragment V3):
+- ✓ clipped archive field glimpse on homepage (`#archive`) — see `docs/ARCHIVE_FRAGMENT_V2.md`
+- ✓ section-local curation (`curatedWindow.ts`); ghost core + field emergence; footer threshold → `/archive`
+
+Completed (BrandIdentitySection):
+- ✓ compressed poster threshold on homepage (`#identity`) — ОНИ + black mass → `/brandbook`
+- ✓ GSAP scroll reveal + cursor parallax; footer threshold mirrors Archive Fragment pattern
+- ✓ spec: `docs/BRAND_IDENTITY_SECTION.md`
+
 Remaining:
-- scroll-driven entrance motion for all sections
+- scroll-driven entrance motion for remaining sections (Archive Fragment + Brand Identity use section-local motion)
 - HeroSection, WorkSection atmospheric polish
-- ContactFooterSection editorial refinement pass: ✓ complete (see below)
 
 Completed (ContactFooterSection — CTA + Footer Editorial Refinement):
 - ✓ Heading migrated to `font-bebas` — genuine condensed display poster language
@@ -240,8 +248,13 @@ scale.
 
 ## Layer 3 — Studio / Identity
 
-**Status: Pending** (parallel with Layer 2 once infrastructure is trustworthy). Who ONI
+**Status: In progress** (brandbook route + homepage Brand Identity section shipped; landing refinement continues). Who ONI
 is on the site and how studio, client work, and personal practice relate.
+
+### Shipped (partial)
+
+- `/brandbook` — interactive identity surface (`docs/BRANDBOOK_INTEGRATION.md`)
+- `BrandIdentitySection` — homepage poster threshold `#identity` → `/brandbook` (`docs/BRAND_IDENTITY_SECTION.md`)
 
 ### Core track
 

@@ -54,25 +54,15 @@ export function BrandbookFonts() {
         </motion.div>
       </div>
 
-      <motion.span
-        className="absolute left-10 top-10 text-[11px] tracking-[0.3em] text-[#B2B2B2]"
-        style={{ fontFamily: "var(--font-mono)" }}
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        05 / 06
-      </motion.span>
-
-      <div ref={contentRef} className="relative z-10 flex h-full">
-        <div className="flex w-1/2 flex-col justify-center px-[7%]">
+      <div ref={contentRef} className="relative z-10 flex h-full flex-col md:flex-row">
+        <div className="flex w-full flex-none flex-col justify-center px-8 pt-20 max-md:pb-4 md:w-1/2 md:px-[7%] md:pt-0 md:pb-0">
           <div className="overflow-hidden">
             <motion.h2
               className="leading-none text-[#070707]"
               style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 800,
-                fontSize: "clamp(52px, 7vw, 108px)",
+                fontSize: "clamp(60px, 12vw, 108px)",
               }}
               initial={{ y: "110%" }}
               animate={isInView ? { y: "0%" } : { y: "110%" }}
@@ -87,7 +77,7 @@ export function BrandbookFonts() {
               style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 800,
-                fontSize: "clamp(52px, 7vw, 108px)",
+                fontSize: "clamp(60px, 12vw, 108px)",
               }}
               initial={{ y: "110%" }}
               animate={isInView ? { y: "0%" } : { y: "110%" }}
@@ -98,7 +88,7 @@ export function BrandbookFonts() {
           </div>
         </div>
 
-        <div className="flex w-1/2 flex-col justify-center gap-8 px-[6%]">
+        <div className="flex w-full flex-1 flex-col justify-center gap-10 px-8 pb-14 max-md:gap-9 md:w-1/2 md:gap-8 md:px-[6%] md:pb-0">
           {TYPEFACES.map((face, i) => (
             <motion.div
               key={face.name}
@@ -111,7 +101,7 @@ export function BrandbookFonts() {
                 style={{
                   fontFamily: face.fontFamily,
                   fontWeight: face.weight,
-                  fontSize: "clamp(18px, 2.5vw, 36px)",
+                  fontSize: "clamp(22px, 5.5vw, 36px)",
                 }}
               >
                 {face.name}
@@ -120,7 +110,7 @@ export function BrandbookFonts() {
                 className="mb-3 tracking-widest text-[#B2B2B2]"
                 style={{
                   fontFamily: "var(--font-mono)",
-                  fontSize: "10px",
+                  fontSize: "11px",
                   fontWeight: 300,
                 }}
               >
@@ -131,7 +121,7 @@ export function BrandbookFonts() {
                 style={{
                   fontFamily: face.fontFamily,
                   fontWeight: 300,
-                  fontSize: "clamp(12px, 1.4vw, 18px)",
+                  fontSize: "clamp(14px, 3.6vw, 18px)",
                   lineHeight: 1.9,
                   letterSpacing: "0.05em",
                 }}

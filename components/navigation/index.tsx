@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { NavLogo } from "./NavLogo";
+import { NavHome } from "./NavHome";
 import { NavTelemetry } from "./NavTelemetry";
 import { NavMenuTrigger } from "./NavMenuTrigger";
 import { NavOverlay } from "./NavOverlay";
@@ -33,7 +33,7 @@ export function ControlSurface() {
           menuOpen ? "z-50" : "z-40",
         ].join(" ")}
       >
-        <NavLogo />
+        <NavHome />
         <NavTelemetry />
         <NavMenuTrigger
           isOpen={menuOpen}

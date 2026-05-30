@@ -89,16 +89,6 @@ export function BrandbookColors() {
         ))}
       </div>
 
-      <motion.span
-        className="absolute left-10 top-10 text-[11px] tracking-[0.3em] text-[#B2B2B2]"
-        style={{ fontFamily: "var(--font-mono)" }}
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        04 / 06
-      </motion.span>
-
       <div className="absolute right-[5%] top-8">
         <div className="overflow-hidden">
           <motion.h2
@@ -106,7 +96,7 @@ export function BrandbookColors() {
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 800,
-              fontSize: "clamp(52px, 8vw, 120px)",
+              fontSize: "clamp(60px, 13vw, 120px)",
             }}
             initial={{ y: "110%" }}
             animate={isInView ? { y: "0%" } : { y: "110%" }}
@@ -124,7 +114,7 @@ export function BrandbookColors() {
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 800,
-              fontSize: "clamp(52px, 8vw, 120px)",
+              fontSize: "clamp(60px, 13vw, 120px)",
             }}
             initial={{ y: "110%" }}
             animate={isInView ? { y: "0%" } : { y: "110%" }}
@@ -143,7 +133,7 @@ export function BrandbookColors() {
         {COLORS.map((color, i) => (
           <motion.div
             key={color.label}
-            className="flex flex-1 flex-col items-center justify-center gap-3 py-8"
+            className="flex min-h-[34vh] flex-1 flex-col items-center justify-center gap-4 py-10 max-md:py-12 md:min-h-0 md:gap-3 md:py-8"
             style={{ backgroundColor: color.bg, border: color.border }}
             initial={{ scaleY: 0, originY: "50%" }}
             animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
@@ -160,7 +150,7 @@ export function BrandbookColors() {
               className="text-center"
             >
               <p
-                className="mb-1 text-[11px] tracking-wider"
+                className="mb-1 text-[12px] tracking-wider max-md:text-[13px]"
                 style={{
                   fontFamily: "var(--font-mono)",
                   color: color.text,
@@ -170,19 +160,19 @@ export function BrandbookColors() {
                 {color.label}
               </p>
               <p
-                className="text-[13px] tracking-wider"
+                className="text-[14px] tracking-wider max-md:text-[15px]"
                 style={{ fontFamily: "var(--font-mono)", color: color.text }}
               >
                 HEX:{color.hex}
               </p>
               <p
-                className="text-[13px] tracking-wider"
+                className="text-[14px] tracking-wider max-md:text-[15px]"
                 style={{ fontFamily: "var(--font-mono)", color: color.text }}
               >
                 RGB:{color.rgb}
               </p>
               <p
-                className="text-[13px] tracking-wider"
+                className="text-[14px] tracking-wider max-md:text-[15px]"
                 style={{ fontFamily: "var(--font-mono)", color: color.text }}
               >
                 CMYK:{color.cmyk}

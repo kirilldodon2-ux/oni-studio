@@ -15,10 +15,12 @@ import { AmbientField } from "./AmbientField";
  *   pointer-events-none, aria-hidden — decorative, no interaction
  *   Server component — zero JS; all motion is pure CSS keyframes.
  *
- * Three zones keyed to approximate section transition depths:
- *   Zone A — Hero → Work      (top: 100svh)
- *   Zone B — Work → Showreel  (top: 175svh)
- *   Zone C — Showreel → Contact (top: 252svh)
+ * Four zones keyed to approximate section transition depths:
+ *   Zone A — Hero → Work           (top: 100svh)
+ *   Zone B — Work → Archive        (top: 175svh)
+ *   Zone C  — Archive → Brand Identity  (top: 228svh)
+ *   Zone C′ — Brand Identity → Showreel (top: 252svh)
+ *   Zone D  — Showreel → Contact        (top: 305svh)
  *
  * Horizon threads — gradient dividers (~1px) that read as spatial page creases
  * in an editorial object. Peak opacity ~0.05 — virtually invisible.
@@ -84,7 +86,7 @@ export function ContinuityField() {
         </AmbientField>
       </div>
 
-      {/* ── Zone B: Work → Showreel ──────────────────────────────────── */}
+      {/* ── Zone B: Work → Archive ───────────────────────────────────── */}
 
       {/* Horizon thread — offset right start, different proportions from A */}
       <div
@@ -114,12 +116,80 @@ export function ContinuityField() {
         </AmbientField>
       </div>
 
-      {/* ── Zone C: Showreel → Contact ───────────────────────────────── */}
+      {/* ── Zone C: Archive → Brand Identity ─────────────────────────── */}
+
+      <div
+        className="absolute left-[9%] right-[10%]"
+        style={{ top: "calc(228svh)" }}
+      >
+        <AmbientField breathe delay={-8900}>
+          <div
+            style={{
+              height: 1,
+              background:
+                "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.041) 28%, rgba(0,0,0,0.034) 76%, transparent 100%)",
+            }}
+          />
+        </AmbientField>
+      </div>
+
+      <div
+        className="absolute"
+        style={{ top: "calc(228svh + 0.75rem)", left: "68%" }}
+      >
+        <AmbientField drift breathe delay={-5600}>
+          <div
+            style={{
+              width: 2.5,
+              height: 2.5,
+              borderRadius: "50%",
+              background: "#000",
+              opacity: 0.14,
+            }}
+          />
+        </AmbientField>
+      </div>
+
+      {/* ── Zone C′: Brand Identity → Showreel ───────────────────────── */}
+
+      <div
+        className="absolute left-[11%] right-[9%]"
+        style={{ top: "calc(252svh)" }}
+      >
+        <AmbientField breathe delay={-9200}>
+          <div
+            style={{
+              height: 1,
+              background:
+                "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.038) 32%, rgba(0,0,0,0.031) 74%, transparent 100%)",
+            }}
+          />
+        </AmbientField>
+      </div>
+
+      <div
+        className="absolute"
+        style={{ top: "calc(252svh + 0.875rem)", left: "42%" }}
+      >
+        <AmbientField breathe delay={-11800}>
+          <div
+            style={{
+              width: 2.5,
+              height: 2.5,
+              borderRadius: "50%",
+              background: "#000",
+              opacity: 0.12,
+            }}
+          />
+        </AmbientField>
+      </div>
+
+      {/* ── Zone D: Showreel → Contact ───────────────────────────────── */}
 
       {/* Horizon thread — most faded, right-biased span */}
       <div
         className="absolute left-[8%] right-[14%]"
-        style={{ top: "calc(252svh)" }}
+        style={{ top: "calc(305svh)" }}
       >
         <AmbientField breathe delay={-14200}>
           <div
@@ -135,7 +205,7 @@ export function ContinuityField() {
       {/* Accent mark — black dot, most minimal presence */}
       <div
         className="absolute"
-        style={{ top: "calc(252svh + 0.875rem)", left: "81.5%" }}
+        style={{ top: "calc(305svh + 0.875rem)", left: "81.5%" }}
       >
         <AmbientField breathe delay={-7700}>
           <div

@@ -56,7 +56,7 @@ Production (`/` without the flag) is unchanged.
 | Attribute | Values | Meaning |
 |-----------|--------|---------|
 | `data-oni-page` | `landing` | Page identity |
-| `data-oni-section` | `hero`, `work`, `showreel`, `contact` | Section boundaries for AI + Figma |
+| `data-oni-section` | `hero`, `work`, `archive-preview`, `brand-identity`, `showreel`, `contact` | Section boundaries for AI + Figma |
 | `data-oni-layer` | `content`, `decorative`, `chrome` | Strip vs keep in structure import |
 | `data-oni-presence` | (empty) | `PresenceLayer` / FadeIn / RevealUp wrappers |
 | `data-oni-export` | `1` on page root when active | Capture flag mirror |
@@ -89,8 +89,10 @@ Production (`/` without the flag) is unchanged.
 1. **Strip** `data-oni-layer="decorative"` from structure (or move to locked reference group).
 2. **Hero** — treat `data-oni-hero-fallback` as raster reference; rebuild sculpture as linked component if needed.
 3. **Work** — import six `article` nodes (`data-oni-section="work"`), not one flattened group. Desktop uses `lg:order-*`; DOM order ≠ visual order.
-4. **Showreel** — frame + play control; media well may be empty.
-5. **Reconcile** with `TERRITORIES` ids in `sections/WorkSection/index.tsx`, not Figma layer order alone.
+4. **Archive Fragment** — clipped field window (`data-oni-section="archive-preview"`); tiles may overlap; ghost core is decorative.
+5. **Brand Identity** — poster link field (`data-oni-section="brand-identity"`); ОНИ + black mass only.
+6. **Showreel** — frame + play control; media well may be empty.
+7. **Reconcile** with `TERRITORIES` ids in `sections/WorkSection/index.tsx`, not Figma layer order alone.
 
 ### 4. Code Connect / `use_figma` (optional)
 
