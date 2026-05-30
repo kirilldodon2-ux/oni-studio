@@ -20,7 +20,7 @@ export function ContactFooterSection() {
       id="contact"
       data-oni-section="contact"
       aria-labelledby="contact-heading"
-      className="pt-24 pb-10 md:pt-32 md:pb-20 lg:pt-36 lg:pb-24"
+      className="pt-24 pb-10 md:pt-20 md:pb-10 lg:pt-20 lg:pb-10"
     >
       {/*
         Environmental activation field.
