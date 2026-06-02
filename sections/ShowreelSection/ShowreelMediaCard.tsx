@@ -1,12 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
+import { resolveArchiveMediaSrc } from "@/content/archiveObjectPaths";
 import {
   ONI_SILHOUETTE_CONTACT,
   ONI_SILHOUETTE_LIFT,
 } from "@/systems/spatial/silhouetteGrounding";
 import { useExportMode } from "@/systems/export";
+import { useCinematicVideo } from "@/systems/useCinematicVideo";
 
 // ─── Frame positioning constants ─────────────────────────────────────────────
 // These map to the metallic frame PNG's inner window (1024×682 source image).
@@ -37,6 +39,9 @@ const FRAME_FILTER = [
 // softly into the frame rather than cutting hard at the window boundary.
 const MEDIA_VIGNETTE =
   "radial-gradient(ellipse 88% 86% at 50% 50%, black 55%, transparent 100%)";
+
+/** Site-relative showreel transport path — resolved via NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN. */
+const SHOWREEL_VIDEO_PATH = "/showreel/gg2.mp4";
 
 function PlayIcon() {
   return (
@@ -75,7 +80,7 @@ function PlayIcon() {
  *    card div        — CSS transition scale ×1.012 (hover)
  *    media-object    — JS rAF parallax ±5px X/Y (fine pointer)
  *      media-well    — absolute, inset to frame window, overflow-hidden
- *        media-content ← dedicated layer for future video/still (vignette pre-applied)
+ *        media-content ← showreel video (vignette pre-applied, opacity fade-in on ready)
  *        play button ← z-[1], above media-content, unmasked
  *      frame-layer   — z-[2], luma-matte + dual drop-shadow
  *
@@ -86,6 +91,14 @@ export function ShowreelMediaCard() {
   const exportMode = useExportMode();
   const containerRef = useRef<HTMLDivElement>(null); // hover / mouse event target
   const mediaRef = useRef<HTMLDivElement>(null); // parallax target — whole media object
+  const videoRef = useCinematicVideo<HTMLVideoElement>({
+    rootMargin: "0px 0px 200px 0px",
+    threshold: 0.15,
+    activationDelay: 80,
+  });
+  const showreelSrc = resolveArchiveMediaSrc(SHOWREEL_VIDEO_PATH);
+  const [mediaReady, setMediaReady] = useState(false);
+  const [isActivelyPlaying, setIsActivelyPlaying] = useState(false);
 
   useEffect(() => {
     const media = mediaRef.current;
@@ -213,24 +226,42 @@ export function ShowreelMediaCard() {
               className="absolute aspect-video overflow-hidden"
               style={{ left: FRAME_LEFT, top: FRAME_TOP, width: FRAME_WIDTH }}
             >
-              {/* Media content layer — reserved for future video or still frame.
-                  Vignette mask pre-applied: edges dissolve softly into the frame
-                  rather than hard-cutting at the window boundary.
-                  Currently empty — zero visual effect until content is inserted. */}
+              {/* Media content — vignette mask; video fades in after first frame is ready. */}
               <div
                 className="absolute inset-0"
                 style={{
                   maskImage: MEDIA_VIGNETTE,
                   WebkitMaskImage: MEDIA_VIGNETTE,
                 }}
-                aria-hidden
-              />
+              >
+                <video
+                  ref={videoRef}
+                  src={showreelSrc}
+                  className={`h-full w-full object-cover transition-opacity duration-700 ease-out ${
+                    mediaReady ? "opacity-100" : "opacity-0"
+                  }`}
+                  muted
+                  playsInline
+                  loop
+                  preload="none"
+                  aria-label="ONI studio showreel"
+                  onLoadedData={() => setMediaReady(true)}
+                  onPlaying={() => setIsActivelyPlaying(true)}
+                  onPause={() => setIsActivelyPlaying(false)}
+                  onEnded={() => setIsActivelyPlaying(false)}
+                />
+              </div>
 
-              {/* Play control — z-[1] places it above future media content, unmasked. */}
+              {/* Play control — z-[1] above media content, unmasked; hidden while video plays. */}
               <button
                 type="button"
-                className="absolute inset-0 z-[1] flex cursor-pointer items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oni-accent focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900"
+                className={`absolute inset-0 z-[1] flex cursor-pointer items-center justify-center transition-opacity duration-500 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oni-accent focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900 ${
+                  isActivelyPlaying
+                    ? "pointer-events-none opacity-0"
+                    : "opacity-100"
+                }`}
                 aria-label="Play showreel video"
+                aria-hidden={isActivelyPlaying}
               >
                 <span className="flex h-14 w-14 items-center justify-center rounded-full bg-oni-accent ring-1 ring-white/20 transition-transform duration-500 ease-out hover:scale-[1.06] active:scale-[0.96] md:h-[3.75rem] md:w-[3.75rem]">
                   <PlayIcon />
