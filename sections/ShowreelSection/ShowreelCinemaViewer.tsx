@@ -1,9 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useRef, type RefObject } from "react";
+import { createPortal } from "react-dom";
 
 const FOCUSABLE =
   'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+/** Above navigation control surface (z-40) and menu overlay (z-50). */
+const CINEMA_LAYER_Z = "z-[60]";
 
 type ShowreelCinemaViewerProps = {
   isOpen: boolean;
@@ -14,7 +18,7 @@ type ShowreelCinemaViewerProps = {
   returnFocusRef: RefObject<HTMLElement | null>;
 };
 
-/** Mobile (<768px): fullscreen cinema — black field, video only, audio on. */
+/** Mobile (<768px): dedicated fullscreen cinema — black field, video only, audio on. */
 export function ShowreelCinemaViewer({
   isOpen,
   onClose,
@@ -37,7 +41,35 @@ export function ShowreelCinemaViewer({
     if (!isOpen) return;
 
     const previousFocus = document.activeElement as HTMLElement | null;
-    document.body.style.overflow = "hidden";
+    const scrollY = window.scrollY;
+    const html = document.documentElement;
+    const body = document.body;
+
+    const prevHtmlOverflow = html.style.overflow;
+    const prevBodyOverflow = body.style.overflow;
+    const prevBodyPosition = body.style.position;
+    const prevBodyTop = body.style.top;
+    const prevBodyLeft = body.style.left;
+    const prevBodyRight = body.style.right;
+    const prevBodyWidth = body.style.width;
+    const prevBodyTouchAction = body.style.touchAction;
+
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    body.style.touchAction = "none";
+
+    const blockDocumentTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+    };
+    document.addEventListener("touchmove", blockDocumentTouchMove, {
+      passive: false,
+    });
+
     closeRef.current?.focus();
 
     const onKeyDown = (e: KeyboardEvent) => {
@@ -67,7 +99,16 @@ export function ShowreelCinemaViewer({
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = "";
+      document.removeEventListener("touchmove", blockDocumentTouchMove);
+      html.style.overflow = prevHtmlOverflow;
+      body.style.overflow = prevBodyOverflow;
+      body.style.position = prevBodyPosition;
+      body.style.top = prevBodyTop;
+      body.style.left = prevBodyLeft;
+      body.style.right = prevBodyRight;
+      body.style.width = prevBodyWidth;
+      body.style.touchAction = prevBodyTouchAction;
+      window.scrollTo(0, scrollY);
       const target = returnFocusRef.current ?? previousFocus;
       target?.focus();
     };
@@ -91,7 +132,7 @@ export function ShowreelCinemaViewer({
     }
   }, [isOpen, syncTime]);
 
-  return (
+  const layer = (
     <div
       ref={dialogRef}
       role="dialog"
@@ -99,30 +140,48 @@ export function ShowreelCinemaViewer({
       aria-label="ONI showreel"
       aria-hidden={!isOpen}
       className={[
-        "fixed inset-0 z-30 bg-black",
+        "fixed inset-0 flex h-[100dvh] max-h-[100dvh] w-full flex-col bg-black",
+        CINEMA_LAYER_Z,
+        "touch-none overscroll-none",
         "transition-opacity duration-[700ms] ease-out motion-reduce:transition-none",
         isOpen
           ? "pointer-events-auto opacity-100"
           : "pointer-events-none opacity-0",
       ].join(" ")}
     >
-      <video
-        ref={viewerVideoRef}
-        src={src}
-        className="absolute inset-0 h-full w-full object-contain"
-        playsInline
-        loop
-        preload="auto"
+      <button
+        type="button"
+        tabIndex={isOpen ? 0 : -1}
+        aria-label="Close showreel"
+        className="absolute inset-0 z-0 cursor-default border-0 bg-transparent p-0"
+        onClick={handleClose}
       />
+
+      <div className="pointer-events-none relative z-[1] flex min-h-0 flex-1 items-center justify-center">
+        <video
+          ref={viewerVideoRef}
+          src={src}
+          className="pointer-events-auto max-h-full max-w-full object-contain"
+          playsInline
+          loop
+          preload="auto"
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
+        />
+      </div>
 
       <button
         ref={closeRef}
         type="button"
-        className="fixed right-5 top-[max(1.25rem,env(safe-area-inset-top))] z-[1] font-sans text-[9px] uppercase tracking-[0.35em] text-white/45 hover:opacity-60"
+        className="fixed right-5 top-[max(1.25rem,env(safe-area-inset-top))] z-[2] font-sans text-[9px] uppercase tracking-[0.35em] text-white/45 hover:opacity-60"
         onClick={handleClose}
       >
         CLOSE
       </button>
     </div>
   );
+
+  if (typeof document === "undefined") return layer;
+
+  return createPortal(layer, document.body);
 }

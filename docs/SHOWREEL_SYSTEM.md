@@ -73,21 +73,25 @@ Component: `ShowreelInstallationViewer.tsx`.
 
 ### Mobile viewer — cinema mode (<768px)
 
-**Purpose:** Fullscreen cinema — black field, video only, no frame or blurred site.
+**Purpose:** Dedicated fullscreen cinema — black field, video only; no frame, no site chrome.
 
 | Behavior | Implementation |
 |----------|----------------|
 | Open | Click ambient artifact → `viewerKind: "cinema"` |
-| Field | `fixed inset-0 z-30` — solid `bg-black` (no scrim blur, no white museum) |
-| Presentation | Single `<video>` — `object-contain`, full viewport, **no frame PNG** |
+| Layer | Portaled to `document.body` via `createPortal` — escapes section `overflow-hidden` |
+| Stacking | `z-[60]` — above navigation (`z-40` / `z-50` overlay) |
+| Field | `fixed inset-0`, `h-[100dvh]` — solid `bg-black` |
+| Presentation | Centered `<video>` — `object-contain`; layout box matches picture, letterbox is background |
 | Audio | Unmuted on open |
 | Time sync | Same `syncTime` / `onTimeSync` contract as installation viewer |
-| Close | **Fixed CLOSE** button (safe-area aware), **ESC** — no scrim dismiss |
-| Scroll | `document.body.style.overflow = "hidden"` while open |
+| Close | **CLOSE** (fixed, safe-area), **ESC**, tap on **black letterbox** (full-screen backdrop behind video) |
+| Video tap | Does **not** close — `stopPropagation` on video pointer/click |
+| Scroll lock | `html` + `body` overflow hidden; `body` `position: fixed` with scroll position restore; `touchmove` prevented on `document` (`passive: false`) |
+| Touch | `touch-none` + `overscroll-none` on cinema root |
 
 Component: `ShowreelCinemaViewer.tsx`.
 
-**Design intent:** Desktop = installation. Mobile = cinema.
+**Design intent:** Desktop = installation (museum, site visible). Mobile = cinema (isolated takeover).
 
 ---
 
@@ -131,7 +135,7 @@ stateDiagram-v2
   InstallationViewer --> Ambient: CLOSE / ESC / scrim
 
   Ambient --> CinemaViewer: click artifact\n(width < 768px)
-  CinemaViewer --> Ambient: CLOSE / ESC
+  CinemaViewer --> Ambient: CLOSE / ESC / letterbox tap
 
   note right of Ambient
     muted · loop · useCinematicVideo
@@ -166,7 +170,7 @@ ASCII equivalent:
    │ Installation Viewer  │        │   Cinema Viewer      │
    │ white · frame · blur │        │ black · video only   │
    └──────────┬───────────┘        └──────────┬───────────┘
-              │ CLOSE / ESC / scrim           │ CLOSE / ESC
+              │ CLOSE / ESC / scrim           │ CLOSE / ESC / letterbox
               └────────────────┬──────────────┘
                                ▼
                     ┌─────────────────────┐
@@ -206,6 +210,14 @@ ASCII equivalent:
 | JS errors | Inspect console on click |
 | `pointer-events` | Viewer uses `pointer-events-none` when `isOpen={false}` — confirm state toggles |
 
+### Mobile cinema: page scrolls or nav visible
+
+| Check | Action |
+|-------|--------|
+| Stacking | Cinema must be portaled with `z-[60]` — not `z-30` inside a section |
+| iOS scroll | Confirm `body` fixed lock + `touchmove` prevent runs while `isOpen` |
+| Close lost | CLOSE is `z-[2]` above backdrop; letterbox taps hit backdrop `z-0` |
+
 ### `currentTime` not syncing
 
 | Check | Action |
@@ -230,7 +242,12 @@ Not a media-pipeline issue — see `SHOWREEL_FRAME_CALIBRATION.md`. Mobile cinem
 
 ## Z-index
 
-Showreel viewers use `z-30` (reserved layer in `ARCHITECTURE.md`). Navigation control surface remains above at `z-40` / `z-50`.
+| Viewer | z-index | Notes |
+|--------|---------|--------|
+| Installation (desktop) | `z-30` | Reserved in `ARCHITECTURE.md`; site nav remains above |
+| Cinema (mobile) | `z-[60]` | Portaled takeover — must cover nav and menu overlay |
+
+Cinema layer is mobile-only and documented here; it does not change the global z-index table for navigation.
 
 ---
 
