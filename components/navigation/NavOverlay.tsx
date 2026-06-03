@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useDocumentScrollLock } from "@/systems/useDocumentScrollLock";
 
 type NavItem = {
   id: string;
@@ -98,12 +99,7 @@ export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const touchActivationRef = useRef(false);
 
-  useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
+  useDocumentScrollLock(isOpen, { blockTouchMove: true });
 
   useEffect(() => {
     if (!isOpen) return;

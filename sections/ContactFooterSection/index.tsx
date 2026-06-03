@@ -6,8 +6,9 @@ import { RevealUp } from "@/systems/atmosphere";
 
 const FOOTER_NAV = [
   { label: "WORK", href: "#work" },
-  { label: "STUDIO", href: "#studio" },
-  { label: "SERVICES", href: "#services" },
+  { label: "ARCHIVE", href: "#archive" },
+  { label: "IDENTITY", href: "#identity" },
+  { label: "SHOWREEL", href: "#showreel" },
   { label: "CONTACT", href: "#contact" },
   { label: "INSTAGRAM", href: "https://instagram.com/oni_studio" },
 ] as const;

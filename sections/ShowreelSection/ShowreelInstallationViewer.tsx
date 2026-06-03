@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, type RefObject } from "react";
+import { useDocumentScrollLock } from "@/systems/useDocumentScrollLock";
 import {
   ONI_SILHOUETTE_CONTACT,
   ONI_SILHOUETTE_LIFT,
@@ -45,11 +46,12 @@ export function ShowreelInstallationViewer({
     onClose();
   }, [onClose, onTimeSync, syncTime]);
 
+  useDocumentScrollLock(isOpen, { blockTouchMove: true });
+
   useEffect(() => {
     if (!isOpen) return;
 
     const previousFocus = document.activeElement as HTMLElement | null;
-    document.body.style.overflow = "hidden";
     closeRef.current?.focus();
 
     const onKeyDown = (e: KeyboardEvent) => {
@@ -79,7 +81,6 @@ export function ShowreelInstallationViewer({
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = "";
       const target = returnFocusRef.current ?? previousFocus;
       target?.focus();
     };

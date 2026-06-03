@@ -11,7 +11,7 @@ export function HeroSection({ exportMode = false }: HeroSectionProps) {
   // Cinematic hero artboard — one spatial field, not a boxed strip
   return (
     <section
-      className="relative z-10 min-h-[100svh] overflow-hidden text-black lg:h-[100svh] lg:min-h-0"
+      className="relative z-10 min-h-[100svh] max-lg:overflow-visible text-black lg:h-[100svh] lg:min-h-0 lg:overflow-hidden"
       data-oni-section="hero"
       data-oni-layer="content"
       aria-label="Hero"

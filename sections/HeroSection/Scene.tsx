@@ -108,7 +108,7 @@ export function Scene() {
         premultipliedAlpha: false,
       }}
       style={{ background: "transparent" }}
-      className="h-full w-full touch-none bg-transparent"
+      className="h-full w-full touch-pan-y bg-transparent"
       onCreated={({ gl, scene }) => {
         gl.setClearColor(0x000000, 0);
         scene.background = null;
