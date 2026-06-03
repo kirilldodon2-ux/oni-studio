@@ -10,6 +10,18 @@
 
 ---
 
+## Project Visibility
+
+This is a **visibility principle**, not a project-management system. No HUD, no task board, no delivery metrics layer.
+
+- Progress is measured through **system maturity**, not task counts or checkbox volume.
+- **Completed systems** matter more than completed TODOs.
+- Resolved risks, reconciled documentation, and architecture stabilization are real maturity signals — not side work.
+- Repository entry points (README when introduced) should communicate project state clearly to contributors and future agents.
+- Read this roadmap for what is **stable and shipped**; read `docs/DECISIONS.md` and ACTIVE architecture docs for why the system looks the way it does.
+
+---
+
 ## Phase 0 — Infrastructure Migration
 
 **Status: Complete**
