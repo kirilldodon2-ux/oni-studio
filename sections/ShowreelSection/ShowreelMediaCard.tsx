@@ -43,24 +43,11 @@ const MEDIA_VIGNETTE =
 /** Site-relative showreel transport path — resolved via NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN. */
 const SHOWREEL_VIDEO_PATH = "/showreel/gg2.mp4";
 
-function PlayIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      className="ml-0.5 h-6 w-6 text-white"
-      aria-hidden
-    >
-      <path d="M8 5v14l11-7L8 5z" />
-    </svg>
-  );
-}
-
 /**
  * ShowreelMediaCard
  *
- * Unified cinematic media artifact — frame, media surface, and play control
- * compose as one spatial object:
+ * Unified cinematic media artifact — frame and media surface compose as one
+ * spatial object:
  *
  *  Compositing model (SVG filter `#oni-luma-matte`):
  *    Step 1 — feColorMatrix matrix: contrast boost (1.2×, pivot 0.5)
@@ -81,11 +68,10 @@ function PlayIcon() {
  *    media-object    — JS rAF parallax ±5px X/Y (fine pointer)
  *      media-well    — absolute, inset to frame window, overflow-hidden
  *        media-content ← showreel video (vignette pre-applied, opacity fade-in on ready)
- *        play button ← z-[1], above media-content, unmasked
  *      frame-layer   — z-[2], luma-matte + dual drop-shadow
  *
  *  The parallax target is `media-object`, which contains both media-well
- *  and frame-layer. Frame and play control move as a single unit on parallax.
+ *  and frame-layer. Frame and media move as a single unit on parallax.
  */
 export function ShowreelMediaCard() {
   const exportMode = useExportMode();
@@ -98,7 +84,6 @@ export function ShowreelMediaCard() {
   });
   const showreelSrc = resolveArchiveMediaSrc(SHOWREEL_VIDEO_PATH);
   const [mediaReady, setMediaReady] = useState(false);
-  const [isActivelyPlaying, setIsActivelyPlaying] = useState(false);
 
   useEffect(() => {
     const media = mediaRef.current;
@@ -220,8 +205,7 @@ export function ShowreelMediaCard() {
             className="absolute inset-0 will-change-transform"
           >
             {/* Media well: inset to frame's inner window.
-                overflow-hidden clips future video to the window bounds.
-                Siblings: media-content (masked, for video) + play control (unmasked). */}
+                overflow-hidden clips video to the window bounds. */}
             <div
               className="absolute aspect-video overflow-hidden"
               style={{ left: FRAME_LEFT, top: FRAME_TOP, width: FRAME_WIDTH }}
@@ -246,32 +230,12 @@ export function ShowreelMediaCard() {
                   preload="none"
                   aria-label="ONI studio showreel"
                   onLoadedData={() => setMediaReady(true)}
-                  onPlaying={() => setIsActivelyPlaying(true)}
-                  onPause={() => setIsActivelyPlaying(false)}
-                  onEnded={() => setIsActivelyPlaying(false)}
                 />
               </div>
-
-              {/* Play control — z-[1] above media content, unmasked; hidden while video plays. */}
-              <button
-                type="button"
-                className={`absolute inset-0 z-[1] flex cursor-pointer items-center justify-center transition-opacity duration-500 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oni-accent focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900 ${
-                  isActivelyPlaying
-                    ? "pointer-events-none opacity-0"
-                    : "opacity-100"
-                }`}
-                aria-label="Play showreel video"
-                aria-hidden={isActivelyPlaying}
-              >
-                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-oni-accent ring-1 ring-white/20 transition-transform duration-500 ease-out hover:scale-[1.06] active:scale-[0.96] md:h-[3.75rem] md:w-[3.75rem]">
-                  <PlayIcon />
-                </span>
-              </button>
             </div>
 
             {/* Frame layer — metallic PNG via luma-matte + dual silhouette shadow.
                 z-[2] renders frame above media content.
-                Frame's transparent inner window lets play control show through.
                 Drop-shadows follow visible PNG silhouette via post-matte chain. */}
             <div
               className="pointer-events-none absolute inset-0 z-[2]"
