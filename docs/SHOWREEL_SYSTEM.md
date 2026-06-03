@@ -40,7 +40,9 @@ Frame geometry and compositing doctrine → `docs/SHOWREEL_FRAME_CALIBRATION.md`
 | Behavior | Implementation |
 |----------|----------------|
 | Muted autoplay | `useCinematicVideo` — `muted: true`, `loop`, `playsInline` |
-| Viewport-aware load/play | `IntersectionObserver` — `preload="none"` until intersecting; pauses off-screen |
+| Viewport-aware load/play | `IntersectionObserver` — `preload="none"` until first intersect; pauses off-screen |
+| Stale recovery | On re-intersect, `load()` only if `readyState` / `networkState` indicate evicted buffer (Safari); healthy buffer → `play()` only — no reload per intersect |
+| Play retry | One bounded `play()` retry per visibility cycle if autoplay fails while intersecting |
 | Gesture unlock | One-shot `click` / `scroll` / `touchstart` on document if autoplay blocked |
 | Fade-in | `opacity-0` → `opacity-100` on `loadedData` |
 | Frame stack | Video in calibrated aperture + vignette mask + `showreel_frame.png` with silhouette shadows |
@@ -245,6 +247,16 @@ ASCII equivalent:
 ---
 
 ## 4. Troubleshooting
+
+### Empty aperture after long scroll (ambient)
+
+| Symptom | Cause / fix |
+|---------|-------------|
+| Frame visible, video area blank after returning from footer | iOS Safari may evict paused decode; `useCinematicVideo` reloads on re-intersect **only when stale** (`readyState < HAVE_FUTURE_DATA` or `networkState === NETWORK_EMPTY`), then resumes `play()` |
+| Still empty after reload | Check network / R2 URL; scroll section fully into view (IO threshold 0.15); first visit needs `loadedData` for fade-in (`mediaReady`) |
+| Reload loop suspicion | Reload is skipped while `networkState === NETWORK_LOADING`; at most one `play()` retry per intersect cycle |
+
+Shared hook also applies to Archive Fragment / browse tiles — same recovery rules.
 
 ### Video not loading
 

@@ -94,7 +94,7 @@ oni-site/
 │   │   ├── exportMode.ts
 │   │   ├── ExportModeProvider.tsx
 │   │   └── index.ts
-│   ├── useCinematicVideo.ts        ← viewport-gated video (ArchiveTile, showreel ambient)
+│   ├── useCinematicVideo.ts        ← viewport-gated video; stale re-intersect reload (archive + showreel ambient)
 │   ├── useDocumentScrollLock.ts    ← ref-counted document scroll lock (overlay + showreel)
 │   ├── spatial/                 ← nav sigil, object grounding, convergence (see ARCHITECTURE.md)
 │   │   ├── ONINavigationSigil.tsx

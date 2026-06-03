@@ -15,7 +15,22 @@ Before any task — read:
 `ROADMAP.md` = future intent. Do NOT implement roadmap items unless explicitly requested.
 `_archive_graveyard/ONI_MASTER_SYSTEM.md` = archived bootstrap template. Do NOT treat as active implementation guide.
 
----
+
+## Investigation Protocol
+
+Before modifying a system:
+
+1. Read canonical documentation.
+2. Read related decisions.
+3. Read implementation.
+4. Compare intended behavior vs implemented behavior.
+5. Identify:
+   - implementation drift,
+   - documentation drift,
+   - architectural drift.
+6. Report findings before proposing major changes.
+
+Do not modify a system before understanding its canonical design.
 
 ## Document Status Protocol
 
@@ -66,7 +81,23 @@ Archive media = cinematic publishing infrastructure.
 Always: preserve audio (`-an` is forbidden), keep source masters, separate preview from original.
 Preview → grid. Original → inspect page. Never mix.
 
----
+## Canonical Ownership
+
+Every concern must have a single canonical owner.
+
+Before changing a system, identify:
+
+- Canonical documentation
+- Canonical implementation
+- Canonical decision record
+
+If multiple sources disagree:
+
+1. Report the drift.
+2. Determine the canonical owner.
+3. Reconcile before extending the system.
+
+Do not create duplicate sources of truth.
 
 ## Structural Rules
 

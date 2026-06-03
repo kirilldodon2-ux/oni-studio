@@ -131,6 +131,12 @@ Phase 5 is complete. `components/SiteHeader.tsx` has been replaced by `component
 - Hero canvas: keep `touch-pan-y`; never reintroduce `OrbitControls` on the hero scene (DEC-006)
 - full-surface links with embedded video/image: media `pointer-events-none`, link owns pan/tap (Archive Fragment pattern, DEC-006)
 
+### Cinematic video (`useCinematicVideo`)
+
+- extend `systems/useCinematicVideo.ts` for viewport policy changes — do not fork per section
+- re-intersect reload only when `readyState` / `networkState` indicate stale media — never reload on every intersection
+- showreel ambient playback details → `docs/SHOWREEL_SYSTEM.md`
+
 ---
 
 ## Showreel rules

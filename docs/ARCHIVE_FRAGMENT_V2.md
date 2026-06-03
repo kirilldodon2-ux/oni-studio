@@ -81,7 +81,7 @@ Unresolved space is **field space**, not hero staging:
 
 ### Motion
 
-At most **one** tile uses `AmbientField` drift — slow, environmental, non-performative. Video tiles use `useCinematicVideo` under the same browse policy as `ArchiveTile` (viewport-gated, `preload="none"`).
+At most **one** tile uses `AmbientField` drift — slow, environmental, non-performative. Video tiles use `useCinematicVideo` under the same browse policy as `ArchiveTile` (viewport-gated, `preload="none"` until intersect; **stale reload on re-intersect only** when Safari evicts buffer — see `docs/SHOWREEL_SYSTEM.md` § Empty aperture after long scroll).
 
 ---
 

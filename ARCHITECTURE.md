@@ -141,7 +141,7 @@ systems/
   brandbook/              ← interactive brandbook (Phase 1 — docs/BRANDBOOK_INTEGRATION.md)
                             scroll-snap orchestrator, section context/nav, six sections;
                             cover = BrandbookHero + BrandbookHeroMetallicDrift (same artifact desktop/mobile)
-  useCinematicVideo.ts       ← viewport-gated browse video (ArchiveTile, showreel ambient)
+  useCinematicVideo.ts       ← viewport-gated video (archive tiles, showreel ambient); stale re-intersect reload
   useDocumentScrollLock.ts   ← ref-counted iOS-safe document scroll lock (DEC-008)
 
 content/
@@ -730,6 +730,10 @@ Canonical module: `systems/useDocumentScrollLock.ts` (`docs/DECISIONS.md` DEC-00
 ### Pointer-events rule
 
 When a fullscreen overlay root uses `pointer-events-none` while staying mounted (closed dialog, opacity `0`), **descendants must not keep `pointer-events-auto`** unless intentionally interactive. Otherwise invisible media nodes remain hit targets over the page (ghost slab). See `docs/SHOWREEL_SYSTEM.md` § Closed-state interaction.
+
+### Ambient video recovery (`useCinematicVideo`)
+
+Shared by showreel ambient and archive browse surfaces. First viewport entry calls `load()` once; off-screen `pause()` only. Re-intersect calls `load()` again **only when** `isMediaStale()` (not on every intersection, not while `NETWORK_LOADING`). One `play()` retry per visibility cycle if needed. Details: `docs/SHOWREEL_SYSTEM.md` § Ambient · troubleshooting.
 
 ---
 

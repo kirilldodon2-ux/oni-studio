@@ -92,6 +92,7 @@ Completed (mobile interaction stabilization — homepage):
 - ✓ `useDocumentScrollLock` — shared ref-counted lock for overlay + showreel (`docs/DECISIONS.md` DEC-008)
 - ✓ Hero / Archive Fragment touch scroll-through (`docs/DECISIONS.md` DEC-006)
 - ✓ Cinema closed-state hit testing — viewer video `pointer-events-none` when closed (`docs/DECISIONS.md` DEC-007)
+- ✓ `useCinematicVideo` stale recovery — conditional `load()` on re-intersect after Safari buffer eviction (showreel ambient + archive tiles; `docs/SHOWREEL_SYSTEM.md`)
 
 Completed (ArchivePreviewSection — Archive Fragment V3):
 - ✓ clipped archive field glimpse on homepage (`#archive`) — see `docs/ARCHIVE_FRAGMENT_V2.md`

@@ -21,9 +21,35 @@ const registrations = new Set<CinematicVideoRegistration>();
 let gestureListenersInstalled = false;
 let userHasInteracted = false;
 
+/** True when prior load is not playable — e.g. Safari buffer eviction after long pause. */
+function isMediaStale(video: HTMLVideoElement): boolean {
+  if (video.networkState === HTMLMediaElement.NETWORK_LOADING) {
+    return false;
+  }
+  return (
+    video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA ||
+    video.networkState === HTMLMediaElement.NETWORK_EMPTY
+  );
+}
+
+function ensureMediaLoaded(video: HTMLVideoElement, hasLoadedBefore: boolean): void {
+  video.preload = "metadata";
+  if (!hasLoadedBefore) {
+    video.load();
+    return;
+  }
+  if (isMediaStale(video)) {
+    video.load();
+  }
+}
+
 function retryPlayVisibleVideos() {
   registrations.forEach(({ video, isIntersecting }) => {
     if (!isIntersecting) return;
+    if (isMediaStale(video)) {
+      video.preload = "metadata";
+      video.load();
+    }
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise.catch(() => {});
@@ -77,6 +103,8 @@ export function useCinematicVideo<T extends HTMLVideoElement = HTMLVideoElement>
   const observerRef = useRef<IntersectionObserver | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isLoadedRef = useRef(false);
+  const isIntersectingRef = useRef(false);
+  const playRetryRef = useRef(false);
 
   const clearTimer = useCallback(() => {
     if (timerRef.current !== null) {
@@ -85,38 +113,51 @@ export function useCinematicVideo<T extends HTMLVideoElement = HTMLVideoElement>
     }
   }, []);
 
-  const loadAndPlay = useCallback((video: T) => {
-    // Set attributes before load — Safari needs this
-    video.muted = muted;
-    video.loop = loop;
-    video.playsInline = true;
+  const loadAndPlay = useCallback(
+    (video: T) => {
+      video.muted = muted;
+      video.loop = loop;
+      video.playsInline = true;
 
-    if (!isLoadedRef.current) {
-      // Trigger actual network load only when near viewport
-      video.preload = "metadata";
-      video.load();
-      isLoadedRef.current = true;
-    }
-
-    const attemptPlay = () => {
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Autoplay blocked — silently fail, atmosphere > errors
-          // Browser may allow play on next user interaction
-        });
+      const hadLoadedBefore = isLoadedRef.current;
+      if (!hadLoadedBefore) {
+        isLoadedRef.current = true;
       }
-    };
+      ensureMediaLoaded(video, hadLoadedBefore);
 
-    timerRef.current = setTimeout(attemptPlay, activationDelay);
-  }, [muted, loop, activationDelay]);
+      const attemptPlay = () => {
+        if (!isIntersectingRef.current) return;
 
-  const pauseVideo = useCallback((video: T) => {
-    clearTimer();
-    if (!video.paused) {
-      video.pause();
-    }
-  }, [clearTimer]);
+        const playPromise = video.play();
+        if (playPromise === undefined) return;
+
+        playPromise.catch(() => {
+          if (!isIntersectingRef.current || playRetryRef.current) return;
+          playRetryRef.current = true;
+          if (isMediaStale(video)) {
+            video.preload = "metadata";
+            video.load();
+          }
+          timerRef.current = setTimeout(attemptPlay, activationDelay);
+        });
+      };
+
+      clearTimer();
+      timerRef.current = setTimeout(attemptPlay, activationDelay);
+    },
+    [muted, loop, activationDelay, clearTimer]
+  );
+
+  const pauseVideo = useCallback(
+    (video: T) => {
+      clearTimer();
+      playRetryRef.current = false;
+      if (!video.paused) {
+        video.pause();
+      }
+    },
+    [clearTimer]
+  );
 
   useEffect(() => {
     const video = videoRef.current;
@@ -129,7 +170,6 @@ export function useCinematicVideo<T extends HTMLVideoElement = HTMLVideoElement>
     registrations.add(registration);
     installGestureUnlockListeners();
 
-    // Ensure no preloading until IntersectionObserver fires
     video.preload = "none";
     video.muted = muted;
     video.loop = loop;
@@ -139,6 +179,7 @@ export function useCinematicVideo<T extends HTMLVideoElement = HTMLVideoElement>
       (entries) => {
         entries.forEach((entry) => {
           registration.isIntersecting = entry.isIntersecting;
+          isIntersectingRef.current = entry.isIntersecting;
           if (entry.isIntersecting) {
             loadAndPlay(video);
           } else {
@@ -157,8 +198,9 @@ export function useCinematicVideo<T extends HTMLVideoElement = HTMLVideoElement>
     return () => {
       registrations.delete(registration);
       clearTimer();
+      playRetryRef.current = false;
+      isIntersectingRef.current = false;
       observerRef.current?.disconnect();
-      // Clean pause on unmount — no stale decode processes
       if (!video.paused) video.pause();
     };
   }, [rootMargin, threshold, loadAndPlay, pauseVideo, clearTimer, muted, loop]);
