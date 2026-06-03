@@ -9,7 +9,12 @@ import {
 } from "@/systems/spatial/silhouetteGrounding";
 import { useExportMode } from "@/systems/export";
 import { useCinematicVideo } from "@/systems/useCinematicVideo";
+import { ShowreelCinemaViewer } from "./ShowreelCinemaViewer";
 import { ShowreelInstallationViewer } from "./ShowreelInstallationViewer";
+
+const MOBILE_VIEWER_QUERY = "(max-width: 767px)";
+
+type ShowreelViewerKind = "installation" | "cinema";
 
 // ─── Frame positioning constants ─────────────────────────────────────────────
 // Mapped to showreel_frame.png (1536×1024 RGBA) transparent aperture (alpha ≤ 32).
@@ -45,12 +50,18 @@ export function ShowreelMediaCard() {
   const showreelSrc = resolveArchiveMediaSrc(SHOWREEL_VIDEO_PATH);
   const [mediaReady, setMediaReady] = useState(false);
   const [viewerOpen, setViewerOpen] = useState(false);
+  const [viewerKind, setViewerKind] =
+    useState<ShowreelViewerKind>("installation");
   const [syncTime, setSyncTime] = useState(0);
 
   const openViewer = useCallback(() => {
     if (exportMode) return;
     const ambient = videoRef.current;
     const t = ambient?.currentTime ?? 0;
+    const isMobile =
+      typeof window !== "undefined" &&
+      window.matchMedia(MOBILE_VIEWER_QUERY).matches;
+    setViewerKind(isMobile ? "cinema" : "installation");
     setSyncTime(t);
     ambient?.pause();
     setViewerOpen(true);
@@ -141,7 +152,7 @@ export function ShowreelMediaCard() {
         type="button"
         onClick={openViewer}
         disabled={exportMode}
-        aria-label="Open showreel installation"
+        aria-label="Open showreel"
         className={[
           "group relative w-full border-0 bg-transparent p-0 text-left",
           exportMode ? "cursor-default" : "cursor-pointer",
@@ -211,8 +222,19 @@ export function ShowreelMediaCard() {
         </div>
       </button>
 
-      {!exportMode && (
+      {!exportMode && viewerKind === "installation" && (
         <ShowreelInstallationViewer
+          isOpen={viewerOpen}
+          onClose={closeViewer}
+          src={showreelSrc}
+          syncTime={syncTime}
+          onTimeSync={handleTimeSync}
+          returnFocusRef={triggerRef}
+        />
+      )}
+
+      {!exportMode && viewerKind === "cinema" && (
+        <ShowreelCinemaViewer
           isOpen={viewerOpen}
           onClose={closeViewer}
           src={showreelSrc}
