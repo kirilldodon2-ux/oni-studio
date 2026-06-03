@@ -7,6 +7,31 @@ Operational decision log. Read before changing navigation, content lanes, or con
 
 ---
 
+## DEC-006 — Homepage touch scroll-through (2026-05-30)
+
+**Context:** Phase 1 scroll-lock work did not fix production mobile symptom: vertical swipes starting on Hero WebGL or Archive Fragment tiles often failed to scroll the document.
+
+**Root causes:**
+
+| Surface | Cause |
+|---------|--------|
+| Hero canvas | `@react-three/drei` `OrbitControls` `connect()` set inline `touch-action: none` on `gl.domElement`, overriding Tailwind `touch-pan-y` |
+| Archive tiles | iOS Safari: touch on `<video>` inside full-surface `<Link>`; media element captured pan before document |
+
+**Decision:**
+
+1. **Hero — remove `OrbitControls` entirely** (all breakpoints). `enableRotate` / `enablePan` / `enableZoom` were already `false`; environmental motion is `SpinOnY` + `useFrame`, not controls. Removing avoids `touch-action: none` and dead pointer listeners. Canvas + `.oni-webgl` keep `touch-pan-y` (class + inline on canvas).
+
+2. **Archive Fragment — minimal tile touch stack** (`ArchiveFragmentTile`): `touch-pan-y` on link + wrapper; `pointer-events-none` on `<video>` / `<Image>` so the link owns tap and vertical pan reaches the document. Autoplay via `useCinematicVideo` unchanged.
+
+**Rejected:** Post-connect `touch-action` override while keeping OrbitControls — fights drei on every connect/dispose. Mobile-only OrbitControls removal — desktop scroll-over-canvas benefit is free when control is unused.
+
+**Implementation:** `sections/HeroSection/Scene.tsx` · `sections/HeroSection/index.tsx` · `sections/ArchivePreviewSection/ArchiveFragmentTile.tsx`
+
+**See also:** `ARCHITECTURE.md` Hero editorial composition · `docs/ARCHIVE_FRAGMENT_V2.md` § V3.5
+
+---
+
 ## DEC-005 — Navigation route awareness (2026-05-30)
 
 **Context:** Multi-route baseline (`/`, `/works`, `/works/[slug]`, `/archive`, `/archive/[slug]`) shipped with Layer 1. Overlay and telemetry were still documented as home-static (static `MMXXVI`, decorative `ARCHIVE OPEN`). Visitors had no infrastructural signal of current lane.

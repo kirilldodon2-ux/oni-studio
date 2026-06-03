@@ -40,7 +40,7 @@ export function HeroSection({ exportMode = false }: HeroSectionProps) {
           <ViewWorkLink className="mt-8 hidden lg:mt-[clamp(2rem,5vh,4rem)] lg:inline-flex" />
         </FadeIn>
 
-        <div className="oni-webgl relative z-[5] h-[38svh] min-h-[17rem] w-full max-h-[23rem] shrink-0 bg-transparent lg:col-start-5 lg:col-end-13 lg:row-start-1 lg:h-full lg:max-h-none lg:min-h-0 lg:w-full">
+        <div className="oni-webgl relative z-[5] h-[38svh] min-h-[17rem] w-full max-h-[23rem] shrink-0 touch-pan-y bg-transparent lg:col-start-5 lg:col-end-13 lg:row-start-1 lg:h-full lg:max-h-none lg:min-h-0 lg:w-full">
           <HeroVisual exportMode={exportMode} />
         </div>
 

@@ -26,11 +26,11 @@ export function ArchiveFragmentTile({ entry }: ArchiveFragmentTileProps) {
     <article className="group relative w-full drop-shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
       <Link
         href={`/archive/${entry.slug}`}
-        className="block focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-black/20"
+        className="block touch-pan-y focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-black/20"
         aria-label={`${entry.title}, ${entry.year}${entry.creator ? `, ${entry.creator}` : ""}`}
       >
         <div
-          className="relative overflow-hidden bg-neutral-100 ring-1 ring-black/[0.04]"
+          className="relative touch-pan-y overflow-hidden bg-neutral-100 ring-1 ring-black/[0.04]"
           style={{ aspectRatio: `${w} / ${h}` }}
         >
           {isCinematicVideo ? (
@@ -43,7 +43,7 @@ export function ArchiveFragmentTile({ entry }: ArchiveFragmentTileProps) {
               playsInline
               loop
               preload="none"
-              className="h-full w-full object-cover transition-opacity duration-500 ease-out group-hover:opacity-[0.88]"
+              className="pointer-events-none h-full w-full object-cover transition-opacity duration-500 ease-out group-hover:opacity-[0.88]"
             />
           ) : (
             <Image
@@ -51,7 +51,8 @@ export function ArchiveFragmentTile({ entry }: ArchiveFragmentTileProps) {
               alt=""
               width={w * 120}
               height={h * 120}
-              className="h-full w-full object-cover transition-opacity duration-500 ease-out group-hover:opacity-[0.88]"
+              draggable={false}
+              className="pointer-events-none h-full w-full object-cover transition-opacity duration-500 ease-out group-hover:opacity-[0.88]"
               sizes="(max-width: 1024px) 44vw, 30vw"
             />
           )}

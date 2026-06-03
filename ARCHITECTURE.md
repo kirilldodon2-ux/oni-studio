@@ -214,6 +214,11 @@ The Three.js scene remains Hero-scoped. Its object motion is environmental: slow
 rotation, off-axis placement, no interaction-driven spectacle, and no independent layout
 authority outside the scene canvas.
 
+**Touch / scroll (DEC-006):** `Scene.tsx` does **not** mount `OrbitControls`. All orbit/pan/zoom
+were already disabled; drei’s control only applied inline `touch-action: none` on the canvas and
+blocked document scroll on mobile. Canvas and `.oni-webgl` wrapper use `touch-pan-y` so vertical
+swipes propagate to the page.
+
 ---
 
 ## Backdrop System

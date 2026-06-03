@@ -243,3 +243,17 @@ Creators: `@minzvr` · `@somovdes` · `dodon.one` · `@zxseeczs` · `@whytheweak
 ### V3.4 — Noise removal
 
 Tile metadata (title / year / author) removed from persistent view. **Mobile:** objects only. **Desktop:** index lines on hover/focus fade (500ms). Section chrome unchanged (`ARCHIVE FRAGMENT`, field index, `Enter archive field`). Link `aria-label` retains inspect context.
+
+### V3.5 — Mobile scroll-through tiles (touch targets)
+
+**Problem:** On iOS Safari, vertical swipes starting on fragment `<video>` inside a full-surface `<Link>` often did not scroll the document (native media touch path).
+
+**Fix (`ArchiveFragmentTile.tsx`):**
+
+| Layer | Treatment |
+|-------|-----------|
+| `<Link>` | `touch-pan-y` — document vertical pan allowed on tile surface |
+| Media wrapper | `touch-pan-y` |
+| `<video>` / `<Image>` | `pointer-events-none` — gesture hits the link; tap still navigates; `useCinematicVideo` unchanged (ref + IntersectionObserver on video) |
+
+Layout, autoplay, and hover opacity unchanged. Do not re-wrap video in interactive-only overlays without revisiting this table.

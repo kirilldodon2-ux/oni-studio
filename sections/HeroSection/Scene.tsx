@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Bounds,
-  Center,
-  ContactShadows,
-  OrbitControls,
-  useGLTF,
-} from "@react-three/drei";
+import { Bounds, Center, ContactShadows, useGLTF } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { type ReactNode, useLayoutEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
@@ -107,8 +101,8 @@ export function Scene() {
         antialias: true,
         premultipliedAlpha: false,
       }}
-      style={{ background: "transparent" }}
       className="h-full w-full touch-pan-y bg-transparent"
+      style={{ background: "transparent", touchAction: "pan-y" }}
       onCreated={({ gl, scene }) => {
         gl.setClearColor(0x000000, 0);
         scene.background = null;
@@ -130,14 +124,6 @@ export function Scene() {
         scale={16}
         blur={2.4}
         far={6}
-      />
-      <OrbitControls
-        makeDefault
-        enableDamping
-        dampingFactor={0.08}
-        enableZoom={false}
-        enablePan={false}
-        enableRotate={false}
       />
     </Canvas>
   );
