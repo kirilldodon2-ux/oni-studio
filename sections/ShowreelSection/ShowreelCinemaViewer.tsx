@@ -125,7 +125,10 @@ export function ShowreelCinemaViewer({
         <video
           ref={viewerVideoRef}
           src={src}
-          className="pointer-events-auto max-h-full max-w-full object-contain"
+          className={[
+            "max-h-full max-w-full object-contain",
+            isOpen ? "pointer-events-auto" : "pointer-events-none",
+          ].join(" ")}
           playsInline
           loop
           preload="auto"
