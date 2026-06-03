@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { resolveArchiveMediaSrc } from "@/content/archiveObjectPaths";
 import {
   ONI_SILHOUETTE_CONTACT,
@@ -9,6 +9,7 @@ import {
 } from "@/systems/spatial/silhouetteGrounding";
 import { useExportMode } from "@/systems/export";
 import { useCinematicVideo } from "@/systems/useCinematicVideo";
+import { ShowreelInstallationViewer } from "./ShowreelInstallationViewer";
 
 // ─── Frame positioning constants ─────────────────────────────────────────────
 // Mapped to showreel_frame.png (1536×1024 RGBA) transparent aperture (alpha ≤ 32).
@@ -22,10 +23,6 @@ const FRAME_HEIGHT = "57.0%";
 const FRAME_FILTER = [ONI_SILHOUETTE_CONTACT, ONI_SILHOUETTE_LIFT].join(" ");
 
 // ─── Media-well vignette mask ─────────────────────────────────────────────────
-// Radial soft-edge mask pre-applied to the media-content layer.
-// Has zero visual effect while the layer is empty.
-// When future video/still is inserted into that layer, its edges will dissolve
-// softly into the frame rather than cutting hard at the window boundary.
 const MEDIA_VIGNETTE =
   "radial-gradient(ellipse 88% 86% at 50% 50%, black 55%, transparent 100%)";
 
@@ -33,26 +30,13 @@ const MEDIA_VIGNETTE =
 const SHOWREEL_VIDEO_PATH = "/showreel/gg2.mp4";
 
 /**
- * ShowreelMediaCard
- *
- * Unified cinematic media artifact — frame and media surface compose as one
- * spatial object. Frame PNG carries native alpha; silhouette drop-shadow only.
- *
- *  Media stack (unified spatial unit):
- *    float div       — CSS keyframe ±7px Y (md+, reduced-motion safe)
- *    card div        — CSS transition scale ×1.012 (hover)
- *    media-object    — JS rAF parallax ±5px X/Y (fine pointer)
- *      media-well    — absolute, inset to frame window, overflow-hidden
- *        media-content ← showreel video (vignette pre-applied, opacity fade-in on ready)
- *      frame-layer   — z-[2], RGBA PNG + dual drop-shadow
- *
- *  The parallax target is `media-object`, which contains both media-well
- *  and frame-layer. Frame and media move as a single unit on parallax.
+ * ShowreelMediaCard — ambient artifact (State A) + installation viewer (State B).
  */
 export function ShowreelMediaCard() {
   const exportMode = useExportMode();
-  const containerRef = useRef<HTMLDivElement>(null); // hover / mouse event target
-  const mediaRef = useRef<HTMLDivElement>(null); // parallax target — whole media object
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mediaRef = useRef<HTMLDivElement>(null);
   const videoRef = useCinematicVideo<HTMLVideoElement>({
     rootMargin: "0px 0px 200px 0px",
     threshold: 0.15,
@@ -60,10 +44,37 @@ export function ShowreelMediaCard() {
   });
   const showreelSrc = resolveArchiveMediaSrc(SHOWREEL_VIDEO_PATH);
   const [mediaReady, setMediaReady] = useState(false);
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [syncTime, setSyncTime] = useState(0);
+
+  const openViewer = useCallback(() => {
+    if (exportMode) return;
+    const ambient = videoRef.current;
+    const t = ambient?.currentTime ?? 0;
+    setSyncTime(t);
+    ambient?.pause();
+    setViewerOpen(true);
+  }, [exportMode, videoRef]);
+
+  const closeViewer = useCallback(() => {
+    setViewerOpen(false);
+  }, []);
+
+  const handleTimeSync = useCallback(
+    (time: number) => {
+      setSyncTime(time);
+      const ambient = videoRef.current;
+      if (!ambient) return;
+      ambient.currentTime = time;
+      ambient.muted = true;
+      ambient.play().catch(() => {});
+    },
+    [videoRef]
+  );
 
   useEffect(() => {
     const media = mediaRef.current;
-    if (exportMode) {
+    if (exportMode || viewerOpen) {
       if (media) media.style.transform = "";
       return;
     }
@@ -78,8 +89,8 @@ export function ShowreelMediaCard() {
     const container = containerRef.current;
     if (!container || !media) return;
 
-    const MAX_OFFSET = 5; // px — restrained spatial depth cue
-    const LERP = 0.065; // interpolation factor — physically calm
+    const MAX_OFFSET = 5;
+    const LERP = 0.065;
 
     let tx = 0,
       ty = 0,
@@ -117,81 +128,99 @@ export function ShowreelMediaCard() {
       cancelAnimationFrame(rafId);
       media.style.transform = "";
     };
-  }, [exportMode]);
+  }, [exportMode, viewerOpen]);
+
+  useEffect(() => {
+    if (viewerOpen) videoRef.current?.pause();
+  }, [viewerOpen, videoRef]);
 
   return (
-    /* Layer 1 — hover detection context */
-    <div className="group relative w-full">
-      {/* Layer 2 — float animation (CSS keyframe, md+, reduced-motion safe) */}
-      <div className="oni-showreel-float will-change-transform">
-        {/* Layer 3 — hover scale (transition, isolated from float animation) */}
-        <div
-          ref={containerRef}
-          className="relative transition-transform duration-700 ease-out will-change-transform group-hover:scale-[1.012]"
-          style={{ aspectRatio: "1536 / 1024" }}
-        >
-          {/* Layer 4 — unified media object (parallax target).
-              Contains both media-well and frame-layer so all elements
-              of the spatial unit move together on parallax. */}
+    <>
+      <button
+        ref={triggerRef}
+        type="button"
+        onClick={openViewer}
+        disabled={exportMode}
+        aria-label="Open showreel installation"
+        className={[
+          "group relative w-full border-0 bg-transparent p-0 text-left",
+          exportMode ? "cursor-default" : "cursor-pointer",
+        ].join(" ")}
+      >
+        <div className="oni-showreel-float will-change-transform">
           <div
-            ref={mediaRef}
-            className="absolute inset-0 will-change-transform"
+            ref={containerRef}
+            className={`relative transition-transform duration-700 ease-out will-change-transform ${
+              exportMode ? "" : "group-hover:scale-[1.012]"
+            }`}
+            style={{ aspectRatio: "1536 / 1024" }}
           >
-            {/* Media well: inset to frame's inner window.
-                overflow-hidden clips video to the window bounds. */}
             <div
-              className="absolute overflow-hidden"
-              style={{
-                left: FRAME_LEFT,
-                top: FRAME_TOP,
-                width: FRAME_WIDTH,
-                height: FRAME_HEIGHT,
-              }}
+              ref={mediaRef}
+              className="absolute inset-0 will-change-transform"
             >
-              {/* Media content — vignette mask; video fades in after first frame is ready. */}
               <div
-                className="absolute inset-0"
+                className="absolute overflow-hidden"
                 style={{
-                  maskImage: MEDIA_VIGNETTE,
-                  WebkitMaskImage: MEDIA_VIGNETTE,
+                  left: FRAME_LEFT,
+                  top: FRAME_TOP,
+                  width: FRAME_WIDTH,
+                  height: FRAME_HEIGHT,
                 }}
               >
-                <video
-                  ref={videoRef}
-                  src={showreelSrc}
-                  className={`h-full w-full object-cover transition-opacity duration-700 ease-out ${
-                    mediaReady ? "opacity-100" : "opacity-0"
-                  }`}
-                  muted
-                  playsInline
-                  loop
-                  preload="none"
-                  aria-label="ONI studio showreel"
-                  onLoadedData={() => setMediaReady(true)}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    maskImage: MEDIA_VIGNETTE,
+                    WebkitMaskImage: MEDIA_VIGNETTE,
+                  }}
+                >
+                  <video
+                    ref={videoRef}
+                    src={showreelSrc}
+                    className={`h-full w-full object-cover transition-opacity duration-700 ease-out ${
+                      mediaReady ? "opacity-100" : "opacity-0"
+                    }`}
+                    muted
+                    playsInline
+                    loop
+                    preload="none"
+                    aria-label="ONI studio showreel"
+                    onLoadedData={() => setMediaReady(true)}
+                  />
+                </div>
+              </div>
+
+              <div
+                className="pointer-events-none absolute inset-0 z-[2]"
+                style={{ filter: FRAME_FILTER }}
+                aria-hidden
+              >
+                <Image
+                  src="/frames/showreel_frame.png"
+                  alt=""
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1100px) 80vw, 880px"
+                  className="object-fill select-none"
+                  draggable={false}
+                  priority={false}
                 />
               </div>
             </div>
-
-            {/* Frame layer — RGBA PNG + dual silhouette shadow.
-                z-[2] renders frame above media content. */}
-            <div
-              className="pointer-events-none absolute inset-0 z-[2]"
-              style={{ filter: FRAME_FILTER }}
-              aria-hidden
-            >
-              <Image
-                src="/frames/showreel_frame.png"
-                alt=""
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1100px) 80vw, 880px"
-                className="object-fill select-none"
-                draggable={false}
-                priority={false}
-              />
-            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </button>
+
+      {!exportMode && (
+        <ShowreelInstallationViewer
+          isOpen={viewerOpen}
+          onClose={closeViewer}
+          src={showreelSrc}
+          syncTime={syncTime}
+          onTimeSync={handleTimeSync}
+          returnFocusRef={triggerRef}
+        />
+      )}
+    </>
   );
 }
