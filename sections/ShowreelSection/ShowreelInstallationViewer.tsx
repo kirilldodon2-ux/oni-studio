@@ -82,7 +82,7 @@ export function ShowreelInstallationViewer({
     return () => {
       document.removeEventListener("keydown", onKeyDown);
       const target = returnFocusRef.current ?? previousFocus;
-      target?.focus();
+      target?.focus({ preventScroll: true });
     };
   }, [isOpen, handleClose, returnFocusRef]);
 
