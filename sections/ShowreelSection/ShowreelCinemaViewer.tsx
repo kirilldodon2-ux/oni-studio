@@ -34,8 +34,8 @@ export function ShowreelCinemaViewer({
 
   const handleClose = useCallback(() => {
     const t = viewerVideoRef.current?.currentTime ?? syncTime;
+    onTimeSync(t);
     onClose();
-    setTimeout(() => onTimeSync(t), 0);
   }, [onClose, onTimeSync, syncTime]);
 
   useDocumentScrollLock(isOpen, { blockTouchMove: true });

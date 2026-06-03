@@ -7,7 +7,7 @@ Rules for AI assistants (Cursor, Claude, etc.) working on this codebase.
 ## Before Modifying Structure
 
 - read ARCHITECTURE.md and this file first
-- read `docs/DECISIONS.md` before changing navigation links, content lanes, or control-surface scroll behavior
+- read `docs/DECISIONS.md` before changing navigation links, content lanes, control-surface scroll behavior, or overlay/showreel interaction
 - analyze dependencies before moving files
 - preserve responsive behavior at every breakpoint
 - preserve cinematic restraint — do not default to "standard" layouts
@@ -113,48 +113,40 @@ The navigation system is a **floating control surface**, not a navbar. These rul
 - hover states are opacity-only (`hover:opacity-60`) — no scale, no translate, no color change
 - do not remove `--oni-header-h` from `globals.css` without also updating Hero to remove its dependency
 
-Phase 5 is in progress. `components/SiteHeader.tsx` has been replaced by `components/navigation/`. The active ControlSurface v1 is `fixed`, transparent at all scroll positions, three-zone layout (`docs/DECISIONS.md` DEC-004). `NavOverlay` v1 — HOME / WORK / ARCHIVE / STUDIO / CONTACT (`DEC-002`). Overlay: full-viewport scrim, adaptive navigation plane, `z-50`, ESC close, body scroll lock.
+Phase 5 is complete. `components/SiteHeader.tsx` has been replaced by `components/navigation/`. ControlSurface is `fixed`, transparent at all scroll positions (`docs/DECISIONS.md` DEC-004). `NavOverlay` — HOME · CAPABILITIES · ARCHIVE · BRANDBOOK · CONTACT (`DEC-002`). Overlay: `z-50`, ESC close, `useDocumentScrollLock` (DEC-008).
 
 ---
 
-## ShowreelMediaCard Rules
+## Interaction rules
 
-The `ShowreelMediaCard` is the reference implementation for cinematic media artifacts.
-Follow these rules when extending or reusing the pattern:
+### Document scroll lock
 
-### Compositing
-- the metallic frame PNG lives at `public/frames/showreel_frame.png` (1024×682, black bg)
-- frame compositing uses the inline SVG filter `#oni-luma-matte` — **not** `mix-blend-mode`
-- the SVG filter performs a 4-step pipeline: contrast-boost → luminanceToAlpha → alpha-gamma (√) → composite
-  - do not reduce the filter to a single `luminanceToAlpha + composite` — the contrast-boost and gamma steps are required for metallic definition and fog reduction
-  - do not change `exponent="0.5"` to a value above `0.8` — higher values reintroduce fog
-  - do not increase the contrast matrix amplitude above `1.35` — it will damage mid-tone metallic areas
-- the SVG filter is defined inline as a zero-size hidden element — do not move it to a global file
-- the CSS `filter` on the frame layer chains the SVG matte with dual `drop-shadow()` in one property value
-- drop-shadow follows the PNG silhouette because it operates on the post-matte output
-- the card div has **no background, no isolate, no overflow-hidden** — shadows must render beyond element bounds
-- do not reintroduce `bg-neutral-950`, `mix-blend-mode`, `isolation`, or `overflow-hidden` on the card
-- do not add glow, gradient overlays, or visible container styling
+- use `useDocumentScrollLock` from `systems/useDocumentScrollLock.ts` for any fullscreen modal that locks the document — do not hand-roll `body` style mutation (DEC-008)
+- pass `{ blockTouchMove: true }` for iOS overlay/showreel consumers unless a future DEC narrows policy
+- respect ref counting — do not bypass the module with parallel lock utilities
 
-### Media stack hierarchy
-- `media-object` is the unified parallax container — it contains `media-well` AND `frame-layer`
-- do not separate `media-well` and `frame-layer` into sibling stacking contexts — they must share one parallax parent so they move as a single spatial unit
-- `media-content` (inside `media-well`) is the dedicated layer for future video/still insertion
-  - it carries a pre-applied radial `mask-image` vignette — do not remove it
-  - insert video/image content into this div, not directly into `media-well`
-- the play button must be a **sibling** of `media-content`, never a child — it must not be affected by the vignette mask
-- `frame-layer` is `z-[2]` relative to `media-object` — it renders above `media-well`
-  - the frame's transparent inner window (post-matte) lets the play control show through
-  - do not reduce `z-[2]` — it must remain above the media content
+### Pointer-events and touch
 
-### Motion
-- frame inner window positioning is owned by named constants at the top of `ShowreelMediaCard.tsx`
-- always update those constants when the frame asset changes
-- motion uses three isolated transform layers (float / scale / parallax) — never combine on one element
-- the floating CSS animation (`oni-showreel-float`) lives in `globals.css` — do not inline it
-- parallax is owned by `mediaRef` pointing to `media-object` — do not move it back to the frame layer only
-- parallax runs only on `(pointer: fine)` devices and respects `prefers-reduced-motion`
-- the JS parallax writes `media.style.transform` directly; the frame layer's `style.filter` is a separate CSS property — no conflict
+- when a closed overlay root is `pointer-events-none` but remains mounted, **gate `pointer-events-auto` on media children to open state only** (DEC-007)
+- Hero canvas: keep `touch-pan-y`; never reintroduce `OrbitControls` on the hero scene (DEC-006)
+- full-surface links with embedded video/image: media `pointer-events-none`, link owns pan/tap (Archive Fragment pattern, DEC-006)
+
+---
+
+## Showreel rules
+
+Runtime and calibration authority — do not duplicate long spec here:
+
+- **`docs/SHOWREEL_SYSTEM.md`** — ambient / installation / cinema viewers, portal lifecycle, media path, troubleshooting
+- **`docs/SHOWREEL_FRAME_CALIBRATION.md`** — 1536×1024 RGBA frame, aperture constants, vignette, silhouette filter
+
+Agent constraints:
+
+- do not reintroduce luma-matte / SVG matte / `mix-blend-mode` frame pipelines — production uses native RGBA + `silhouetteGrounding` on the frame layer
+- do not add showreel masters under `public/archive/` — R2 transport via `SHOWREEL_VIDEO_PATH` + `resolveArchiveMediaSrc()`
+- cinema viewer must stay portaled at `z-[60]` on mobile; installation at `z-30`
+- on cinema close, viewer video must use `pointer-events-none` when `isOpen === false`
+- frame constant changes require updating both `ShowreelMediaCard.tsx` and `ShowreelInstallationViewer.tsx` per calibration doc
 
 ---
 
@@ -195,7 +187,7 @@ frame layer in Showreel).
 `.archive-hero-media`, or any layout container.
 
 **Canonical values:** `systems/spatial/silhouetteGrounding.ts` (`ONI_SILHOUETTE_FILTER`).
-Reference implementation: `ShowreelMediaCard` (matte + silhouette chain on frame layer).
+Reference implementation: `ShowreelMediaCard` (RGBA frame layer + silhouette chain).
 Archive inspect: `ONI_SILHOUETTE_FILTER` on hero `Image` / `video` in `ArchiveInspectView`.
 
 - `.archive-hero-media` must stay `overflow: visible` so silhouette shadows are not clipped
@@ -265,7 +257,7 @@ not CSS masks. Do not use forced `h-full` / `object-cover` on browse previews to
 | 4     | In Progress | Cinematic polish — Showreel, Archive Fragment, Brand Identity shipped; Hero/Work atmosphere pending |
 | 5     | Complete    | Navigation — floating control surface + adaptive overlay (DEC-004/005) |
 | 6     | Pending     | Routing & page architecture — writings/code routes, transitions (partial: archive + works shipped) |
-| 7     | Pending     | Work archive — individual Work pages + Works index            |
+| 7     | Partial     | Works Lean Path delivered (DEC-001); MDX interior / production pipeline pending |
 | 8     | Pending     | Written content — Writings + MDX pipeline + typography system |
 | 9     | Pending     | Experiment layer — Code Artifacts + sandbox architecture      |
 

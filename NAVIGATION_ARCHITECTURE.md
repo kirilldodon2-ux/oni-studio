@@ -302,7 +302,7 @@ Implemented (Phase 5). Adaptive atmospheric navigation — not permanent center-
 
 **Interaction & a11y:**
 - Close: `NavMenuTrigger` toggle, ESC, scrim pointer-down
-- `body` scroll locked while open
+- `useDocumentScrollLock(isOpen, { blockTouchMove: true })` while open (`systems/useDocumentScrollLock.ts` — DEC-008)
 - `aria-modal="true"`, `role="dialog"`; focusable links when open (`tabIndex` gated)
 
 **Primary links (`NAV_ITEMS`) — editorial index (2026-05-30):**

@@ -26,6 +26,7 @@ The showreel is a three-state system: **ambient** (always on the homepage), **de
 | `sections/ShowreelSection/ShowreelCinemaViewer.tsx` | Mobile cinema viewer (<768px) |
 | `public/frames/showreel_frame.png` | Metallic frame overlay (local, not R2) |
 | `systems/useCinematicVideo.ts` | Ambient viewport-gated playback |
+| `systems/useDocumentScrollLock.ts` | Ref-counted document scroll lock (DEC-008) |
 | `content/archiveObjectPaths.ts` → `resolveArchiveMediaSrc()` | R2 / origin transport for video |
 
 Frame geometry and compositing doctrine → `docs/SHOWREEL_FRAME_CALIBRATION.md`.
@@ -64,7 +65,7 @@ Frame geometry and compositing doctrine → `docs/SHOWREEL_FRAME_CALIBRATION.md`
 | Time sync | `currentTime` copied from ambient on open; written back to ambient on close |
 | Ambient while open | Ambient video paused |
 | Close | **CLOSE** button, **ESC**, pointer-down on scrim (outside artifact) |
-| A11y | `role="dialog"`, focus trap, scroll lock on `body`, focus return to trigger |
+| A11y / lock | `role="dialog"`, focus trap, `useDocumentScrollLock(isOpen, { blockTouchMove: true })`, focus return (`preventScroll: true`) |
 | Motion | Opacity + `scale-[0.98→1]`; `motion-reduce:` opacity only (~700ms) |
 
 Component: `ShowreelInstallationViewer.tsx`.
@@ -86,12 +87,74 @@ Component: `ShowreelInstallationViewer.tsx`.
 | Time sync | Same `syncTime` / `onTimeSync` contract as installation viewer |
 | Close | **CLOSE** (fixed, safe-area), **ESC**, tap on **black letterbox** (full-screen backdrop behind video) |
 | Video tap | Does **not** close — `stopPropagation` on video pointer/click |
-| Scroll lock | `html` + `body` overflow hidden; `body` `position: fixed` with scroll position restore; `touchmove` prevented on `document` (`passive: false`) |
-| Touch | `touch-none` + `overscroll-none` on cinema root |
+| Scroll lock | `useDocumentScrollLock(isOpen, { blockTouchMove: true })` — see DEC-008 |
+| Touch (open) | `touch-none` + `overscroll-none` on cinema root |
+| Touch (closed) | Root `pointer-events-none`; viewer `<video>` `pointer-events-none` when `!isOpen` (DEC-007) |
 
 Component: `ShowreelCinemaViewer.tsx`.
 
 **Design intent:** Desktop = installation (museum, site visible). Mobile = cinema (isolated takeover).
+
+---
+
+## Portal and viewer lifecycle
+
+### `viewerKind` latch
+
+On first open, `ShowreelMediaCard` sets `viewerKind` from `(max-width: 767px)`:
+
+- `installation` → renders `ShowreelInstallationViewer` only
+- `cinema` → renders `ShowreelCinemaViewer` only
+
+Kind **persists for the session** (not re-evaluated on resize). Only the matching viewer component is mounted.
+
+### Cinema portal persistence
+
+`ShowreelCinemaViewer` uses `createPortal(layer, document.body)`:
+
+| Phase | DOM |
+|-------|-----|
+| Before first mobile open | Cinema component not mounted |
+| After first mobile open | Portal root appended under `document.body` (typically last child) |
+| While open | `pointer-events-auto`, `opacity-100`, `z-[60]`, scroll lock active |
+| After close | **Same node stays mounted** — `pointer-events-none`, `opacity-0`, 700ms opacity transition; scroll lock released |
+
+Unmount happens on full page navigation / remount — not on each close.
+
+### Close path (both viewers)
+
+1. `handleClose` reads viewer `currentTime`
+2. `onTimeSync(t)` → ambient `currentTime` + muted `play()`
+3. `onClose()` → `viewerOpen = false`
+4. React effects: scroll lock release; focus cleanup; viewer video pause/mute
+
+Synchronous sync order — do not defer `onTimeSync` after close (forensic experiment rejected).
+
+---
+
+## Closed-state interaction ownership
+
+Applies to **cinema** portaled layer (DEC-007). Installation uses in-tree `z-30` with the same dialog visibility pattern.
+
+### Root vs child pointer-events
+
+When the dialog root is `pointer-events-none` (closed), **descendants with `pointer-events-auto` still receive hit testing**. An invisible centered `<video>` (`object-contain`) forms a **ghost slab** over the page — partial scroll, dead footer/trigger taps, edge-only pan on iOS.
+
+**Production fix:** viewer `<video>` uses `pointer-events-auto` only when `isOpen === true`; `pointer-events-none` when false.
+
+### Rules
+
+| Element | Open | Closed |
+|---------|------|--------|
+| Dialog root | `pointer-events-auto` | `pointer-events-none` |
+| Viewer `<video>` | `pointer-events-auto` (cinema; stops propagation on tap) | **`pointer-events-none`** |
+| Frame overlay (`ShowreelMediaCard`) | n/a | always `pointer-events-none` |
+
+Transparent regions of a closed portaled root (no `auto` descendants) pass events through to page content below in stack order.
+
+### `touch-none` when closed
+
+Cinema root keeps `touch-none` while mounted. If gesture issues persist after DEC-007, evaluate gating `touch-none` to open state only — separate from hit-testing fix.
 
 ---
 
@@ -208,14 +271,14 @@ ASCII equivalent:
 |-------|--------|
 | Export mode | `useExportMode()` disables open — expected in export captures |
 | JS errors | Inspect console on click |
-| `pointer-events` | Viewer uses `pointer-events-none` when `isOpen={false}` — confirm state toggles |
+| `pointer-events` | Cinema: viewer **`<video>`** must be `pointer-events-none` when `!isOpen` (DEC-007); dialog root also `pointer-events-none` |
 
 ### Mobile cinema: page scrolls or nav visible
 
 | Check | Action |
 |-------|--------|
 | Stacking | Cinema must be portaled with `z-[60]` — not `z-30` inside a section |
-| iOS scroll | Confirm `body` fixed lock + `touchmove` prevent runs while `isOpen` |
+| iOS scroll | Confirm `useDocumentScrollLock` runs while `isOpen`; after close, no ghost video hit slab (DEC-007) |
 | Close lost | CLOSE is `z-[2]` above backdrop; letterbox taps hit backdrop `z-0` |
 
 ### `currentTime` not syncing
@@ -247,12 +310,13 @@ Not a media-pipeline issue — see `SHOWREEL_FRAME_CALIBRATION.md`. Mobile cinem
 | Installation (desktop) | `z-30` | Reserved in `ARCHITECTURE.md`; site nav remains above |
 | Cinema (mobile) | `z-[60]` | Portaled takeover — must cover nav and menu overlay |
 
-Cinema layer is mobile-only and documented here; it does not change the global z-index table for navigation.
+Cinema and installation viewer z-index rows live in `ARCHITECTURE.md` z-index table.
 
 ---
 
 ## Related docs
 
 - `docs/SHOWREEL_FRAME_CALIBRATION.md` — aperture constants, compositing, frame replacement
-- `ARCHITECTURE.md` — `oni-showreel` token, section atmosphere, z-index table
-- `AI_RULES.md` — cinematic video doctrine (grid vs showreel contexts)
+- `docs/DECISIONS.md` — DEC-007 (cinema hit testing) · DEC-008 (scroll lock)
+- `ARCHITECTURE.md` — interaction ownership · z-index table
+- `AI_RULES.md` — showreel + interaction agent constraints

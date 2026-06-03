@@ -10,7 +10,9 @@ oni-site/
 ├── _archive_graveyard/                    ← deprecated site scaffolding (never delete)
 │
 ├── docs/
-│   ├── DECISIONS.md                       ← architecture decision log (nav, content lanes, control surface)
+│   ├── DECISIONS.md                       ← architecture decision log (nav, content lanes, interaction)
+│   ├── SHOWREEL_SYSTEM.md                 ← showreel ambient + installation + cinema (OPERATIONAL)
+│   ├── SHOWREEL_FRAME_CALIBRATION.md      ← frame geometry + RGBA compositing authority (OPERATIONAL)
 │   ├── BRANDBOOK_INTEGRATION.md           ← /brandbook port, atmosphere pass, Phase 1 release (OPERATIONAL)
 │   ├── ARCHIVE_FRAGMENT_V2.md             ← homepage Archive Fragment section (OPERATIONAL)
 │   ├── BRAND_IDENTITY_SECTION.md          ← homepage Brand Identity threshold → /brandbook (OPERATIONAL)
@@ -66,8 +68,10 @@ oni-site/
 │   │   ├── IdentityManifesto.tsx ← ОНИ + black mass poster (client)
 │   │   └── manifestoLines.ts    ← layout + motion constants
 │   ├── ShowreelSection/
-│   │   ├── index.tsx            ← section shell; SectionLabel + ShowreelMediaCard
-│   │   └── ShowreelMediaCard.tsx ← cinematic media artifact (luma-matte frame)
+│   │   ├── index.tsx                      ← section shell; SectionLabel + ShowreelMediaCard
+│   │   ├── ShowreelMediaCard.tsx          ← ambient artifact + viewer orchestration
+│   │   ├── ShowreelInstallationViewer.tsx ← desktop installation viewer (≥768px)
+│   │   └── ShowreelCinemaViewer.tsx       ← mobile cinema viewer (<768px, body portal)
 │   ├── ContactFooterSection/
 │   │   └── index.tsx
 │   └── GhostPopulationSection/  ← present; not composed on app/page.tsx (home)
@@ -90,7 +94,8 @@ oni-site/
 │   │   ├── exportMode.ts
 │   │   ├── ExportModeProvider.tsx
 │   │   └── index.ts
-│   ├── useCinematicVideo.ts     ← viewport-gated browse video playback (ArchiveTile)
+│   ├── useCinematicVideo.ts        ← viewport-gated video (ArchiveTile, showreel ambient)
+│   ├── useDocumentScrollLock.ts    ← ref-counted document scroll lock (overlay + showreel)
 │   ├── spatial/                 ← nav sigil, object grounding, convergence (see ARCHITECTURE.md)
 │   │   ├── ONINavigationSigil.tsx
 │   │   ├── ArtifactConsumptionPair.tsx
@@ -129,7 +134,7 @@ oni-site/
 │       ├── NavLogo.tsx          ← reserved identity zone; visible sigil disabled
 │       ├── NavTelemetry.tsx     ← ambient annotation, desktop-only, pointer-events-none
 │       ├── NavMenuTrigger.tsx   ← MENU + ONINavigationSigil; toggles MENU/CLOSE
-│       └── NavOverlay.tsx       ← overlay: HOME · CAPABILITIES · ARCHIVE · BRANDBOOK · CONTACT
+│       └── NavOverlay.tsx       ← overlay: HOME · CAPABILITIES · ARCHIVE · BRANDBOOK · CONTACT (DEC-002)
 │
 └── public/
     ├── archive/
@@ -143,7 +148,7 @@ oni-site/
     ├── logo/
     │   └── oni_logo_black.svg
     ├── frames/
-    │   └── showreel_frame.png ← metallic figurative frame (1024×682, luma-matte composite)
+    │   └── showreel_frame.png ← metallic figurative frame (1536×1024 RGBA — SHOWREEL_FRAME_CALIBRATION.md)
     ├── models/
     │   └── ONI_3d_no_texture.glb
     └── png/

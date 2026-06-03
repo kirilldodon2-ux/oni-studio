@@ -162,3 +162,5 @@ Media swap without frame change → `docs/SHOWREEL_SYSTEM.md` § Media pipeline 
 
 - `docs/SHOWREEL_SYSTEM.md` — viewers, R2 path, troubleshooting
 - `ARCHITECTURE.md` — showreel section atmosphere, `oni-showreel` max-width token
+- `docs/SHOWREEL_SYSTEM.md` — portal lifecycle, viewers, closed-state pointer-events (DEC-007)
+- `docs/DECISIONS.md` — DEC-007 · DEC-008

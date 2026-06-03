@@ -7,6 +7,52 @@ Operational decision log. Read before changing navigation, content lanes, or con
 
 ---
 
+## DEC-008 — `useDocumentScrollLock` (2026-05-30)
+
+**Context:** Menu overlay and showreel viewers both need iOS-safe document scroll lock. Ad-hoc per-component body style mutation risks drift and double-release bugs.
+
+**Decision:** Single module `systems/useDocumentScrollLock.ts` owns lock lifecycle.
+
+| Concern | Behavior |
+|---------|----------|
+| **Ownership** | Module-level ref count (`lockCount`); first acquire snapshots `scrollY` + inline `html`/`body` styles; last release restores both and calls `window.scrollTo(0, scrollY)` |
+| **Apply** | `html`/`body` `overflow: hidden`; `body` `position: fixed`, `top: -scrollY`, `width: 100%`, `touchAction: none` |
+| **Consumers** | `NavOverlay` (`blockTouchMove: true`); `ShowreelInstallationViewer`; `ShowreelCinemaViewer` |
+| **`blockTouchMove`** | When true: document `touchmove` listener with `{ passive: false }` + `preventDefault` — iOS background-scroll guard; ref-counted separately (`touchMoveBlockCount`) |
+| **Restoration** | Synchronous on last consumer cleanup — revert inline styles, then `scrollTo` saved position; clear snapshot |
+
+**Rejected:** Duplicate scroll-lock logic in overlay or showreel components. Reintroducing `useControlSurfaceScroll` for scroll feedback (DEC-004).
+
+**Implementation:** `systems/useDocumentScrollLock.ts` · consumers above.
+
+**See also:** `ARCHITECTURE.md` Interaction ownership · `docs/SHOWREEL_SYSTEM.md` · `NAVIGATION_ARCHITECTURE.md` §7 NavOverlay
+
+---
+
+## DEC-007 — Cinema viewer closed-state hit testing (2026-05-30)
+
+**Context:** After closing mobile showreel (TEST C), production iOS exhibited partial scroll recovery, dead footer/trigger zones, scroll only at viewport edges, intermittent recovery when content moved — not explained by focus restore (`preventScroll` did not help) or deferred time sync experiments.
+
+**Root cause:** `ShowreelCinemaViewer` stays **portaled** to `document.body` at `z-[60]` after first mobile open. On close, dialog root correctly uses `pointer-events-none`, but viewer `<video>` kept `pointer-events-auto`. CSS hit testing: descendants with `auto` remain targets under a `none` parent — invisible **ghost video slab** (`object-contain` center) intercepted pan/tap over page content.
+
+**Investigation summary:**
+
+| Hypothesis | Result |
+|------------|--------|
+| Return focus / `scrollTo` order | Ruled out — `preventScroll` patch no improvement |
+| Pre-unlock `onTimeSync` | Ruled out — deferral experiment did not fix TEST C |
+| Closed portaled layer + child `pointer-events` | **Confirmed** — `pointer-events-none` on video when `!isOpen` fixed production TEST C |
+
+**Decision:** Gate viewer `<video>` pointer events on `isOpen` — `pointer-events-auto` only while open; `pointer-events-none` when closed. Portal mount persistence unchanged.
+
+**Rejected:** Unmounting portal on every close (larger lifecycle change). Stacking workaround layers. Canonizing forensic `setTimeout` deferral for `onTimeSync`.
+
+**Implementation:** `sections/ShowreelSection/ShowreelCinemaViewer.tsx` — video `className` toggles with `isOpen`.
+
+**See also:** `docs/SHOWREEL_SYSTEM.md` § Portal lifecycle · § Closed-state interaction
+
+---
+
 ## DEC-006 — Homepage touch scroll-through (2026-05-30)
 
 **Context:** Phase 1 scroll-lock work did not fix production mobile symptom: vertical swipes starting on Hero WebGL or Archive Fragment tiles often failed to scroll the document.
@@ -87,28 +133,30 @@ Operational decision log. Read before changing navigation, content lanes, or con
 
 ---
 
-## DEC-002 — Overlay primary routes: WORK + ARCHIVE (2026-05-29)
+## DEC-002 — Overlay editorial index (2026-05-29, amended 2026-05-30)
 
-**Context:** Layer 1 introduced `/works` and `/archive` as permanent content routes. The overlay was home-centric: WORK → `#work` (homepage territory section); ARCHIVE had no link (only decorative `ARCHIVE OPEN` annotation and Hero `View Archive` CTA).
+**Context:** Layer 1 introduced `/works` and `/archive` as permanent content routes. The overlay was home-centric with no ARCHIVE link. Initial DEC-002 shipped WORK → `/works` in the overlay; production index later evolved to foreground homepage territory and brandbook while Works remains a first-class route via telemetry and direct URLs.
 
-**Decision:**
+**Decision (canonical — matches `NavOverlay.tsx` `NAV_ITEMS`):**
 
 | Label | href | Rationale |
 |-------|------|-----------|
-| WORK | `/works` | Studio output index — primary archetype lane, not homepage `#work` scroll target |
-| ARCHIVE | `/archive` | Cross-archetype browse field — first-class route alongside Works |
+| HOME | `/` | Landing |
+| CAPABILITIES | `#work` | Homepage territory section (Capabilities) — dominant M tier; `md:-ml-3` |
+| ARCHIVE | `/archive` | Cross-archetype browse field |
+| BRANDBOOK | `/brandbook` | Brand identity route |
+| CONTACT | `#contact` | Homepage footer anchor |
 
-Overlay order: **HOME · WORK · ARCHIVE · STUDIO · CONTACT**
+**Overlay order:** HOME · CAPABILITIES · ARCHIVE · BRANDBOOK · CONTACT
 
-- WORK keeps dominant typography tier and `md:-ml-3` offset (index 1).
-- ARCHIVE reuses STUDIO’s existing mid-weight tier — no new visual language.
-- STUDIO / CONTACT remain `#showreel` / `#contact` (home section anchors) until a separate cross-route pass.
+- `/works` is **not** an overlay row — lane signal via `NavTelemetry` (`WORKS` / `WORK OPEN`) and Hero CTA; DEC-001 Lean Path unchanged.
+- `#showreel` is **not** an overlay row — showreel remains homepage section `#showreel`; cross-route overlay pass still deferred.
 
-**Rejected:** Leaving WORK on `#work` after `/works` exists — breaks multi-route site model. Omitting ARCHIVE from overlay — archive is a primary surface, not discoverable only via Hero CTA.
+**Rejected:** Omitting ARCHIVE from overlay. Reintroducing scroll-state on the closed control surface (DEC-004).
 
 **Implementation:** `components/navigation/NavOverlay.tsx` — `NAV_ITEMS` only.
 
-**See also:** `ROADMAP.md` Layer 1 URL targets · `NAVIGATION_ARCHITECTURE.md` §7 NavOverlay
+**See also:** `NAVIGATION_ARCHITECTURE.md` §7 NavOverlay · `docs/DECISIONS.md` DEC-005 · `ROADMAP.md` Layer 1 URL targets
 
 ---
 
@@ -144,3 +192,5 @@ Overlay order: **HOME · WORK · ARCHIVE · STUDIO · CONTACT**
 | `ARCHITECTURE.md` | Infrastructure truth |
 | `AI_RULES.md` | Agent constraints — points here for nav/content lane decisions |
 | `CONTENT_SYSTEM.md` | Archive authoring + Works Pages-static delivery |
+| `docs/SHOWREEL_SYSTEM.md` | Showreel runtime authority (ambient / installation / cinema) |
+| `docs/SHOWREEL_FRAME_CALIBRATION.md` | Frame geometry + RGBA compositing authority |

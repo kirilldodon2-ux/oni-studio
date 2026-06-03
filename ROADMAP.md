@@ -82,12 +82,16 @@ Goals:
 - 3D scene enhancements
 
 Completed (ShowreelSection):
-- ✓ `ShowreelMediaCard` — cinematic media artifact with metallic frame overlay
-- ✓ Frame compositing: metallic frame PNG via inline SVG filter `#oni-luma-matte` (contrast-boost → luminanceToAlpha → alpha-gamma → composite) — transparent field, not `mix-blend-mode`
-- ✓ Three-layer motion system: float (CSS, md+) / scale (hover) / parallax (JS rAF)
+- ✓ `ShowreelMediaCard` — ambient framed artifact; RGBA `showreel_frame.png` + silhouette grounding (`docs/SHOWREEL_FRAME_CALIBRATION.md`)
+- ✓ Dual viewers — `ShowreelInstallationViewer` (≥768px, `z-30`) + `ShowreelCinemaViewer` (<768px, portaled `z-[60]`) — `docs/SHOWREEL_SYSTEM.md`
+- ✓ R2 showreel transport via `SHOWREEL_VIDEO_PATH` + `resolveArchiveMediaSrc()`
+- ✓ Three-layer motion: float (CSS, md+) / scale (hover) / parallax (JS rAF, fine pointer)
 - ✓ `oni-showreel-float` keyframe in `globals.css` (prefers-reduced-motion safe)
-- ✓ Reusable structure prepared for video integration, modal expansion, archive usage
-- ✓ Frame inner window constants — tunable when asset changes
+
+Completed (mobile interaction stabilization — homepage):
+- ✓ `useDocumentScrollLock` — shared ref-counted lock for overlay + showreel (`docs/DECISIONS.md` DEC-008)
+- ✓ Hero / Archive Fragment touch scroll-through (`docs/DECISIONS.md` DEC-006)
+- ✓ Cinema closed-state hit testing — viewer video `pointer-events-none` when closed (`docs/DECISIONS.md` DEC-007)
 
 Completed (ArchivePreviewSection — Archive Fragment V3):
 - ✓ clipped archive field glimpse on homepage (`#archive`) — see `docs/ARCHIVE_FRAGMENT_V2.md`
@@ -129,7 +133,7 @@ Goals:
 - ✓ remove `calc(100svh - var(--oni-header-h))` from Hero; restore full-viewport height
 - ✓ route-aware telemetry — `NavTelemetry`: `ONI.STUDIO / {lane}` (`HOME` · `WORKS` · `ARCHIVE` · `MMXXVI` fallback); see `docs/DECISIONS.md` DEC-005
 - ✓ route-aware overlay — `aria-current` on primary links, non-current opacity, route-specific footer annotation (`HOME FIELD` · `WORKS INDEX` · `WORK OPEN` · `ARCHIVE FIELD` · `ARCHIVE OPEN`); DEC-005
-- ✓ implement `NavOverlay` — adaptive atmospheric menu overlay (`z-50`): full-viewport scrim; navigation plane full-width below `md`, right partial-width plane on `md+`; HOME / WORK / ARCHIVE / STUDIO / CONTACT; translateX+opacity reveal; ESC close; body scroll lock
+- ✓ implement `NavOverlay` — adaptive atmospheric menu overlay (`z-50`): full-viewport scrim; navigation plane full-width below `md`, right partial-width plane on `md+`; HOME · CAPABILITIES · ARCHIVE · BRANDBOOK · CONTACT (DEC-002); translateX+opacity reveal; ESC close; `useDocumentScrollLock` (DEC-008)
 - ✓ Atmospheric Polish Layer 1 — static material pass applied (control surface + overlay)
 - ✓ scroll state on closed surface — **removed**; always transparent (see `docs/DECISIONS.md` DEC-004; supersedes DEC-003 glass/border experiments)
 

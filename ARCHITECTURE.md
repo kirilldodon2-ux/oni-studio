@@ -111,10 +111,10 @@ sections/
     IdentityManifesto.tsx ← client poster: ОНИ + black mass, GSAP reveal, cursor parallax
     manifestoLines.ts     ← layout + motion constants
   ShowreelSection/
-    index.tsx             ← RevealUp (heading) + FadeIn (card, annotation) + section-local dot mark
-    ShowreelMediaCard.tsx ← unified cinematic media artifact: transparent field,
-                            media-object parallax unit, enhanced luma-matte frame,
-                            media-content vignette layer, float / scale / parallax
+    index.tsx                    ← RevealUp (heading) + FadeIn (card, annotation) + section-local dot mark
+    ShowreelMediaCard.tsx        ← ambient artifact + viewer orchestration (see docs/SHOWREEL_SYSTEM.md)
+    ShowreelInstallationViewer.tsx ← desktop installation viewer (≥768px, z-30)
+    ShowreelCinemaViewer.tsx     ← mobile cinema viewer (<768px, portaled z-[60])
   ContactFooterSection/
     index.tsx             ← participates in atmosphere via RevealUp (entire content block)
 
@@ -141,7 +141,8 @@ systems/
   brandbook/              ← interactive brandbook (Phase 1 — docs/BRANDBOOK_INTEGRATION.md)
                             scroll-snap orchestrator, section context/nav, six sections;
                             cover = BrandbookHero + BrandbookHeroMetallicDrift (same artifact desktop/mobile)
-  useCinematicVideo.ts    ← viewport-gated browse video (ArchiveTile)
+  useCinematicVideo.ts       ← viewport-gated browse video (ArchiveTile, showreel ambient)
+  useDocumentScrollLock.ts   ← ref-counted iOS-safe document scroll lock (DEC-008)
 
 content/
   field.ts                ← archiveObjects registry
@@ -167,8 +168,7 @@ public/
   works/[slug]/           ← work territory (00-cover.*)
   brandbook/              ← hero-wire.png, about-wire.png (wire-art backgrounds)
   frames/
-    showreel_frame.png    ← metallic figurative frame overlay (1024×682, black bg,
-                            composited via SVG luminance-matte → transparent)
+    showreel_frame.png    ← metallic figurative frame overlay (1536×1024 RGBA — see SHOWREEL_FRAME_CALIBRATION.md)
 ```
 
 ---
@@ -255,10 +255,10 @@ The showreel section has received its Phase 4 cinematic treatment:
 - `ShowreelMediaCard` introduced as reusable cinematic media artifact
 - Transparent field — page space becomes the backdrop; no dark media slab
 - Video placeholder inset to the frame's inner window via named constants
-- Metallic frame PNG composited via SVG luminance-matte (`#oni-luma-matte`): black bg → transparent, metallic detail preserved
-- Dual-layer silhouette drop-shadow: contact shadow (tight) + atmospheric halo (wide, near-invisible)
-- Three isolated transform layers: float (CSS animation), scale (hover transition), parallax (JS rAF)
-- `oni-showreel-float` keyframe added to `globals.css` (md+, reduced-motion safe)
+- `ShowreelMediaCard` — RGBA frame + silhouette grounding; ambient video; opens installation or cinema viewer
+- `ShowreelInstallationViewer` / `ShowreelCinemaViewer` — dual viewer split at 768px (`docs/SHOWREEL_SYSTEM.md`)
+- Three isolated transform layers on ambient card: float (CSS, md+) / scale (hover) / parallax (JS rAF, fine pointer)
+- `oni-showreel-float` keyframe in `globals.css` (prefers-reduced-motion safe)
 
 ---
 
@@ -599,9 +599,10 @@ All z-index values are formally owned. No undocumented or ad-hoc values.
 | Spatial continuity field       | `[5]`         | `systems/atmosphere/ContinuityField.tsx`       |
 | Section content                | `10`          | `SectionContainer` (`relative z-10`)           |
 | Section atmosphere             | `20`          | Phase 4 section atmosphere systems             |
-| (reserved)                     | `30`          | —                                              |
+| Showreel installation viewer   | `30`          | `ShowreelInstallationViewer.tsx` — desktop modal, in-tree |
 | Navigation control surface     | `40` / `50`*  | `components/navigation/index.tsx`              |
 | Menu overlay                   | `50`          | `components/navigation/NavOverlay.tsx` — full-viewport layer; adaptive plane (full-width `< md`, partial-width right plane `md+`) |
+| Showreel cinema viewer (portal)| `[60]`        | `ShowreelCinemaViewer.tsx` — mobile-only; `createPortal` → `document.body` (DEC-007) |
 
 \* The control surface `<header>` is promoted from `z-40` to `z-50` while the overlay is
 active, so the trigger button remains interactive above the overlay. `NavOverlay` renders
@@ -609,7 +610,8 @@ before the header in the DOM; at the same z-level, DOM order gives the header th
 stack position. When the overlay is closed the header returns to `z-40`.
 
 Rules:
-- No system or section exceeds `z-20` except the navigation system
+- Section content and atmosphere stay at `z-10` / `z-20` unless listed here
+- Navigation (`40`/`50`) and documented modal viewers (`30`, `[60]`) are the only stack exceptions above `z-20`
 - No component uses escape-hatch values (`z-index: 9999`)
 - All z-index values must appear in this table
 
@@ -703,98 +705,51 @@ See `NAVIGATION_ARCHITECTURE.md` for full specification.
 
 ---
 
-## ShowreelSection Media Card Architecture
+## Interaction ownership
 
-### ShowreelMediaCard — unified media stack
+Touch, scroll lock, and pointer targeting for overlays and homepage surfaces.
 
-Frame, media surface, and play control compose as one spatial unit:
+### Document scroll lock (`useDocumentScrollLock`)
 
-```
-[group div]             ← Layer 1: hover detection context (containerRef — mouse events)
-  [svg defs]            ← hidden SVG filter definition (#oni-luma-matte, enhanced)
-  [float div]           ← Layer 2: CSS animation (oni-showreel-float, md+, reduced-motion safe)
-    [card div]          ← Layer 3: aspect ratio + hover scale transition (containerRef)
-      [media-object]    ← Layer 4: parallax target (mediaRef) — contains all sub-layers
-        [media-well]    ← absolute, inset to frame inner window, overflow-hidden
-          [media-content] ← dedicated layer for future video/still; vignette mask pre-applied
-          [play button] ← z-[1], above media-content, unmasked
-        [frame-layer]   ← z-[2], absolute inset-0, luma-matte filter + dual drop-shadow
-          [Image]       ← object-fill, fills card exactly (no distortion)
-```
+Canonical module: `systems/useDocumentScrollLock.ts` (`docs/DECISIONS.md` DEC-008).
 
-`media-object` is the parallax target. Both `media-well` (play control) and
-`frame-layer` (metallic frame) are children — they move as one spatial unit.
+- Ref-counted acquire/release — safe when multiple consumers could nest (today: one overlay or one showreel viewer at a time).
+- Optional `blockTouchMove: true` — document-level `touchmove` `preventDefault` for iOS Safari while locked.
+- **Consumers:** `NavOverlay`, `ShowreelInstallationViewer`, `ShowreelCinemaViewer`.
+- Do not duplicate inline `body` lock logic in components.
 
-### Frame inner window positioning constants
+### Touch ownership (homepage)
 
-Constants defined at the top of `ShowreelMediaCard.tsx` — update when the frame asset changes:
+| Surface | Ownership |
+|---------|-----------|
+| Hero WebGL canvas | `touch-pan-y` on canvas + `.oni-webgl`; **no** `OrbitControls` (DEC-006) |
+| Archive Fragment tiles | `touch-pan-y` on link; `pointer-events-none` on tile media (DEC-006) |
+| Cinema viewer (open) | `touch-none` + `overscroll-none` on portaled root; letterbox backdrop closes |
+| Cinema viewer (closed) | Root `pointer-events-none`; viewer `<video>` **`pointer-events-none`** when `!isOpen` (DEC-007) |
 
-| Constant       | Default  | Maps to                          |
-|----------------|----------|----------------------------------|
-| `FRAME_LEFT`   | `8.2%`   | Frame left border width          |
-| `FRAME_TOP`    | `13.8%`  | Frame top border height          |
-| `FRAME_WIDTH`  | `83.6%`  | Frame inner window width         |
+### Pointer-events rule
 
-### Enhanced luminance-matte compositing
+When a fullscreen overlay root uses `pointer-events-none` while staying mounted (closed dialog, opacity `0`), **descendants must not keep `pointer-events-auto`** unless intentionally interactive. Otherwise invisible media nodes remain hit targets over the page (ghost slab). See `docs/SHOWREEL_SYSTEM.md` § Closed-state interaction.
 
-The frame PNG (1024×682) has a black background with no alpha channel.
-SVG filter `#oni-luma-matte` performs a 4-step metallic rendering pipeline:
+---
 
-```
-Step 1 — feColorMatrix matrix (contrast boost, pivot 0.5, amplitude 1.2)
-         Sharpens metallic mid-tones, elevates specular highlights,
-         deepens recessed areas before the matte is extracted.
-         output = 1.2 × input − 0.10
+## ShowreelSection
 
-Step 2 — feColorMatrix luminanceToAlpha (from contrast-boosted image)
-         black → α=0  |  dark metallic → α≈0.2–0.5  |  silver → α≈0.8  |  white → α=1
+Runtime authority: **`docs/SHOWREEL_SYSTEM.md`**. Frame geometry and RGBA compositing: **`docs/SHOWREEL_FRAME_CALIBRATION.md`**.
 
-Step 3 — feComponentTransfer feFuncA gamma exponent=0.5 (√)
-         Sharpens alpha falloff — pushes mid-dark metallic zones toward opacity.
-         Without: luma 0.4 → α=0.4 → foggy 0.76 on white.
-         With √:  luma 0.4 → α=0.63 → defined 0.63 on white.
+### States
 
-Step 4 — feComposite in=boosted in2=luma-sharp operator=in
-         Composites contrast-boosted source colors through sharpened alpha mask.
-         Result: metallic frame with genuine silhouette transparency.
-```
+| State | Component | Notes |
+|-------|-----------|--------|
+| Ambient | `ShowreelMediaCard` | Muted loop; `useCinematicVideo`; framed RGBA stack; button opens viewer |
+| Installation | `ShowreelInstallationViewer` | ≥768px; `z-30`; white scrim + frame; in section tree |
+| Cinema | `ShowreelCinemaViewer` | <768px; portaled `z-[60]`; black fullscreen; no frame |
 
-CSS `filter` on the frame layer chains the SVG matte with dual drop-shadow:
-```
-filter: url(#oni-luma-matte)
-        drop-shadow(0px 1px 4px rgba(0,0,0,0.20))   ← contact shadow
-        drop-shadow(0px 6px 28px rgba(0,0,0,0.09))  ← atmospheric halo
-```
-Drop-shadow operates on the post-matte output — shadows trace the visible
-frame silhouette rather than the rectangular bounding box.
+`viewerKind` is set once per session at first open (`cinema` vs `installation`). Cinema portal **remains mounted** on `document.body` after first mobile open — closed visibility only (`DEC-007`).
 
-No `isolate` or `overflow-hidden` on the card div — shadows must render beyond element bounds.
+### Motion (ambient card)
 
-### Media-content vignette layer
-
-A dedicated empty `<div>` inside `media-well` holds a pre-applied radial
-`mask-image` (elliptical, center-full to transparent at edges). Currently
-invisible — the layer has no content. When future video or still frame is
-inserted into this div, its edges will dissolve softly into the metallic
-frame rather than cutting hard at the window boundary. The play button
-is a sibling of `media-content`, not a child — it is never masked.
-
-### Motion system
-
-Three transform layers on isolated elements to prevent animation/transition conflicts:
-
-| Layer        | Owner          | Technique       | Max range  | Trigger          |
-|--------------|----------------|-----------------|------------|------------------|
-| Float (Y)    | float div      | CSS keyframe    | ±7px       | Always (md+)     |
-| Scale        | card div       | CSS transition  | ×1.012     | hover            |
-| Parallax X/Y | media-object   | JS rAF / lerp   | ±5px       | mousemove (fine) |
-
-`media-object` is the parallax owner (previously `frame div`). By making it
-the parent of both media-well and frame-layer, the full spatial object moves
-together — frame and play control remain registered with each other on parallax.
-
-The JS parallax writes `media.style.transform` (via `mediaRef`).
-The frame layer's `style.filter` is a separate CSS property — no conflict.
+Float (`oni-showreel-float`, md+), hover scale on container, fine-pointer parallax on `mediaRef` — isolated transform owners; see `ShowreelMediaCard.tsx`.
 
 ---
 
