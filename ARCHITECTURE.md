@@ -32,7 +32,7 @@ Defined in `tailwind.config.ts` under `theme.extend.maxWidth`:
 
 | Token            | Value   | Used in              |
 |------------------|---------|----------------------|
-| `oni-page`       | 1500px  | CapabilitiesSection  |
+| `oni-page`       | 1500px  | CapabilitiesSection (archived — not on homepage) |
 | `oni-showreel`   | 1100px  | ShowreelSection      |
 | `oni-contact`    | 1400px  | ContactFooterSection |
 
@@ -80,7 +80,7 @@ app/
                        + combined rule: .oni-ambient-drift.oni-breath (stacks both animations)
   layout.tsx        ← root layout, fonts
   page.tsx          ← home: ExportModeProvider, PageBackdrop, ContinuityField, sections
-                      Hero → Capabilities → Archive Fragment → Brand Identity → Showreel → Contact Footer
+                      Hero → Archive Fragment → Brand Identity → Showreel → Contact Layer (footer)
   archive/
     page.tsx          ← browse: /archive (ArchiveGrid)
     [slug]/page.tsx   ← inspect: /archive/[slug] (ArchiveInspectView)
@@ -116,7 +116,11 @@ sections/
     ShowreelInstallationViewer.tsx ← desktop installation viewer (≥768px, z-30)
     ShowreelCinemaViewer.tsx     ← mobile cinema viewer (<768px, portaled z-[60])
   ContactFooterSection/
-    index.tsx             ← participates in atmosphere via RevealUp (entire content block)
+    index.tsx             ← poster heading + subline + footer cluster (RevealUp)
+    ProjectContactForm.tsx ← client inquiry form; POST to oni-contact-api (see Contact Layer Architecture)
+
+workers/
+  contact/                ← standalone Worker: oni-contact-api (not composed in Next build — DEC-010)
 
 systems/
   layout/
@@ -757,35 +761,73 @@ Float (`oni-showreel-float`, md+), hover scale on container, fine-pointer parall
 
 ---
 
-## ContactFooterSection Editorial Architecture
+## Contact Layer Architecture
 
-### Composition
+The homepage **Contact Layer** is the final section (`#contact`, `ContactFooterSection`). Inquiry intake is **not** implemented as a Next.js API route — it is isolated in a dedicated Cloudflare Worker so the Pages site stays static-friendly while uploads and delivery run at the edge.
 
-The lower section is an authored epilogue, not a conventional website footer.
-Spatial composition descends: editorial heading → contact annotations → CTA portal → footer cluster.
+**Authority:** `docs/contact-layer-spec.md` (fields, validation, deployment) · `docs/DECISIONS.md` DEC-010.
 
-**Heading:** `font-bebas` display scale, `clamp(4rem,18vw,9.5rem)`, `leading-[0.9]`, `tracking-[-0.01em]`.
-3-line vertical stack — "LET'S / WORK / TOGETHER" — creates asymmetric poster silhouette.
-Lines have different widths (narrow → narrow → wide), producing left-column spatial weight with open right field.
-- Mobile: ~4.2rem at 375px — dense, compressed, poster-like
-- Desktop: capped at 9.5rem — calmer, architectural, more breathable
+### Pipeline
 
-**Contact annotations:** flat infrastructural thread, `font-sans text-[11px] tracking-[0.18em] text-neutral-500 uppercase`.
-No border rows, no card framing. Opacity-only hover (`hover:opacity-40`).
+```
+Homepage Contact Layer (ProjectContactForm)
+        │  POST multipart/form-data
+        │  NEXT_PUBLIC_CONTACT_API_URL
+        ▼
+Cloudflare Worker — oni-contact-api (workers/contact/)
+        ├─ validate + honeypot + rate limit (KV)
+        ├─ R2 Attachments Storage (submissions/{id}/…)
+        ├─ Telegram Forum Delivery (Bot API, optional message_thread_id)
+        └─ Email Delivery — Resend → hello@oni.studio
+```
 
-**CTA — "START A PROJECT →":**
-Hairline-anchored text-link. Wrapped in `border-t border-black/[0.06] pt-6` — thin separator gives spatial
-grounding without button behavior. `font-sans text-[11px] font-semibold tracking-[0.26em] uppercase text-black`.
-Mirrors the SectionLabel typographic register. `href="mailto:hello@oni.studio"`. Opacity-only hover.
+Telegram and email are dispatched **in parallel** (`Promise.all`). Neither channel routes through the other.
 
-**Footer cluster:** two-cluster layout — navigation left / archival right.
-- Navigation layer: `text-[10px] tracking-[0.20em] text-neutral-400 uppercase` — footer nav links
-- Archival layer (right, md:items-end):
-  - Copyright: `text-[10px] tracking-[0.14em] text-neutral-400 uppercase`
-              - Authorship: `text-[10px] tracking-[0.08em] text-neutral-300` — `built by dodon.one with ONI`
-                "dodon.one" is an active link: `href="https://dodon.one"`, `target="_blank"`, `rel="noopener noreferrer"`
+### Frontend ownership
 
-Border: `border-black/[0.08]` — intentionally minimal, below glassmorphism threshold.
+| Concern | Owner |
+|---------|--------|
+| Section shell, poster heading, footer nav | `sections/ContactFooterSection/index.tsx` |
+| Form UI, client validation, success/error | `sections/ContactFooterSection/ProjectContactForm.tsx` |
+| Max width token | `max-w-oni-contact` (1400px) |
+| Worker URL | `NEXT_PUBLIC_CONTACT_API_URL` (Pages env — not in repo secrets) |
+
+No budget, timeline, company, or lead-gen fields. Honeypot: hidden `company`.
+
+### Worker ownership (`workers/contact/`)
+
+| Concern | Module / binding |
+|---------|------------------|
+| HTTP + CORS | `src/index.ts` |
+| Field + file validation | `src/validate.ts` |
+| Rate limiting | `src/rateLimit.ts` · `RATE_LIMIT` KV |
+| Attachment storage | `src/storage.ts` · `ATTACHMENTS` R2 |
+| Telegram + Resend | `src/delivery.ts` |
+| Config constants | `src/config.ts` |
+
+Deploy is independent of `next build` (`wrangler deploy` from `workers/contact/`).
+
+### ContactFooterSection composition (current)
+
+Authored epilogue, not a conventional footer card grid.
+
+Spatial descent: **poster heading** → **subline** → **project form** → **direct contact links** → **footer cluster**.
+
+**Heading:** `font-bebas`, `clamp(5rem,22vw,9.5rem)`, 3-line stack — Let's / Work / Together.
+
+**Form:** hairline-separated fields; uppercase micro-labels; opacity-only control hovers; compact attachment list (not enterprise dropzone).
+
+**Direct links:** `hello@oni.studio`, `@oni_studio` — retained below form.
+
+**Footer cluster:** nav (WORKS → `/works`, ARCHIVE, …) + copyright / authorship. Border `border-black/[0.08]`.
+
+Environmental CTA residue (`oni-cta-field` on hover) was removed when the form became the primary intake path.
+
+---
+
+## ContactFooterSection Editorial Architecture (legacy notes)
+
+Capabilities-section atmospheric marks and mailto-first CTA copy in older captures are **superseded** by Contact Layer Architecture above. `sections/CapabilitiesSection/` remains in repo but is **not** composed on `app/page.tsx` (Decision 001).
 
 ---
 

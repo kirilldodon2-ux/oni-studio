@@ -16,6 +16,7 @@ oni-site/
 │   ├── BRANDBOOK_INTEGRATION.md           ← /brandbook port, atmosphere pass, Phase 1 release (OPERATIONAL)
 │   ├── ARCHIVE_FRAGMENT_V2.md             ← homepage Archive Fragment section (OPERATIONAL)
 │   ├── BRAND_IDENTITY_SECTION.md          ← homepage Brand Identity threshold → /brandbook (OPERATIONAL)
+│   ├── contact-layer-spec.md              ← contact form + oni-contact-api Worker (OPERATIONAL)
 │   ├── FIGMA_EXPORT.md                    ← landing capture: ?export=1, metadata, freeze table
 │   └── FIGMA_RECONCILIATION_WORKFLOW.md   ← code ↔ Figma ↔ code perception doctrine
 │
@@ -23,7 +24,7 @@ oni-site/
 │   ├── globals.css              ← layout tokens, viewport safety (overflow-x: clip on html)
 │                                 + html.oni-export perception freeze (?export=1)
 │   ├── layout.tsx               ← root layout, font loading
-│   ├── page.tsx                 ← home: ExportModeProvider, backdrop, continuity, sections
+│   ├── page.tsx                 ← home: Hero → Archive Fragment → Brand Identity → Showreel → Contact
 │   ├── archive/
 │   │   ├── page.tsx             ← browse: /archive (ArchiveGrid)
 │   │   └── [slug]/
@@ -73,7 +74,8 @@ oni-site/
 │   │   ├── ShowreelInstallationViewer.tsx ← desktop installation viewer (≥768px)
 │   │   └── ShowreelCinemaViewer.tsx       ← mobile cinema viewer (<768px, body portal)
 │   ├── ContactFooterSection/
-│   │   └── index.tsx
+│   │   ├── index.tsx            ← poster heading, subline, footer cluster
+│   │   └── ProjectContactForm.tsx ← inquiry form → oni-contact-api
 │   └── GhostPopulationSection/  ← present; not composed on app/page.tsx (home)
 │       └── index.tsx
 │
@@ -134,7 +136,20 @@ oni-site/
 │       ├── NavLogo.tsx          ← reserved identity zone; visible sigil disabled
 │       ├── NavTelemetry.tsx     ← ambient annotation, desktop-only, pointer-events-none
 │       ├── NavMenuTrigger.tsx   ← MENU + ONINavigationSigil; toggles MENU/CLOSE
-│       └── NavOverlay.tsx       ← overlay: HOME · CAPABILITIES · ARCHIVE · BRANDBOOK · CONTACT (DEC-002)
+│       └── NavOverlay.tsx       ← overlay: HOME · ARCHIVE · BRANDBOOK · CONTACT (DEC-009)
+│
+├── workers/
+│   └── contact/                 ← oni-contact-api — standalone Cloudflare Worker (DEC-010)
+│       ├── wrangler.jsonc       ← Worker config, KV + R2 bindings
+│       ├── package.json
+│       ├── README.md              ← deploy + secrets checklist
+│       └── src/
+│           ├── index.ts         ← HTTP entry, CORS, orchestration
+│           ├── validate.ts      ← form + file validation
+│           ├── rateLimit.ts     ← per-IP KV rate limiting
+│           ├── storage.ts       ← R2 attachment uploads
+│           ├── delivery.ts      ← Telegram + Resend (parallel)
+│           └── config.ts        ← limits, MIME map, allowed origins
 │
 └── public/
     ├── archive/
@@ -204,3 +219,5 @@ oni-site/
 - `content/works/` + `public/works/[slug]/` — Works lane; covers are Pages-static — do not use `resolveArchiveMediaSrc()` (`CONTENT_SYSTEM.md`)
 - `systems/export/` — canonical `/?export=1` perception freeze; not a parallel route
 - `docs/FIGMA_EXPORT.md`, `docs/FIGMA_RECONCILIATION_WORKFLOW.md` — OPERATIONAL perception workflow
+- `workers/contact/` — project inquiry intake only; owns Telegram delivery, email delivery (Resend), file uploads (R2), rate limiting, and the contact API — deploy separately from Pages (`docs/contact-layer-spec.md`, DEC-010)
+- `sections/CapabilitiesSection/` — preserved in repo; not composed on homepage (Decision 001)

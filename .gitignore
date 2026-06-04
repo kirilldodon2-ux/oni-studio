@@ -1,5 +1,5 @@
-# dependencies
-/node_modules
+# dependencies (all depths — root Next app + workers/*)
+node_modules/
 /.pnp
 .pnp.js
 .yarn/install-state.gz

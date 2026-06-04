@@ -1,0 +1,28 @@
+{
+	"$schema": "../../node_modules/wrangler/config-schema.json",
+	"name": "oni-contact-api",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-04-01",
+	"observability": {
+		"enabled": true
+	},
+	"vars": {
+		"CONTACT_EMAIL_TO": "hello@oni.studio",
+		"CONTACT_EMAIL_FROM": "ONI Studio <contact@oni.studio>",
+		"RATE_LIMIT_MAX": "8",
+		"RATE_LIMIT_WINDOW_SEC": "3600"
+	},
+	"kv_namespaces": [
+		{
+			"binding": "RATE_LIMIT",
+			"id": "7dd40f193f714a2a98194f124c030083",
+			"remote": true
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "ATTACHMENTS",
+			"bucket_name": "oni-contact-attachments"
+		},
+	]
+}

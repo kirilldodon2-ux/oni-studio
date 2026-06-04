@@ -24,22 +24,13 @@ const NAV_ITEMS: readonly NavItem[] = [
       "text-[clamp(3rem,9vw,6.5rem)] text-black/[0.45] md:text-[clamp(3.75rem,7vw,7rem)]",
   },
   {
-    id: "capabilities",
-    label: "CAPABILITIES",
-    href: "#work",
-    ariaLabel: "Go to CAPABILITIES",
-    className:
-      "text-[clamp(3.8rem,12vw,8rem)] text-black md:text-[clamp(4.5rem,7.5vw,8rem)]",
-    listClassName: "mt-[clamp(1.25rem,3vh,1.75rem)] md:-ml-3",
-  },
-  {
     id: "archive",
     label: "ARCHIVE",
     href: "/archive",
     ariaLabel: "Go to ARCHIVE",
     className:
       "text-[clamp(4.4rem,14vw,9.25rem)] text-black/80 md:text-[clamp(5rem,8.5vw,9.25rem)]",
-    listClassName: "mt-[clamp(0.5rem,1.2vh,0.75rem)]",
+    listClassName: "mt-[clamp(1.25rem,3vh,1.75rem)] md:-ml-3",
   },
   {
     id: "brandbook",

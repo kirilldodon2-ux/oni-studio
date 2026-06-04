@@ -7,6 +7,84 @@ Operational decision log. Read before changing navigation, content lanes, or con
 
 ---
 
+## Decision 001 — Capabilities section removed from production
+
+**Status:** Accepted
+
+The homepage **Capabilities** section (Identity, Motion, Digital, Spatial, Systems) is removed from production composition.
+
+**Reason:**
+
+- Duplicates information already present in the archive
+- Introduces unnecessary text density
+- Weakens journal / archive editorial feeling
+- Team feedback indicated the section feels overloaded
+
+**Preservation:**
+
+Original implementation remains in `sections/CapabilitiesSection/` (not deleted). Content may return later in a different format.
+
+**Future possibilities (not current release):**
+
+- Archive tagging
+- Archive filters
+- Contextual capabilities
+- Project metadata
+
+**Implementation:** `app/page.tsx` no longer composes `CapabilitiesSection`. Overlay nav no longer links to `#work` (see DEC-009).
+
+---
+
+## DEC-009 — Overlay index after Capabilities removal (2026-06-04)
+
+**Context:** Decision 001 removes the `#work` homepage anchor. CAPABILITIES overlay row pointed at that section.
+
+**Decision:** Remove CAPABILITIES from `NavOverlay` `NAV_ITEMS`. Canonical overlay order: HOME · ARCHIVE · BRANDBOOK · CONTACT.
+
+| Label | href | Rationale |
+|-------|------|-----------|
+| HOME | `/` | Landing |
+| ARCHIVE | `/archive` | Cross-archetype browse field |
+| BRANDBOOK | `/brandbook` | Brand identity route |
+| CONTACT | `#contact` | Homepage contact layer |
+
+`/works` remains a first-class route via direct URL and telemetry; not an overlay row (unchanged from DEC-002 intent).
+
+**Rejected:** Keeping CAPABILITIES linking to a removed section. Redirecting CAPABILITIES to `/works` without editorial review (different content lane).
+
+**Implementation:** `components/navigation/NavOverlay.tsx` · footer nav in `sections/ContactFooterSection/index.tsx` (WORK → `/works`).
+
+**See also:** Decision 001 above · `docs/contact-layer-spec.md`
+
+---
+
+## DEC-010 — Contact Layer in dedicated Cloudflare Worker (2026-06-04)
+
+**Status:** Active
+
+**Context:** Homepage needs project inquiry intake with file attachments and dual notification (Telegram forum topic + email). Running that logic inside the Next.js Pages bundle would couple static deploys to upload handling, secrets, and delivery retries.
+
+**Decision:** Extract inquiry handling into a standalone Cloudflare Worker — `oni-contact-api` (`workers/contact/`).
+
+| Concern | Owner |
+|---------|--------|
+| Form UI + client validation | `sections/ContactFooterSection/ProjectContactForm.tsx` |
+| API, uploads, delivery, rate limit | `workers/contact/` |
+
+**Reason:**
+
+- Keep homepage static and deployable on Cloudflare Pages without a Node inquiry API
+- Isolate validation, R2 uploads, Telegram, and Resend from the editorial frontend
+- Parallel Telegram + email delivery without cross-routing between channels
+
+**Rejected:** Next.js Route Handler on Pages for multipart uploads (heavier deploy surface, mixed runtime concerns). Telegram-via-email or email-via-Telegram forwarding.
+
+**Implementation:** `workers/contact/` · `docs/contact-layer-spec.md` · `ARCHITECTURE.md` § Contact Layer Architecture · `NEXT_PUBLIC_CONTACT_API_URL` on Pages.
+
+**See also:** DEC-009 (contact anchor `#contact`) · Decision 001
+
+---
+
 ## DEC-008 — `useDocumentScrollLock` (2026-05-30)
 
 **Context:** Menu overlay and showreel viewers both need iOS-safe document scroll lock. Ad-hoc per-component body style mutation risks drift and double-release bugs.
@@ -194,3 +272,4 @@ Operational decision log. Read before changing navigation, content lanes, or con
 | `CONTENT_SYSTEM.md` | Archive authoring + Works Pages-static delivery |
 | `docs/SHOWREEL_SYSTEM.md` | Showreel runtime authority (ambient / installation / cinema) |
 | `docs/SHOWREEL_FRAME_CALIBRATION.md` | Frame geometry + RGBA compositing authority |
+| `docs/contact-layer-spec.md` | Contact form + oni-contact-api Worker authority |

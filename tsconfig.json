@@ -16,5 +16,10 @@
     "paths": { "@/*": ["./*"] }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "_archive/brandbook-make-export", "_archive_graveyard"]
+  "exclude": [
+    "node_modules",
+    "_archive/brandbook-make-export",
+    "_archive_graveyard",
+    "workers/contact"
+  ]
 }
