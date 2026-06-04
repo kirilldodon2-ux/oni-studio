@@ -64,14 +64,16 @@ function formatTelegramProjectBlockquote(project: string): string {
 
 function formatTelegramHtml(p: DeliveryPayload): string {
   const sections = [
-    "<blockquote>oni-lead-form</blockquote>",
+    "<b>🪙 ЗАЯВКА С САЙТА</b>",
     "",
     TELEGRAM_LEAD_SEPARATOR,
     "",
     "<b>Имя:</b>",
+    "",
     escapeTelegramHtml(p.name),
     "",
     "<b>Связь:</b>",
+    "",
     escapeTelegramHtml(p.contact),
     "",
     TELEGRAM_LEAD_SEPARATOR,

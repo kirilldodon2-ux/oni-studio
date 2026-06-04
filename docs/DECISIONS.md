@@ -41,12 +41,14 @@ Original implementation remains in `sections/CapabilitiesSection/` (not deleted)
 
 **Decision:** Remove CAPABILITIES from `NavOverlay` `NAV_ITEMS`. Canonical overlay order: HOME · ARCHIVE · BRANDBOOK · CONTACT.
 
-| Label | href | Rationale |
-|-------|------|-----------|
-| HOME | `/` | Landing |
-| ARCHIVE | `/archive` | Cross-archetype browse field |
-| BRANDBOOK | `/brandbook` | Brand identity route |
-| CONTACT | `#contact` | Homepage contact layer |
+
+| Label     | href         | Rationale                    |
+| --------- | ------------ | ---------------------------- |
+| HOME      | `/`          | Landing                      |
+| ARCHIVE   | `/archive`   | Cross-archetype browse field |
+| BRANDBOOK | `/brandbook` | Brand identity route         |
+| CONTACT   | `#contact`   | Homepage contact layer       |
+
 
 `/works` remains a first-class route via direct URL and telemetry; not an overlay row (unchanged from DEC-002 intent).
 
@@ -66,10 +68,12 @@ Original implementation remains in `sections/CapabilitiesSection/` (not deleted)
 
 **Decision:** Extract inquiry handling into a standalone Cloudflare Worker — `oni-contact-api` (`workers/contact/`).
 
-| Concern | Owner |
-|---------|--------|
-| Form UI + client validation | `sections/ContactFooterSection/ProjectContactForm.tsx` |
-| API, uploads, delivery, rate limit | `workers/contact/` |
+
+| Concern                            | Owner                                                  |
+| ---------------------------------- | ------------------------------------------------------ |
+| Form UI + client validation        | `sections/ContactFooterSection/ProjectContactForm.tsx` |
+| API, uploads, delivery, rate limit | `workers/contact/`                                     |
+
 
 **Reason:**
 
@@ -91,13 +95,15 @@ Original implementation remains in `sections/CapabilitiesSection/` (not deleted)
 
 **Decision:** Single module `systems/useDocumentScrollLock.ts` owns lock lifecycle.
 
-| Concern | Behavior |
-|---------|----------|
-| **Ownership** | Module-level ref count (`lockCount`); first acquire snapshots `scrollY` + inline `html`/`body` styles; last release restores both and calls `window.scrollTo(0, scrollY)` |
-| **Apply** | `html`/`body` `overflow: hidden`; `body` `position: fixed`, `top: -scrollY`, `width: 100%`, `touchAction: none` |
-| **Consumers** | `NavOverlay` (`blockTouchMove: true`); `ShowreelInstallationViewer`; `ShowreelCinemaViewer` |
-| **`blockTouchMove`** | When true: document `touchmove` listener with `{ passive: false }` + `preventDefault` — iOS background-scroll guard; ref-counted separately (`touchMoveBlockCount`) |
-| **Restoration** | Synchronous on last consumer cleanup — revert inline styles, then `scrollTo` saved position; clear snapshot |
+
+| Concern              | Behavior                                                                                                                                                                  |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Ownership**        | Module-level ref count (`lockCount`); first acquire snapshots `scrollY` + inline `html`/`body` styles; last release restores both and calls `window.scrollTo(0, scrollY)` |
+| **Apply**            | `html`/`body` `overflow: hidden`; `body` `position: fixed`, `top: -scrollY`, `width: 100%`, `touchAction: none`                                                           |
+| **Consumers**        | `NavOverlay` (`blockTouchMove: true`); `ShowreelInstallationViewer`; `ShowreelCinemaViewer`                                                                               |
+| `**blockTouchMove`** | When true: document `touchmove` listener with `{ passive: false }` + `preventDefault` — iOS background-scroll guard; ref-counted separately (`touchMoveBlockCount`)       |
+| **Restoration**      | Synchronous on last consumer cleanup — revert inline styles, then `scrollTo` saved position; clear snapshot                                                               |
+
 
 **Rejected:** Duplicate scroll-lock logic in overlay or showreel components. Reintroducing `useControlSurfaceScroll` for scroll feedback (DEC-004).
 
@@ -115,11 +121,13 @@ Original implementation remains in `sections/CapabilitiesSection/` (not deleted)
 
 **Investigation summary:**
 
-| Hypothesis | Result |
-|------------|--------|
-| Return focus / `scrollTo` order | Ruled out — `preventScroll` patch no improvement |
-| Pre-unlock `onTimeSync` | Ruled out — deferral experiment did not fix TEST C |
+
+| Hypothesis                                     | Result                                                                                |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Return focus / `scrollTo` order                | Ruled out — `preventScroll` patch no improvement                                      |
+| Pre-unlock `onTimeSync`                        | Ruled out — deferral experiment did not fix TEST C                                    |
 | Closed portaled layer + child `pointer-events` | **Confirmed** — `pointer-events-none` on video when `!isOpen` fixed production TEST C |
+
 
 **Decision:** Gate viewer `<video>` pointer events on `isOpen` — `pointer-events-auto` only while open; `pointer-events-none` when closed. Portal mount persistence unchanged.
 
@@ -137,15 +145,16 @@ Original implementation remains in `sections/CapabilitiesSection/` (not deleted)
 
 **Root causes:**
 
-| Surface | Cause |
-|---------|--------|
-| Hero canvas | `@react-three/drei` `OrbitControls` `connect()` set inline `touch-action: none` on `gl.domElement`, overriding Tailwind `touch-pan-y` |
-| Archive tiles | iOS Safari: touch on `<video>` inside full-surface `<Link>`; media element captured pan before document |
+
+| Surface       | Cause                                                                                                                                 |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Hero canvas   | `@react-three/drei` `OrbitControls` `connect()` set inline `touch-action: none` on `gl.domElement`, overriding Tailwind `touch-pan-y` |
+| Archive tiles | iOS Safari: touch on `<video>` inside full-surface `<Link>`; media element captured pan before document                               |
+
 
 **Decision:**
 
 1. **Hero — remove `OrbitControls` entirely** (all breakpoints). `enableRotate` / `enablePan` / `enableZoom` were already `false`; environmental motion is `SpinOnY` + `useFrame`, not controls. Removing avoids `touch-action: none` and dead pointer listeners. Canvas + `.oni-webgl` keep `touch-pan-y` (class + inline on canvas).
-
 2. **Archive Fragment — minimal tile touch stack** (`ArchiveFragmentTile`): `touch-pan-y` on link + wrapper; `pointer-events-none` on `<video>` / `<Image>` so the link owns tap and vertical pan reaches the document. Autoplay via `useCinematicVideo` unchanged.
 
 **Rejected:** Post-connect `touch-action` override while keeping OrbitControls — fights drei on every connect/dispose. Mobile-only OrbitControls removal — desktop scroll-over-canvas benefit is free when control is unused.
@@ -162,12 +171,14 @@ Original implementation remains in `sections/CapabilitiesSection/` (not deleted)
 
 **Decision:** **Route consciousness on the control surface** — read `pathname` via Next.js `usePathname()` in navigation client components. No new systems, no scroll-state, no route transitions.
 
-| Surface | Behavior |
-|---------|----------|
-| **NavTelemetry** | `ONI.STUDIO / {lane}` — `HOME` on `/`; `WORKS` when path starts with `/works`; `ARCHIVE` when path starts with `/archive`; `MMXXVI` fallback elsewhere |
-| **NavOverlay links** | `aria-current="page"` when href matches current route (`/` exact; `/works` and `/archive` include subpaths; `#showreel` / `#contact` current only on `/`) |
-| **NavOverlay links (visual)** | Non-current items at reduced opacity until hover/focus (overlay interaction unchanged) |
-| **NavOverlay footer annotation** | Route-specific third line: `HOME FIELD` · `WORKS INDEX` · `WORK OPEN` · `ARCHIVE FIELD` · `ARCHIVE OPEN` · `ONI STUDIO` fallback |
+
+| Surface                          | Behavior                                                                                                                                                  |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **NavTelemetry**                 | `ONI.STUDIO / {lane}` — `HOME` on `/`; `WORKS` when path starts with `/works`; `ARCHIVE` when path starts with `/archive`; `MMXXVI` fallback elsewhere    |
+| **NavOverlay links**             | `aria-current="page"` when href matches current route (`/` exact; `/works` and `/archive` include subpaths; `#showreel` / `#contact` current only on `/`) |
+| **NavOverlay links (visual)**    | Non-current items at reduced opacity until hover/focus (overlay interaction unchanged)                                                                    |
+| **NavOverlay footer annotation** | Route-specific third line: `HOME FIELD` · `WORKS INDEX` · `WORK OPEN` · `ARCHIVE FIELD` · `ARCHIVE OPEN` · `ONI STUDIO` fallback                          |
+
 
 **Rejected:** Reintroducing scroll-state on the closed control surface for orientation (DEC-004). Folding Works media into `resolveArchiveMediaSrc()` (archive R2 scope — see `CONTENT_SYSTEM.md` Works lane).
 
@@ -217,13 +228,15 @@ Original implementation remains in `sections/CapabilitiesSection/` (not deleted)
 
 **Decision (canonical — matches `NavOverlay.tsx` `NAV_ITEMS`):**
 
-| Label | href | Rationale |
-|-------|------|-----------|
-| HOME | `/` | Landing |
-| CAPABILITIES | `#work` | Homepage territory section (Capabilities) — dominant M tier; `md:-ml-3` |
-| ARCHIVE | `/archive` | Cross-archetype browse field |
-| BRANDBOOK | `/brandbook` | Brand identity route |
-| CONTACT | `#contact` | Homepage footer anchor |
+
+| Label        | href         | Rationale                                                               |
+| ------------ | ------------ | ----------------------------------------------------------------------- |
+| HOME         | `/`          | Landing                                                                 |
+| CAPABILITIES | `#work`      | Homepage territory section (Capabilities) — dominant M tier; `md:-ml-3` |
+| ARCHIVE      | `/archive`   | Cross-archetype browse field                                            |
+| BRANDBOOK    | `/brandbook` | Brand identity route                                                    |
+| CONTACT      | `#contact`   | Homepage footer anchor                                                  |
+
 
 **Overlay order:** HOME · CAPABILITIES · ARCHIVE · BRANDBOOK · CONTACT
 
@@ -244,12 +257,14 @@ Original implementation remains in `sections/CapabilitiesSection/` (not deleted)
 
 **Decision:** Ship a **parallel Works lane** with minimum surface area:
 
-| Layer | Location |
-|-------|----------|
-| Registry | `content/works/field.ts` + `types.ts` |
-| Territory | `public/works/[slug]/` (`00-cover.*`) |
-| Routes | `/works`, `/works/[slug]` — static SSG |
-| Render | `systems/works/` — typographic index + document shell |
+
+| Layer     | Location                                              |
+| --------- | ----------------------------------------------------- |
+| Registry  | `content/works/field.ts` + `types.ts`                 |
+| Territory | `public/works/[slug]/` (`00-cover.`*)                 |
+| Routes    | `/works`, `/works/[slug]` — static SSG                |
+| Render    | `systems/works/` — typographic index + document shell |
+
 
 **Explicitly deferred:** MDX narrative, Zod validation, `shared/content/`, evidence sequences, R2 upload for works assets, archive cross-links.
 
@@ -263,13 +278,47 @@ Original implementation remains in `sections/CapabilitiesSection/` (not deleted)
 
 ## Document relations
 
-| Document | Role |
-|----------|------|
-| `ROADMAP.md` | Delivery status — sync when decisions ship |
-| `NAVIGATION_ARCHITECTURE.md` | Navigation runtime spec |
-| `ARCHITECTURE.md` | Infrastructure truth |
-| `AI_RULES.md` | Agent constraints — points here for nav/content lane decisions |
-| `CONTENT_SYSTEM.md` | Archive authoring + Works Pages-static delivery |
-| `docs/SHOWREEL_SYSTEM.md` | Showreel runtime authority (ambient / installation / cinema) |
-| `docs/SHOWREEL_FRAME_CALIBRATION.md` | Frame geometry + RGBA compositing authority |
-| `docs/contact-layer-spec.md` | Contact form + oni-contact-api Worker authority |
+
+| Document                             | Role                                                           |
+| ------------------------------------ | -------------------------------------------------------------- |
+| `ROADMAP.md`                         | Delivery status — sync when decisions ship                     |
+| `NAVIGATION_ARCHITECTURE.md`         | Navigation runtime spec                                        |
+| `ARCHITECTURE.md`                    | Infrastructure truth                                           |
+| `AI_RULES.md`                        | Agent constraints — points here for nav/content lane decisions |
+| `CONTENT_SYSTEM.md`                  | Archive authoring + Works Pages-static delivery                |
+| `docs/SHOWREEL_SYSTEM.md`            | Showreel runtime authority (ambient / installation / cinema)   |
+| `docs/SHOWREEL_FRAME_CALIBRATION.md` | Frame geometry + RGBA compositing authority                    |
+| `docs/contact-layer-spec.md`         | Contact form + oni-contact-api Worker authority                |
+
+
+DEC-010
+
+Contact Layer replaces traditional contact section.
+
+Architecture:
+
+Form
+
+↓
+
+Cloudflare Worker
+
+↓
+
+Telegram Forum Topic
+
+↓
+
+Email (future)
+
+Attachments:
+
+R2
+
+Rate limiting:
+
+KV
+
+Primary notification channel:
+
+Telegram
