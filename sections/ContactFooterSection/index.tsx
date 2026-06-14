@@ -10,7 +10,7 @@ const FOOTER_NAV = [
   { label: "IDENTITY", href: "#identity" },
   { label: "SHOWREEL", href: "#showreel" },
   { label: "CONTACT", href: "#contact" },
-  { label: "INSTAGRAM", href: "https://instagram.com/oni_studio" },
+  { label: "INSTAGRAM", href: "https://www.instagram.com/oni_visual_studio" },
 ] as const;
 
 export function ContactFooterSection() {
@@ -40,18 +40,18 @@ export function ContactFooterSection() {
 
           <div className="mt-12 flex flex-col gap-1 md:mt-16">
             <a
-              href="mailto:hello@oni.studio"
+              href="mailto:hello@onidigital.net"
               className="w-fit font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-500 transition-opacity duration-300 hover:opacity-40"
             >
-              hello@oni.studio
+              hello@onidigital.net
             </a>
             <a
-              href="https://instagram.com/oni_studio"
+              href="https://www.instagram.com/oni_visual_studio"
               target="_blank"
               rel="noopener noreferrer"
               className="w-fit font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-500 transition-opacity duration-300 hover:opacity-40"
             >
-              @oni_studio
+              @oni_visual_studio
             </a>
           </div>
 
