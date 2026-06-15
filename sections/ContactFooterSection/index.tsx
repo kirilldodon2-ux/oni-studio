@@ -11,6 +11,7 @@ const FOOTER_NAV = [
   { label: "SHOWREEL", href: "#showreel" },
   { label: "CONTACT", href: "/#contact" },
   { label: "INSTAGRAM", href: "https://www.instagram.com/oni_visual_studio" },
+  { label: "TELEGRAM", href: "https://t.me/ONIvisual" },
 ] as const;
 
 export function ContactFooterSection() {
@@ -72,7 +73,7 @@ export function ContactFooterSection() {
                       <a
                         href={item.href}
                         className="text-neutral-400 transition-colors duration-300 hover:text-neutral-600"
-                        {...(item.label === "INSTAGRAM"
+                        {...(item.label === "INSTAGRAM" || item.label === "TELEGRAM"
                           ? { target: "_blank", rel: "noopener noreferrer" }
                           : {})}
                       >
