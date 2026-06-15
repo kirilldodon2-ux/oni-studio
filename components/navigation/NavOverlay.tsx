@@ -44,7 +44,7 @@ const NAV_ITEMS: readonly NavItem[] = [
   {
     id: "contact",
     label: "CONTACT",
-    href: "#contact",
+    href: "/#contact",
     ariaLabel: "Go to CONTACT",
     className:
       "text-[clamp(3.6rem,11vw,7.5rem)] text-black/[0.55] md:text-[clamp(4.25rem,7.25vw,7.5rem)]",

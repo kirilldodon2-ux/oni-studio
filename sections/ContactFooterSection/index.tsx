@@ -9,7 +9,7 @@ const FOOTER_NAV = [
   { label: "ARCHIVE", href: "/archive" },
   { label: "IDENTITY", href: "#identity" },
   { label: "SHOWREEL", href: "#showreel" },
-  { label: "CONTACT", href: "#contact" },
+  { label: "CONTACT", href: "/#contact" },
   { label: "INSTAGRAM", href: "https://www.instagram.com/oni_visual_studio" },
 ] as const;
 
@@ -53,6 +53,14 @@ export function ContactFooterSection() {
             >
               @oni_visual_studio
             </a>
+            <a
+              href="https://t.me/ONIvisual"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-fit font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-500 transition-opacity duration-300 hover:opacity-40"
+            >
+              @ONIvisual
+            </a>
           </div>
 
           <footer className="mt-16 border-t border-black/[0.08] pt-7 md:mt-28 md:pt-10">
@@ -83,18 +91,6 @@ export function ContactFooterSection() {
               <div className="flex flex-col gap-1.5 md:items-end">
                 <p className="font-sans text-[10px] font-medium uppercase tracking-[0.14em] text-neutral-400">
                   ONI Studio © 2026
-                </p>
-                <p className="font-sans text-[10px] font-medium tracking-[0.08em] text-neutral-300">
-                  built by{" "}
-                  <a
-                    href="https://dodon.one"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="transition-opacity duration-300 hover:opacity-60"
-                  >
-                    dodon.one
-                  </a>
-                  {" "}with ONI
                 </p>
               </div>
             </div>
