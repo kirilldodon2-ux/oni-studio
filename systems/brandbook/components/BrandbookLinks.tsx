@@ -6,13 +6,13 @@ import { useRef } from "react";
 const LINKS = [
   {
     platform: "telegram",
-    handle: "@ONIvisual",
-    url: "https://t.me/ONIvisual",
+    handle: "@ONIdigital",
+    url: "https://t.me/ONIdigital",
   },
   {
     platform: "instagram",
-    handle: "@oni_visual_studio",
-    url: "https://www.instagram.com/oni_visual_studio",
+    handle: "@onidigital_studio",
+    url: "https://www.instagram.com/onidigital_studio",
   },
 ];
 
