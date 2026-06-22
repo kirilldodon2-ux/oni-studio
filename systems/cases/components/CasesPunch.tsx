@@ -4,11 +4,11 @@ import { motion, useInView } from "motion/react";
 import Link from "next/link";
 import { useRef } from "react";
 import { punchSrc } from "@/systems/cases/punch/punchAssets";
+import { CaseImage } from "@/systems/cases/components/CaseImage";
 import { CaseMotionImage } from "@/systems/cases/components/CaseMotionImage";
+import { punchSectionStyle } from "@/systems/cases/punch/punchLayout";
 
-const PUNCH_PURPLE = "#8f62c7";
 const BG = "#06040c";
-const SCOPE = ["Event Branding", "Visual Identity", "Merch", "Posters"];
 
 const IMG = {
   planet: punchSrc("planet.png"),
@@ -20,38 +20,16 @@ export function CasesPunch() {
   const isInView = useInView(ref, { amount: 0.3 });
 
   return (
-    <section
-      ref={ref}
-      className="relative overflow-hidden"
-      style={{ height: "100vh", scrollSnapAlign: "start", flexShrink: 0, backgroundColor: BG }}
-    >
-      {/* Ambient glow — purple radial in left zone */}
+    <section ref={ref} className="relative overflow-hidden" style={punchSectionStyle(BG)}>
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 55% 65% at 28% 38%, rgba(143,98,199,0.18) 0%, rgba(143,98,199,0.04) 60%, transparent 80%)",
+            "radial-gradient(ellipse 55% 65% at 28% 38%, rgba(143,98,199,0.14) 0%, transparent 80%)",
         }}
         aria-hidden="true"
       />
 
-      {/* Left accent strip */}
-      <motion.div
-        className="absolute left-0 top-0 hidden h-full w-[3px] md:block"
-        style={{ backgroundColor: PUNCH_PURPLE }}
-        initial={{ scaleY: 0, originY: 0 }}
-        animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
-        transition={{ duration: 0.9, ease: "easeOut", delay: 0.05 }}
-      />
-
-      {/* Ghost "01" */}
-      <div
-        className="pointer-events-none absolute -bottom-4 -right-4 select-none font-bebas leading-none text-white"
-        style={{ fontSize: "clamp(10rem, 30vw, 24rem)", opacity: 0.02 }}
-        aria-hidden="true"
-      >01</div>
-
-      {/* Category + year */}
       <motion.div
         className="absolute left-8 z-20 flex items-center gap-4 md:left-10 lg:left-14"
         style={{ top: "calc(var(--oni-header-h, 4rem) + 1.75rem)" }}
@@ -64,7 +42,6 @@ export function CasesPunch() {
         <span className="text-[10px] font-medium tracking-[0.30em] text-white/20">2026</span>
       </motion.div>
 
-      {/* PLANET — huge, right-shifted (z=0) */}
       <motion.div
         className="pointer-events-none absolute hidden md:block"
         style={{
@@ -74,9 +51,9 @@ export function CasesPunch() {
           width: "clamp(38rem, 92vw, 78rem)",
           zIndex: 0,
         }}
-        initial={{ opacity: 0, scale: 0.88 }}
-        animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.88 }}
-        transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 1.8, ease: "easeOut", delay: 0.05 }}
         aria-hidden="true"
       >
         <CaseMotionImage
@@ -86,14 +63,13 @@ export function CasesPunch() {
           style={{
             width: "100%",
             display: "block",
-            filter: "drop-shadow(0 0 80px rgba(143,98,199,0.28)) drop-shadow(0 0 30px rgba(143,98,199,0.15))",
+            filter: "drop-shadow(0 0 60px rgba(143,98,199,0.22))",
           }}
           animate={{ rotate: 360 }}
           transition={{ duration: 36, ease: "linear", repeat: Infinity }}
         />
       </motion.div>
 
-      {/* CUP — floats in upper-left void, above title */}
       <motion.div
         className="pointer-events-none absolute hidden md:block"
         style={{
@@ -104,27 +80,20 @@ export function CasesPunch() {
         }}
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 1, delay: 0.5 }}
+        transition={{ duration: 1, delay: 0.4 }}
         aria-hidden="true"
       >
-        <CaseMotionImage
+        <CaseImage
           src={IMG.cup}
           alt=""
           sectionInView={isInView}
           style={{
             width: "100%",
-            filter: "drop-shadow(0 0 18px rgba(143,98,199,0.95)) drop-shadow(0 0 6px rgba(200,160,255,0.55))",
+            filter: "drop-shadow(0 0 14px rgba(143,98,199,0.5))",
           }}
-          animate={{
-            x: [0, 10, 3, -6, 0],
-            y: [0, -14, -22, -8, 0],
-            rotate: [-10, -4, -14, -6, -10],
-          }}
-          transition={{ duration: 8, ease: "easeInOut", repeat: Infinity }}
         />
       </motion.div>
 
-      {/* Bottom gradient — text legibility over planet */}
       <div
         className="pointer-events-none absolute bottom-0 left-0 right-0 hidden md:block"
         style={{
@@ -135,10 +104,7 @@ export function CasesPunch() {
         aria-hidden="true"
       />
 
-      {/* TEXT — bottom-left, z=10 */}
       <div className="absolute bottom-0 left-0 z-10 flex flex-col px-8 pb-10 md:max-w-[58%] md:px-10 md:pb-12 lg:max-w-[52%] lg:px-14 lg:pb-14">
-
-        {/* Mobile: planet */}
         <div className="pointer-events-none mb-4 block md:hidden" aria-hidden="true">
           <CaseMotionImage
             src={IMG.planet}
@@ -148,7 +114,7 @@ export function CasesPunch() {
               width: "88vw",
               display: "block",
               margin: "0 auto",
-              filter: "drop-shadow(0 0 30px rgba(143,98,199,0.4))",
+              filter: "drop-shadow(0 0 30px rgba(143,98,199,0.35))",
             }}
             animate={{ rotate: 360 }}
             transition={{ duration: 36, ease: "linear", repeat: Infinity }}
@@ -156,62 +122,35 @@ export function CasesPunch() {
         </div>
 
         <motion.p
-          className="mb-2 text-[10px] font-medium tracking-[0.40em] text-white/22 md:mb-3"
+          className="mb-3 text-[10px] font-medium tracking-[0.36em] text-white/25"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
         >
-          NEVER SLEEP
-        </motion.p>
-
-        <motion.p
-          className="mb-1 text-[10px] font-medium tracking-[0.32em]"
-          style={{ color: PUNCH_PURPLE }}
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.7, delay: 0.18 }}
-        >
           PUNCH · ПУНШ
         </motion.p>
 
-        <div className="overflow-hidden">
-          <motion.h2
-            className="font-bebas leading-[0.88] text-white"
-            style={{ fontSize: "clamp(3rem, 10.5vw, 8.5rem)" }}
-            initial={{ y: "105%" }}
-            animate={isInView ? { y: "0%" } : { y: "105%" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-          >
-            PARTY EVENT DESIGN
-          </motion.h2>
-        </div>
-
-        <motion.div
-          className="mt-4 flex flex-wrap gap-2 md:mt-5"
-          initial={{ opacity: 0, y: 6 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
-          transition={{ duration: 0.7, delay: 0.38 }}
+        <motion.h2
+          className="font-bebas leading-[0.88] text-white"
+          style={{ fontSize: "clamp(3rem, 10.5vw, 8.5rem)" }}
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.12 }}
         >
-          {SCOPE.map((tag) => (
-            <span key={tag} className="border border-white/[0.1] px-2.5 py-1 text-[10px] tracking-[0.22em] text-white/40">
-              {tag}
-            </span>
-          ))}
-        </motion.div>
+          PARTY EVENT DESIGN
+        </motion.h2>
 
         <motion.div
-          className="mt-5 md:mt-6"
-          initial={{ opacity: 0, y: 6 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
-          transition={{ duration: 0.7, delay: 0.52 }}
+          className="mt-6 border-t border-white/[0.08] pt-4"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.7, delay: 0.35 }}
         >
           <Link
             href="/cases/punch"
-            className="group inline-flex items-center gap-3 px-5 py-3 text-[11px] font-medium tracking-[0.22em] text-white transition-opacity duration-200 hover:opacity-75"
-            style={{ backgroundColor: PUNCH_PURPLE }}
+            className="text-[11px] font-semibold tracking-[0.26em] text-white transition-opacity hover:opacity-60"
           >
-            WATCH FULL
-            <span className="inline-block transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">→</span>
+            WATCH FULL →
           </Link>
         </motion.div>
       </div>

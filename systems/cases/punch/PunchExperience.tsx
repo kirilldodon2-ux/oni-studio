@@ -2,20 +2,18 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { usePunchSection } from "./PunchSectionContext";
+import { PUNCH_SCROLL_STYLE } from "./punchLayout";
 import { PunchCover }       from "./sections/PunchCover";
 import { PunchBrand }       from "./sections/PunchBrand";
 import { PunchHeadliner }   from "./sections/PunchHeadliner";
 import { PunchAbout }       from "./sections/PunchAbout";
-import { PunchColors }   from "./sections/PunchColors";
-import { PunchPosters }  from "./sections/PunchPosters";
-import { PunchSocial }   from "./sections/PunchSocial";
-import { PunchPeople }   from "./sections/PunchPeople";
-import { PunchMerch }    from "./sections/PunchMerch";
-import { PunchStickers } from "./sections/PunchStickers";
-import { PunchCredits }  from "./sections/PunchCredits";
-import { PunchFooter }   from "./sections/PunchFooter";
+import { PunchPosters }     from "./sections/PunchPosters";
+import { PunchPeople }      from "./sections/PunchPeople";
+import { PunchMerch }       from "./sections/PunchMerch";
+import { PunchStickers }    from "./sections/PunchStickers";
+import { PunchFooter }      from "./sections/PunchFooter";
 
-const TOTAL_SECTIONS = 12;
+const TOTAL_SECTIONS = 9;
 
 export function PunchExperience() {
   const { setActiveSection, scrollContainerRef } = usePunchSection();
@@ -27,7 +25,8 @@ export function PunchExperience() {
     requestAnimationFrame(() => {
       const el = scrollContainerRef.current;
       if (el) {
-        const section = Math.round(el.scrollTop / el.clientHeight);
+        const h = el.clientHeight;
+        const section = h > 0 ? Math.round(el.scrollTop / h) : 0;
         setActiveSection(Math.min(Math.max(section, 0), TOTAL_SECTIONS - 1));
       }
       ticking.current = false;
@@ -44,20 +43,17 @@ export function PunchExperience() {
   return (
     <div
       ref={scrollContainerRef}
-      className="h-screen overflow-y-scroll"
-      style={{ scrollSnapType: "y mandatory", scrollBehavior: "auto" }}
+      className="h-[100dvh] min-h-[100dvh] overflow-y-scroll overscroll-y-contain"
+      style={PUNCH_SCROLL_STYLE}
     >
       <PunchCover />
       <PunchBrand />
       <PunchHeadliner />
       <PunchAbout />
-      <PunchColors />
       <PunchPosters />
-      <PunchSocial />
       <PunchPeople />
       <PunchMerch />
       <PunchStickers />
-      <PunchCredits />
       <PunchFooter />
     </div>
   );
