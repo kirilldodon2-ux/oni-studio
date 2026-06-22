@@ -4,7 +4,6 @@ import { motion, useInView } from "motion/react";
 import Link from "next/link";
 import { useRef } from "react";
 import { punchSrc } from "@/systems/cases/punch/punchAssets";
-import { CaseImage } from "@/systems/cases/components/CaseImage";
 import { CaseMotionImage } from "@/systems/cases/components/CaseMotionImage";
 
 const PUNCH_PURPLE = "#8f62c7";
@@ -12,7 +11,6 @@ const BG = "#06040c";
 const SCOPE = ["Event Branding", "Visual Identity", "Merch", "Posters"];
 
 const IMG = {
-  rapper: punchSrc("xxxmanera-headliner.png"),
   planet: punchSrc("planet.png"),
   cup:    punchSrc("0911e0cbaf2f31314e861e459b1a42d26baf1d47.png"),
 } as const;
@@ -66,7 +64,7 @@ export function CasesPunch() {
         <span className="text-[10px] font-medium tracking-[0.30em] text-white/20">2026</span>
       </motion.div>
 
-      {/* PLANET — huge, right-shifted, behind artist (z=0) */}
+      {/* PLANET — huge, right-shifted (z=0) */}
       <motion.div
         className="pointer-events-none absolute hidden md:block"
         style={{
@@ -95,56 +93,19 @@ export function CasesPunch() {
         />
       </motion.div>
 
-      {/* RAPPER — z=1, left column (RGBA headliner — no screen blend) */}
+      {/* CUP — floating over planet, center-left */}
       <motion.div
         className="pointer-events-none absolute hidden md:block"
         style={{
-          left: "-4%",
-          top: "50%",
-          translateY: "-48%",
-          width: "clamp(16rem, 28vw, 24rem)",
-          zIndex: 1,
-          filter: "drop-shadow(0 0 40px rgba(143,98,199,0.35))",
-        }}
-        initial={{ opacity: 0, y: 50 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-        transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-        aria-hidden="true"
-      >
-        <motion.div
-          animate={{
-            x: [0, -4, 3, -2, 0],
-            filter: [
-              "hue-rotate(0deg)",
-              "hue-rotate(60deg) saturate(2)",
-              "hue-rotate(-40deg)",
-              "hue-rotate(0deg)",
-            ],
-          }}
-          transition={{ duration: 0.25, times: [0, 0.2, 0.6, 1], repeat: Infinity, repeatDelay: 5.8, delay: 2 }}
-        >
-          <CaseImage
-            src={IMG.rapper}
-            alt=""
-            className="h-auto w-full object-contain"
-            sectionInView={isInView}
-            priority
-          />
-        </motion.div>
-      </motion.div>
-
-      {/* CUP — z=3, near rapper hands */}
-      <motion.div
-        className="pointer-events-none absolute hidden md:block"
-        style={{
-          left: "clamp(18rem, 30vw, 28rem)",
-          top: "clamp(30%, 44vh, 58%)",
-          zIndex: 3,
-          width: "clamp(2.8rem, 4.5vw, 4rem)",
+          left: "34%",
+          top: "46%",
+          translateX: "-50%",
+          zIndex: 6,
+          width: "clamp(3.2rem, 5.5vw, 5rem)",
         }}
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 1, delay: 0.8 }}
+        transition={{ duration: 1, delay: 0.5 }}
         aria-hidden="true"
       >
         <CaseMotionImage
@@ -153,19 +114,18 @@ export function CasesPunch() {
           sectionInView={isInView}
           style={{
             width: "100%",
-            mixBlendMode: "screen",
-            filter: "drop-shadow(0 0 14px rgba(143,98,199,0.95)) drop-shadow(0 0 5px rgba(200,160,255,0.5))",
+            filter: "drop-shadow(0 0 18px rgba(143,98,199,0.95)) drop-shadow(0 0 6px rgba(200,160,255,0.55))",
           }}
           animate={{
-            x: [0, 18, 6, -10, 0],
-            y: [0, -12, -20, -8, 0],
-            rotate: [-15, -8, -20, -10, -15],
+            x: [0, 14, 4, -8, 0],
+            y: [0, -10, -18, -6, 0],
+            rotate: [-12, -6, -18, -8, -12],
           }}
           transition={{ duration: 7, ease: "easeInOut", repeat: Infinity }}
         />
       </motion.div>
 
-      {/* Bottom gradient — z=4 */}
+      {/* Bottom gradient — text legibility over planet */}
       <div
         className="pointer-events-none absolute bottom-0 left-0 right-0 hidden md:block"
         style={{
@@ -177,7 +137,7 @@ export function CasesPunch() {
       />
 
       {/* TEXT — bottom-left, z=10 */}
-      <div className="absolute bottom-0 left-0 z-10 flex flex-col px-8 pb-10 md:max-w-[54%] md:px-10 md:pb-12 lg:max-w-[48%] lg:px-14 lg:pb-14">
+      <div className="absolute bottom-0 left-0 z-10 flex flex-col px-8 pb-10 md:max-w-[58%] md:px-10 md:pb-12 lg:max-w-[52%] lg:px-14 lg:pb-14">
 
         {/* Mobile: planet */}
         <div className="pointer-events-none mb-4 block md:hidden" aria-hidden="true">
@@ -218,7 +178,7 @@ export function CasesPunch() {
         <div className="overflow-hidden">
           <motion.h2
             className="font-bebas leading-[0.88] text-white"
-            style={{ fontSize: "clamp(2.6rem, 8.5vw, 7rem)" }}
+            style={{ fontSize: "clamp(3rem, 10.5vw, 8.5rem)" }}
             initial={{ y: "105%" }}
             animate={isInView ? { y: "0%" } : { y: "105%" }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}

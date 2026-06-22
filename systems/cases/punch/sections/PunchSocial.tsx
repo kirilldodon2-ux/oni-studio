@@ -8,8 +8,8 @@ import { CaseMotionImage } from "@/systems/cases/components/CaseMotionImage";
 const PURPLE = "#8f62c7";
 
 const IMG = {
-  phoneLarge: punchSrc("10aa3444c95c4253f46440f0ef2aac8ccec8b61e.png"),
-  phoneSmall: punchSrc("357158fc1890baecb5c5e89ea5c1ce0fd88ae697.png"),
+  phoneMain:   punchSrc("phone-telegram.png"),
+  phoneAccent: punchSrc("phone-poster.png"),
 };
 
 export function PunchSocial() {
@@ -24,11 +24,11 @@ export function PunchSocial() {
     >
       {/* Background glow */}
       <div
-        className="pointer-events-none absolute left-[55%] top-1/2 -translate-x-1/2 -translate-y-1/2"
+        className="pointer-events-none absolute left-[60%] top-1/2 -translate-x-1/2 -translate-y-1/2"
         style={{
-          width: "55vw",
-          height: "55vw",
-          background: `radial-gradient(circle, rgba(143,98,199,0.2) 0%, transparent 65%)`,
+          width: "70vw",
+          height: "70vw",
+          background: `radial-gradient(circle, rgba(143,98,199,0.22) 0%, transparent 62%)`,
         }}
         aria-hidden="true"
       />
@@ -42,7 +42,7 @@ export function PunchSocial() {
         06
       </div>
 
-      {/* Left — text always on top, full width for headings */}
+      {/* Left — copy */}
       <div
         className="relative z-30 flex flex-col justify-center pl-8 md:pl-10 lg:pl-14"
         style={{
@@ -105,60 +105,70 @@ export function PunchSocial() {
         </motion.div>
       </div>
 
-      {/* Center — large phone (×2.5, height-bounded so layout stays stable) */}
+      {/* Telegram phone — hero scale, bleeds off bottom/right */}
       <motion.div
         className="pointer-events-none absolute z-10"
         style={{
-          left: "clamp(18rem, 32vw, 26rem)",
-          top: "50%",
-          translateY: "-50%",
-          width: "clamp(26rem, 48vw, 42rem)",
+          left: "clamp(8rem, 18vw, 14rem)",
+          bottom: "-16%",
+          width: "clamp(46rem, 88vw, 72rem)",
+          rotate: "-6deg",
         }}
-        initial={{ opacity: 0, y: 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-        transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+        initial={{ opacity: 0, y: 60 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.12 }}
+        aria-hidden="true"
       >
         <CaseMotionImage
-          src={IMG.phoneLarge}
-          alt="Большой телефон с Telegram"
+          src={IMG.phoneMain}
+          alt="Telegram-анонс ПУНШ"
           sectionInView={isInView}
           className="h-auto w-full"
           style={{
-            maxHeight: "88vh",
-            filter: "drop-shadow(0 0 50px rgba(143,98,199,0.4)) drop-shadow(0 24px 40px rgba(0,0,0,0.75))",
+            filter:
+              "drop-shadow(0 0 60px rgba(143,98,199,0.35)) drop-shadow(0 32px 64px rgba(0,0,0,0.85))",
           }}
-          animate={{ y: [-8, 8, -8] }}
-          transition={{ duration: 5, ease: "easeInOut", repeat: Infinity }}
+          animate={{ y: [-10, 10, -10] }}
+          transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
         />
       </motion.div>
 
-      {/* Right — secondary phone (×2, pinned inside frame) */}
+      {/* Poster phone — accent, bleeds off top/right */}
       <motion.div
         className="pointer-events-none absolute z-20"
         style={{
-          right: "clamp(1.5rem, 4vw, 3rem)",
-          top: "50%",
-          translateY: "-50%",
-          width: "clamp(14rem, 22vw, 22rem)",
+          right: "-12%",
+          top: "-10%",
+          width: "clamp(34rem, 58vw, 52rem)",
+          rotate: "12deg",
         }}
-        initial={{ opacity: 0, y: 30, rotate: 10 }}
-        animate={isInView ? { opacity: 1, y: 0, rotate: 5 } : { opacity: 0, y: 30, rotate: 10 }}
-        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+        initial={{ opacity: 0, y: -40, rotate: 18 }}
+        animate={isInView ? { opacity: 1, y: 0, rotate: 12 } : { opacity: 0, y: -40, rotate: 18 }}
+        transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.28 }}
+        aria-hidden="true"
       >
         <CaseMotionImage
-          src={IMG.phoneSmall}
-          alt="Телефон с постером"
+          src={IMG.phoneAccent}
+          alt="Постер в телефоне"
           sectionInView={isInView}
           className="h-auto w-full"
           style={{
-            opacity: 0.9,
-            transform: "rotate(5deg)",
-            filter: "drop-shadow(0 16px 28px rgba(0,0,0,0.65))",
+            filter: "drop-shadow(0 24px 48px rgba(0,0,0,0.75)) drop-shadow(0 0 40px rgba(143,98,199,0.2))",
           }}
-          animate={{ y: [8, -8, 8] }}
-          transition={{ duration: 5, ease: "easeInOut", repeat: Infinity, delay: 0.5 }}
+          animate={{ y: [12, -12, 12] }}
+          transition={{ duration: 5.5, ease: "easeInOut", repeat: Infinity, delay: 0.4 }}
         />
       </motion.div>
+
+      {/* Edge vignette — phones feel cropped by viewport */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[25]"
+        style={{
+          background:
+            "linear-gradient(to right, #0d0010 0%, transparent 18%), linear-gradient(to top, #0d0010 0%, transparent 12%)",
+        }}
+        aria-hidden="true"
+      />
     </section>
   );
 }
