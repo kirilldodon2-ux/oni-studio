@@ -40,7 +40,7 @@ export function PunchCover() {
           src={PLANET}
           alt=""
           className="h-auto w-full"
-          style={{ filter: "drop-shadow(0 0 60px rgba(143,98,199,0.4))" }}
+          style={{ mixBlendMode: "screen", filter: "drop-shadow(0 0 60px rgba(143,98,199,0.4))" }}
           animate={{ rotate: 360 }}
           transition={{ duration: 50, ease: "linear", repeat: Infinity }}
         />

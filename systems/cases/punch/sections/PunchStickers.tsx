@@ -5,25 +5,61 @@ import { useRef } from "react";
 
 const PURPLE = "#8f62c7";
 
-const IMG = {
-  rapper: "/cases/punch/216be9907372b69d0e269a72403e810c8a85e1e9.png",
-  cup:    "/cases/punch/0911e0cbaf2f31314e861e459b1a42d26baf1d47.png",
-  /* 12 sticker grid items — from section 12.3 in Figma Make */
-  grid: [
-    "/cases/punch/0192d7aa82402731c768076d15a8723288da4b2d.png",
-    "/cases/punch/c9eb72d915f6e28f08d7e999ac7058849925ca60.png",
-    "/cases/punch/7dd49aa878b92dd7d27210878de79a8b07d14f7d.png",
-    "/cases/punch/c759dd81a987ba16171e41e95bb6081bc47c411a.png",
-    "/cases/punch/fb895568246bf568e7bb2679622ca5715da9d0d1.png",
-    "/cases/punch/2978c4726895f4bd7680251dc60f90da5cbf99c5.png",
-    "/cases/punch/da6347751165a41a9ae1638e750456b7e87af6de.png",
-    "/cases/punch/43481b646499f9a303dc4e0564a3c9a4e4b39c79.png",
-    "/cases/punch/386398f5faf9366a6343534c166c85faf25c7779.png",
-    "/cases/punch/a461b2a2a462a7968b2791db415de0e33cd452ea.png",
-    "/cases/punch/0e7865bf374b74f7203d80ffd3651f47646214b4.png",
-    "/cases/punch/888dd8166f9a77ab3219c6d38d87f336b8fe3e5b.png",
-  ],
-};
+/**
+ * All 28 stickers from НАКЛЕЙКИ project folder.
+ * Each has: src, size weight (1=base, 1.4=large), tilt, entrance direction, timing.
+ */
+const STICKERS: Array<{
+  src: string;
+  size: number;  // relative flex size
+  rot: number;   // final tilt deg
+  from: "top" | "left" | "right" | "bottom";
+  delay: number;
+}> = [
+  // Root stickers
+  { src: "/cases/punch/stickers/s-root-123.png",       size: 1.3, rot:  -8, from: "top",    delay: 0.00 },
+  { src: "/cases/punch/stickers/s-root-naklika.png",   size: 1.0, rot:   6, from: "left",   delay: 0.05 },
+  { src: "/cases/punch/stickers/s-root-nekurit.png",   size: 0.9, rot: -12, from: "right",  delay: 0.08 },
+  { src: "/cases/punch/stickers/s-root-stakan.png",    size: 1.1, rot:   9, from: "bottom", delay: 0.12 },
+  // МОБИЛЭНД × ПУНШ
+  { src: "/cases/punch/stickers/stk-mobiland-1.png",   size: 1.0, rot:  -5, from: "top",    delay: 0.14 },
+  { src: "/cases/punch/stickers/stk-mobiland-2.png",   size: 1.2, rot:  14, from: "right",  delay: 0.18 },
+  { src: "/cases/punch/stickers/stk-mobiland-3.png",   size: 0.85,rot:  -9, from: "left",   delay: 0.22 },
+  { src: "/cases/punch/stickers/stk-mobiland-4.png",   size: 1.0, rot:   7, from: "bottom", delay: 0.26 },
+  { src: "/cases/punch/stickers/stk-mobiland-5.png",   size: 1.1, rot: -16, from: "top",    delay: 0.30 },
+  { src: "/cases/punch/stickers/stk-mobiland-6.png",   size: 0.9, rot:  11, from: "right",  delay: 0.34 },
+  { src: "/cases/punch/stickers/stk-mobiland-7.png",   size: 1.3, rot:  -6, from: "left",   delay: 0.38 },
+  // ПЛАЗМА × ПУНШ
+  { src: "/cases/punch/stickers/stk-plazma-1.png",     size: 1.2, rot:  18, from: "top",    delay: 0.20 },
+  { src: "/cases/punch/stickers/stk-plazma-2.png",     size: 1.0, rot:  -4, from: "bottom", delay: 0.24 },
+  { src: "/cases/punch/stickers/stk-plazma-3.png",     size: 0.9, rot:  12, from: "left",   delay: 0.28 },
+  { src: "/cases/punch/stickers/stk-plazma-4.png",     size: 1.1, rot:  -8, from: "right",  delay: 0.32 },
+  { src: "/cases/punch/stickers/stk-plazma-5.png",     size: 1.0, rot:   5, from: "top",    delay: 0.36 },
+  // САМЕДИ × ПУНШ
+  { src: "/cases/punch/stickers/stk-samedi-1.png",     size: 1.3, rot: -10, from: "left",   delay: 0.16 },
+  { src: "/cases/punch/stickers/stk-samedi-2.png",     size: 1.0, rot:   8, from: "top",    delay: 0.21 },
+  { src: "/cases/punch/stickers/stk-samedi-3.png",     size: 0.9, rot: -14, from: "right",  delay: 0.25 },
+  { src: "/cases/punch/stickers/stk-samedi-4.png",     size: 1.1, rot:   6, from: "bottom", delay: 0.29 },
+  // ХХ
+  { src: "/cases/punch/stickers/stk-hh-1.png",         size: 1.4, rot:  10, from: "top",    delay: 0.10 },
+  { src: "/cases/punch/stickers/stk-hh-2.png",         size: 1.0, rot:  -7, from: "right",  delay: 0.15 },
+  { src: "/cases/punch/stickers/stk-hh-3.png",         size: 1.2, rot:  13, from: "left",   delay: 0.19 },
+  // Новая папка
+  { src: "/cases/punch/stickers/stk-new-1.png",        size: 1.0, rot:  -9, from: "bottom", delay: 0.06 },
+  { src: "/cases/punch/stickers/stk-new-2.png",        size: 1.2, rot:  15, from: "top",    delay: 0.11 },
+  { src: "/cases/punch/stickers/stk-new-3.png",        size: 0.85,rot:  -5, from: "right",  delay: 0.17 },
+  { src: "/cases/punch/stickers/stk-new-4.png",        size: 1.0, rot:  11, from: "left",   delay: 0.23 },
+  { src: "/cases/punch/stickers/stk-new-5.png",        size: 1.3, rot:  -3, from: "bottom", delay: 0.27 },
+];
+
+function getInitialPos(from: "top" | "left" | "right" | "bottom") {
+  switch (from) {
+    case "top":    return { y: -60, x: 0 };
+    case "bottom": return { y:  60, x: 0 };
+    case "left":   return { x: -60, y: 0 };
+    case "right":  return { x:  60, y: 0 };
+  }
+}
 
 export function PunchStickers() {
   const ref = useRef<HTMLElement>(null);
@@ -32,114 +68,99 @@ export function PunchStickers() {
   return (
     <section
       ref={ref}
-      className="relative flex overflow-hidden"
-      style={{ height: "100vh", scrollSnapAlign: "start", flexShrink: 0, backgroundColor: "#101010" }}
+      className="relative flex flex-col overflow-hidden"
+      style={{ height: "100vh", scrollSnapAlign: "start", flexShrink: 0, backgroundColor: "#0a000f" }}
     >
-      {/* Purple vertical sidebar */}
-      <motion.div
-        className="absolute left-0 top-0 z-10 h-full"
-        style={{ width: "clamp(3rem, 6vw, 5rem)", backgroundColor: PURPLE }}
-        initial={{ scaleX: 0, originX: 0 }}
-        animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+      {/* Ambient purple glow */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(143,98,199,0.18) 0%, transparent 70%)",
+        }}
         aria-hidden="true"
       />
 
-      {/* Left: rapper figure */}
-      <div className="relative z-20 flex w-2/5 items-end">
-        <motion.div
-          className="pointer-events-none absolute bottom-0 left-0 w-full"
-          style={{ paddingLeft: "clamp(3rem, 6vw, 5rem)" }}
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-        >
-          <img
-            src={IMG.rapper}
-            alt=""
-            className="h-auto w-full"
-            style={{ mixBlendMode: "screen" }}
-          />
-        </motion.div>
-
-        {/* Floating cup */}
-        <motion.div
-          className="absolute right-[-2rem] top-[12%] z-30"
-          style={{ width: "clamp(4rem, 8vw, 7rem)" }}
-          initial={{ opacity: 0, scale: 0.5, rotate: -30 }}
-          animate={isInView
-            ? { opacity: 1, scale: 1, rotate: -12 }
-            : { opacity: 0, scale: 0.5, rotate: -30 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
-        >
-          <motion.img
-            src={IMG.cup}
-            alt=""
-            className="h-auto w-full drop-shadow-xl"
-            animate={{ y: [-6, 6, -6], rotate: [-12, -8, -12] }}
-            transition={{ duration: 3.5, ease: "easeInOut", repeat: Infinity }}
-          />
-        </motion.div>
-      </div>
-
-      {/* Right: sticker grid */}
-      <div className="relative z-20 flex w-3/5 flex-col justify-center px-4 py-10 md:px-6">
+      {/* Header row — below navbar */}
+      <div
+        className="relative z-20 flex items-center justify-between px-8 md:px-10 lg:px-14"
+        style={{ paddingTop: "calc(var(--oni-header-h, 4rem) + 1.2rem)" }}
+      >
+        <div className="flex items-baseline gap-5">
+          <motion.h2
+            className="font-bebas leading-none text-white"
+            style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)" }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+          >
+            STICKER
+          </motion.h2>
+          <motion.h2
+            className="font-bebas leading-none"
+            style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)", color: PURPLE }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.12 }}
+          >
+            KIT
+          </motion.h2>
+        </div>
         <motion.p
-          className="mb-3 text-[9px] font-medium tracking-[0.38em] text-white/25"
+          className="text-[9px] font-medium tracking-[0.38em] text-white/20"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
         >
           SECTION 09 / STICKER KIT
         </motion.p>
+      </div>
 
-        <div className="overflow-hidden">
-          <motion.h2
-            className="font-bebas leading-[0.9] text-white"
-            style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)" }}
-            initial={{ y: "110%" }}
-            animate={isInView ? { y: "0%" } : { y: "110%" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-          >
-            STICKER
-          </motion.h2>
-        </div>
-        <div className="overflow-hidden">
-          <motion.h2
-            className="mb-4 font-bebas leading-[0.9]"
-            style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)", color: PURPLE }}
-            initial={{ y: "110%" }}
-            animate={isInView ? { y: "0%" } : { y: "110%" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.22 }}
-          >
-            KIT
-          </motion.h2>
-        </div>
-
-        {/* 3 × 4 sticker grid */}
-        <div
-          className="grid gap-2"
-          style={{ gridTemplateColumns: "repeat(4, 1fr)" }}
-        >
-          {IMG.grid.map((src, i) => (
+      {/* Sticker grid — fills remaining space */}
+      <div
+        className="relative z-10 flex flex-1 flex-wrap content-start gap-2 overflow-hidden px-6 pb-6 pt-3 md:gap-3 md:px-8 md:pb-8 lg:px-10"
+        style={{ alignContent: "space-evenly" }}
+      >
+        {STICKERS.map((s, i) => {
+          const init = getInitialPos(s.from);
+          return (
             <motion.div
-              key={src}
-              className="aspect-square overflow-hidden rounded-sm"
-              style={{ backgroundColor: "#1a1a1a" }}
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={isInView
-                ? { opacity: 1, scale: 1 }
-                : { opacity: 0, scale: 0.7 }}
-              transition={{
-                duration: 0.5,
-                ease: [0.16, 1, 0.3, 1],
-                delay: 0.3 + i * 0.04,
+              key={i}
+              className="relative shrink-0"
+              style={{
+                width: `clamp(${5 * s.size}rem, ${7 * s.size}vw, ${8 * s.size}rem)`,
+                rotate: s.rot,
               }}
+              initial={{ opacity: 0, ...init, scale: 0.6 }}
+              animate={
+                isInView
+                  ? { opacity: 1, x: 0, y: 0, scale: 1 }
+                  : { opacity: 0, ...init, scale: 0.6 }
+              }
+              transition={{
+                duration: 0.7,
+                ease: [0.16, 1, 0.3, 1],
+                delay: s.delay + 0.15,
+              }}
+              aria-hidden="true"
             >
-              <img src={src} alt="" className="h-full w-full object-contain p-1" />
+              {/* Subtle float */}
+              <motion.img
+                src={s.src}
+                alt=""
+                className="h-auto w-full"
+                style={{ mixBlendMode: "screen" }}
+                animate={{ y: [0, i % 2 === 0 ? -4 : 4, 0] }}
+                transition={{
+                  duration: 3 + (i % 5) * 0.4,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                  delay: i * 0.15,
+                }}
+              />
             </motion.div>
-          ))}
-        </div>
+          );
+        })}
       </div>
     </section>
   );

@@ -6,7 +6,7 @@ import { useRef } from "react";
 const PURPLE = "#8f62c7";
 
 const IMG = {
-  rapper: "/cases/punch/9c4b5265bef96a23df48b66a20fdefac5f3870bf.png",
+  rapper: "/cases/punch/xxxmanera-yellow.png",
 };
 
 const PLATFORMS = [

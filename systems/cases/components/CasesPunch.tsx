@@ -96,21 +96,23 @@ export function CasesPunch() {
       </motion.div>
 
       {/* ─────────────────────────────────────────────────
-          RAPPER — large full-body, fills left zone, screen blend
+          RAPPER — centred vertically, upper body + face visible
+          Planet will rest at his hands level (mid-body)
           Occasional glitch jitter
       ───────────────────────────────────────────────── */}
       <motion.div
         className="pointer-events-none absolute hidden md:block"
         style={{
-          left: "-2%",
-          bottom: "0",
-          width: "clamp(22rem, 42vw, 36rem)",
+          left: "1%",
+          top: "50%",
+          translateY: "-38%",
+          width: "clamp(20rem, 38vw, 32rem)",
           mixBlendMode: "screen",
           zIndex: 1,
           filter: "drop-shadow(0 0 30px rgba(143,98,199,0.25))",
         }}
-        initial={{ opacity: 0, y: 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 50 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
         transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
         aria-hidden="true"
       >
@@ -138,13 +140,14 @@ export function CasesPunch() {
       </motion.div>
 
       {/* ─────────────────────────────────────────────────
-          PLANET + ORBIT — z-2, hovers at chest level of rapper
+          PLANET + ORBIT — sits at rapper's hands level (~55% from top)
+          mix-blend-mode: screen removes black bg
       ───────────────────────────────────────────────── */}
       <div
         className="pointer-events-none absolute hidden md:block"
         style={{
-          left: "clamp(6rem, 16vw, 15rem)",
-          top: "6%",
+          left: "clamp(7rem, 18vw, 16rem)",
+          top: "clamp(6rem, 30vh, 22rem)",
           zIndex: 2,
         }}
         aria-hidden="true"
@@ -155,20 +158,21 @@ export function CasesPunch() {
           animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.7 }}
           transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
         >
-          {/* Planet — spinning */}
+          {/* Planet — spinning, screen blend removes black background */}
           <motion.img
             src={IMG.planet}
             alt=""
             style={{
-              width: "clamp(18rem, 30vw, 26rem)",
+              width: "clamp(16rem, 28vw, 24rem)",
               display: "block",
+              mixBlendMode: "screen",
               filter: "drop-shadow(0 0 60px rgba(143,98,199,0.55)) drop-shadow(0 0 20px rgba(143,98,199,0.3))",
             }}
             animate={{ rotate: 360 }}
             transition={{ duration: 22, ease: "linear", repeat: Infinity }}
           />
 
-          {/* Orbit arm — rotates, cup counter-rotates to stay upright */}
+          {/* Orbit arm */}
           <motion.div
             style={{ position: "absolute", top: "50%", left: "50%", width: 0, height: 0 }}
             animate={{ rotate: 360 }}
@@ -177,12 +181,11 @@ export function CasesPunch() {
             <div
               style={{
                 position: "absolute",
-                left: "clamp(9.5rem, 16vw, 14rem)",
+                left: "clamp(8.5rem, 15vw, 13rem)",
                 top: 0,
                 transform: "translateY(-50%)",
               }}
             >
-              {/* Counter-rotation keeps cup upright */}
               <motion.div
                 animate={{ rotate: -360 }}
                 transition={{ duration: 8, ease: "linear", repeat: Infinity }}
@@ -192,11 +195,9 @@ export function CasesPunch() {
                   alt=""
                   style={{
                     width: "clamp(2.8rem, 4.5vw, 4rem)",
-                    filter:
-                      "drop-shadow(0 0 12px rgba(143,98,199,0.9)) drop-shadow(0 0 4px rgba(200,160,255,0.4))",
+                    filter: "drop-shadow(0 0 12px rgba(143,98,199,0.9)) drop-shadow(0 0 4px rgba(200,160,255,0.4))",
                     mixBlendMode: "screen",
                   }}
-                  /* Depth simulation: shrinks + fades as it passes behind planet */
                   animate={{
                     scale:   [1.0, 0.8, 0.4, 0.8, 1.0],
                     opacity: [1.0, 0.9, 0.2, 0.9, 1.0],
@@ -271,6 +272,7 @@ export function CasesPunch() {
             src={IMG.planet}
             alt=""
             style={{ width: "72vw", display: "block", margin: "0 auto",
+              mixBlendMode: "screen",
               filter: "drop-shadow(0 0 30px rgba(143,98,199,0.5))" }}
             animate={{ rotate: 360 }}
             transition={{ duration: 22, ease: "linear", repeat: Infinity }}

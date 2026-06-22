@@ -14,109 +14,135 @@ export function PunchAbout() {
     <section
       ref={ref}
       className="relative flex overflow-hidden"
-      style={{ height: "100vh", scrollSnapAlign: "start", flexShrink: 0, backgroundColor: "#101010" }}
+      style={{ height: "100vh", scrollSnapAlign: "start", flexShrink: 0, backgroundColor: "#0d0010" }}
     >
-      {/* Purple diagonal band */}
+      {/* LEFT COLUMN — purple band full-height with logo centered */}
       <motion.div
-        className="pointer-events-none absolute left-0 right-0 top-[45%]"
-        style={{ height: "clamp(3rem, 7vw, 5.5rem)", backgroundColor: PURPLE }}
-        initial={{ scaleX: 0, originX: 0 }}
-        animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-        aria-hidden="true"
-      />
+        className="relative flex flex-shrink-0 flex-col items-center justify-center"
+        style={{ width: "clamp(12rem, 30vw, 24rem)", backgroundColor: PURPLE }}
+        initial={{ x: "-100%" }}
+        animate={isInView ? { x: "0%" } : { x: "-100%" }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+      >
+        {/* Watermark ПУНШ */}
+        <div
+          className="pointer-events-none absolute inset-0 flex items-center justify-center select-none overflow-hidden"
+          aria-hidden="true"
+        >
+          <span
+            className="font-bebas text-white leading-none"
+            style={{ fontSize: "clamp(7rem, 18vw, 14rem)", opacity: 0.08, writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+          >
+            ПУНШ
+          </span>
+        </div>
 
-      {/* Left col — logo + section label */}
-      <div className="relative z-10 flex w-2/5 flex-col items-center justify-center px-8 md:px-10 lg:pl-14">
+        {/* Section label — vertical */}
         <motion.p
-          className="mb-5 self-start text-[9px] font-medium tracking-[0.38em] text-white/25"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[9px] font-medium tracking-[0.36em] text-white/50 whitespace-nowrap"
+          style={{ writingMode: "vertical-rl", transform: "rotate(180deg) translateX(50%)" }}
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.7, delay: 0.05 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
         >
           SECTION 03 / ABOUT
         </motion.p>
 
+        {/* Logo */}
         <motion.div
-          style={{ width: "clamp(8rem, 18vw, 14rem)" }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          className="relative z-10"
+          style={{ width: "clamp(7rem, 18vw, 14rem)" }}
+          initial={{ opacity: 0, scale: 0.8, y: 20 }}
+          animate={isInView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.8, y: 20 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
         >
           <img
             src={LOGO}
             alt="ПУНШ NEVER SLEEP"
             className="h-auto w-full"
-            style={{ filter: "drop-shadow(0 0 24px rgba(143,98,199,0.4))" }}
+            style={{ filter: "drop-shadow(0 0 20px rgba(0,0,0,0.4))" }}
           />
         </motion.div>
-      </div>
+      </motion.div>
 
-      {/* Right col — text */}
-      <div className="relative z-10 flex w-3/5 flex-col justify-center pr-8 md:pr-10 lg:pr-14">
+      {/* RIGHT COLUMN — dark, all text */}
+      <div
+        className="relative flex flex-1 flex-col justify-center px-8 md:px-10 lg:px-14"
+        style={{ paddingTop: "calc(var(--oni-header-h, 4rem) + 1.5rem)" }}
+      >
+        {/* "ABOUT" heading */}
         <div className="overflow-hidden">
           <motion.h2
-            className="font-bebas leading-[0.88] text-white"
-            style={{ fontSize: "clamp(3.5rem, 7.5vw, 6.5rem)" }}
+            className="font-bebas leading-[0.9] text-white"
+            style={{ fontSize: "clamp(4rem, 9vw, 8rem)" }}
             initial={{ y: "110%" }}
             animate={isInView ? { y: "0%" } : { y: "110%" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           >
             ABOUT
           </motion.h2>
         </div>
 
+        {/* Divider */}
+        <motion.div
+          className="my-5 h-px md:my-6"
+          style={{ width: "3rem", backgroundColor: PURPLE, opacity: 0.7 }}
+          initial={{ scaleX: 0 }}
+          animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        />
+
+        {/* Lead paragraph */}
         <motion.p
-          className="mt-5 max-w-[28rem] text-[12px] font-medium leading-[1.85] tracking-[0.025em] text-white/55 md:mt-7"
+          className="max-w-[32rem] text-[13px] font-medium leading-[1.8] tracking-[0.025em] text-white/70"
+          initial={{ opacity: 0, y: 10 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          transition={{ duration: 0.8, delay: 0.45 }}
+        >
+          PUNCH — вечеринка от организаторов Мурманска.
+        </motion.p>
+
+        {/* Body text */}
+        <motion.p
+          className="mt-4 max-w-[32rem] text-[12px] leading-[1.85] text-white/45"
           initial={{ opacity: 0, y: 8 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-          transition={{ duration: 0.8, delay: 0.35 }}
+          transition={{ duration: 0.8, delay: 0.55 }}
         >
-          PUNCH is a party organizer from Murmansk.
+          Задача: создать дерзкий узнаваемый айдентити для серии клубных мероприятий,
+          который будет работать во всех точках контакта — от постеров до мерча
+          и оформления площадки.
         </motion.p>
 
         <motion.p
-          className="mt-4 max-w-[28rem] text-[11px] leading-[1.85] text-white/30"
+          className="mt-4 max-w-[32rem] text-[12px] leading-[1.85] text-white/30"
           initial={{ opacity: 0, y: 8 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-          transition={{ duration: 0.8, delay: 0.48 }}
+          transition={{ duration: 0.8, delay: 0.65 }}
         >
-          Task: create a bold, recognizable identity for a series of club events
-          that will live in all points of contact — from posters to merchandise
-          and the design of the venue itself.
-        </motion.p>
-
-        <motion.p
-          className="mt-4 max-w-[28rem] text-[11px] leading-[1.85] text-white/25"
-          initial={{ opacity: 0, y: 8 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          We built the style on street aesthetics: grunge, spray can, torn
-          textures and rich purple. This is the language of the night city that
-          doesn't sleep — hence the slogan{" "}
-          <span style={{ color: PURPLE }}>NEVER SLEEP</span>. The Cyrillic logo
-          "ПУНШ" became the core of the system: hard, angular, instantly
-          readable.
+          Стиль строим на уличной эстетике: гранж, балончик, рваные текстуры
+          и насыщенный пурпур. Это язык ночного города, который не спит —
+          отсюда слоган{" "}
+          <span style={{ color: PURPLE }}>NEVER SLEEP</span>.
+          Кириллическое лого «ПУНШ» стало ядром системы: жёсткое, угловатое,
+          мгновенно читаемое.
         </motion.p>
 
         {/* Scope tags */}
         <motion.div
-          className="mt-6 flex flex-wrap gap-2"
+          className="mt-6 flex flex-wrap gap-2 md:mt-8"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.7, delay: 0.75 }}
+          transition={{ duration: 0.7, delay: 0.8 }}
         >
-          {["Event Branding", "Visual Identity", "Merch", "Posters", "Social Media"].map(
-            (tag) => (
-              <span
-                key={tag}
-                className="rounded-full border border-white/12 px-3 py-1 text-[9px] tracking-[0.2em] text-white/25"
-              >
-                {tag}
-              </span>
-            )
-          )}
+          {["Event Branding", "Visual Identity", "Merch", "Posters", "Social Media"].map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full border border-white/10 px-3 py-1 text-[9px] tracking-[0.2em] text-white/30"
+            >
+              {tag}
+            </span>
+          ))}
         </motion.div>
       </div>
     </section>
