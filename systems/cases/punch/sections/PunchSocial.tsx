@@ -2,12 +2,13 @@
 
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
+import { punchSrc } from "../punchAssets";
 
 const PURPLE = "#8f62c7";
 
 const IMG = {
-  phoneLarge: "/cases/punch/10aa3444c95c4253f46440f0ef2aac8ccec8b61e.png",
-  phoneSmall: "/cases/punch/357158fc1890baecb5c5e89ea5c1ce0fd88ae697.png",
+  phoneLarge: punchSrc("10aa3444c95c4253f46440f0ef2aac8ccec8b61e.png"),
+  phoneSmall: punchSrc("357158fc1890baecb5c5e89ea5c1ce0fd88ae697.png"),
 };
 
 export function PunchSocial() {

@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
+import { resolveCasesMediaSrc } from "@/content/casesMediaPaths";
 import type { CaseEntry } from "../casesData";
 
 interface CasesCardProps {
@@ -57,7 +58,7 @@ export function CasesCard({ entry }: CasesCardProps) {
           transition={{ duration: 1.4, delay: 0 }}
         >
           <img
-            src={entry.cover}
+            src={resolveCasesMediaSrc(entry.cover)}
             alt={`${entry.client} — ${entry.title}`}
             className="h-full w-full object-cover opacity-30"
           />

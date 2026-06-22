@@ -3,13 +3,14 @@
 import { motion, useInView } from "motion/react";
 import Link from "next/link";
 import { useRef } from "react";
+import { punchSrc } from "../punchAssets";
 
 const PURPLE = "#8f62c7";
-const LOGO   = "/cases/punch/punch-logo.png";
+const LOGO   = punchSrc("punch-logo.png");
 
 const IMG = {
-  rapper: "/cases/punch/216be9907372b69d0e269a72403e810c8a85e1e9.png",
-  planet: "/cases/punch/planet.png",
+  rapper: punchSrc("216be9907372b69d0e269a72403e810c8a85e1e9.png"),
+  planet: punchSrc("planet.png"),
 };
 
 export function PunchCredits() {

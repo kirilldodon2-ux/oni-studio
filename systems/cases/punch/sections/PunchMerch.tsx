@@ -2,13 +2,14 @@
 
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
+import { punchSrc } from "../punchAssets";
 
 const PURPLE = "#8f62c7";
 
 const IMG = {
-  event:  "/cases/punch/merch-event.png",
-  purple: "/cases/punch/merch-shirt-purple.png",
-  black:  "/cases/punch/merch-shirt-black.png",
+  event:  punchSrc("merch-event.png"),
+  purple: punchSrc("merch-shirt-purple.png"),
+  black:  punchSrc("merch-shirt-black.png"),
 };
 
 export function PunchMerch() {

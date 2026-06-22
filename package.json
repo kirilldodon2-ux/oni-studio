@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "sync:cases-r2": "./scripts/sync-cases-r2.sh"
   },
   "dependencies": {
     "@masonry-grid/react": "^1.1.1",

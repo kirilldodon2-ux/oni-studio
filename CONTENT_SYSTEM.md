@@ -305,6 +305,26 @@ If Works media moves off-repo, require a **lane-specific** decision: documented 
 
 ---
 
+## Cases lane — media delivery (operational)
+
+**Status:** ACTIVE (transport). Full authority: `docs/CASES_SYSTEM.md` § Media delivery.
+
+**Helper:** `resolveCasesMediaSrc(path)` and `casesSrc(slug, …)` in `content/casesMediaPaths.ts`
+
+**Cases-only.** Prepends `NEXT_PUBLIC_CASES_MEDIA_ORIGIN` when set. Separate from archive (`NEXT_PUBLIC_ARCHIVE_MEDIA_ORIGIN`) and works (Pages static). Enables cases bucket/account migration without touching archive transport.
+
+**Ontology paths:** `/cases/[slug]/…` — stored in `casesData.ts` and per-case `[slug]Assets.ts`. Resolution at DOM `src` boundaries only.
+
+**R2 bucket (default):** `oni-cases`. Keys mirror `public/cases/…` without the `public/` prefix.
+
+**Bulk upload:** `npm run sync:cases-r2` (see `scripts/sync-cases-r2.sh`).
+
+**Rollback:** unset `NEXT_PUBLIC_CASES_MEDIA_ORIGIN` → redeploy → `public/cases/` fallback.
+
+**Do not** pass cases paths through `resolveArchiveMediaSrc()`.
+
+---
+
 ## `mediaAspect` doctrine
 
 `mediaAspect` = **spatial metadata truth**

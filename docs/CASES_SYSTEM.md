@@ -73,7 +73,85 @@ export const casesRegistry: CaseEntry[] = [ … ];
 
 **To add a new case:** append a new `CaseEntry` object to `casesRegistry`. `CasesExperience` and `CasesSectionNav` derive slide count and labels from this array — no other wiring required.
 
-**To set a cover image:** put the file in `public/cases/[client-slug]/` and set `cover: "/cases/[client-slug]/cover.jpg"`. The image renders at 30% opacity over the dark field.
+**To set a cover image:** put the file in `public/cases/[slug]/` and set `cover: "/cases/[slug]/cover.jpg"` (ontology path). `CasesCard` resolves transport via `resolveCasesMediaSrc()` at render time.
+
+---
+
+## Media delivery (R2 / CDN)
+
+**Status:** ACTIVE (transport). Ontology unchanged. Lane-specific — not archive, not works.
+
+### Separation of concerns
+
+| Layer | Owner | Rule |
+|-------|-------|------|
+| Ontology | `caseAssetPath(slug, file)` in `content/casesMediaPaths.ts` | Site-relative paths: `/cases/[slug]/…` |
+| Transport | `resolveCasesMediaSrc(path)` | Prepends `NEXT_PUBLIC_CASES_MEDIA_ORIGIN` when set |
+| Per-case wrapper | `systems/cases/[slug]/[slug]Assets.ts` | e.g. `punchSrc("planet.png")` → `casesSrc("punch", …)` |
+| Disk truth | `public/cases/[slug]/` | Authoring + local dev fallback |
+| Remote truth | R2 bucket (default `oni-cases`) | Keys mirror repo: `cases/punch/planet.png` |
+
+**Do not** pass cases paths through `resolveArchiveMediaSrc()` — archive and cases are separate lanes with separate env vars and buckets. This allows migrating cases to another Cloudflare account without touching archive transport.
+
+### Environment
+
+| Variable | Scope | When unset |
+|----------|-------|------------|
+| `NEXT_PUBLIC_CASES_MEDIA_ORIGIN` | Cases lane only | Site-relative paths → `public/cases/` via Pages |
+
+Build-time: `NEXT_PUBLIC_*` is inlined at `next build`. Changing origin requires Pages rebuild. `next.config.mjs` adds `images.remotePatterns` for both archive and cases origins.
+
+**Same origin OK:** If archive and cases share one R2 public URL, set both env vars to the same base — keys remain distinct (`archive/objects/…` vs `cases/…`).
+
+### R2 object keys
+
+```
+cases/[slug]/planet.png
+cases/[slug]/stickers/stk-hh-1.png
+cases/[slug]/merch-event.png
+```
+
+Resolved URL: `{ORIGIN}/cases/punch/planet.png`
+
+### Upload — single file
+
+```bash
+wrangler r2 object put oni-cases/cases/punch/planet.png \
+  --file=public/cases/punch/planet.png \
+  --content-type=image/png \
+  --cache-control="public, max-age=31536000, immutable" \
+  --remote
+```
+
+**Critical:** `--remote` required — without it, wrangler writes to local Miniflare only.
+
+### Upload — bulk sync
+
+```bash
+npm run sync:cases-r2
+# dry-run:
+./scripts/sync-cases-r2.sh --dry-run
+```
+
+Override bucket: `CASES_R2_BUCKET=oni-cases npm run sync:cases-r2`
+
+Script: `scripts/sync-cases-r2.sh` — syncs all files under `public/cases/`.
+
+### CORS
+
+R2 bucket must allow GET from `http://localhost:3000` and production site origin.
+
+### Rollback
+
+1. Unset `NEXT_PUBLIC_CASES_MEDIA_ORIGIN` on Cloudflare Pages.
+2. Rebuild / redeploy.
+3. Runtime serves `public/cases/` again. No component or path changes.
+
+### Implementation rule
+
+All case media `src` values must go through `casesSrc()` / `resolveCasesMediaSrc()` — never hardcode full CDN URLs in components. Registries (`casesData.ts`) store **ontology paths only**.
+
+Template for new case landings: `systems/cases/_template/caseAssets.ts` → copy to `systems/cases/[slug]/[slug]Assets.ts`.
 
 ---
 
@@ -224,6 +302,8 @@ Light dot-nav sections: `COLORS` (4), `POSTERS` (5), `END` (11).
 ### Adding the next full case landing
 
 1. Create `app/cases/[slug]/page.tsx` + `systems/cases/[slug]/` mirroring `punch/`
-2. Add preview component in `systems/cases/components/Cases[Name].tsx`
-3. Register in `casesData.ts` with `href` or wire `WATCH FULL` link manually
-4. Reuse `PunchFooter` pattern for the editorial end section
+2. Copy `systems/cases/_template/caseAssets.ts` → `systems/cases/[slug]/[slug]Assets.ts`; set `SLUG`
+3. Add preview component in `systems/cases/components/Cases[Name].tsx` — use `[slug]Src()` for all media
+4. Register in `casesData.ts` with ontology `cover` path; `CasesCard` resolves transport automatically
+5. Add assets to `public/cases/[slug]/`, then `npm run sync:cases-r2`
+6. Reuse `PunchFooter` pattern (or generalize) for the editorial end section

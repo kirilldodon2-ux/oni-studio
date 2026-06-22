@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
+import { punchSrc } from "../punchAssets";
 
 const BG   = "#CBCAC5";
 const INK  = "#111111";
@@ -60,7 +61,7 @@ export function PunchFooter() {
           transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
         >
           <img
-            src="/cases/punch/punch-logo.png"
+            src={punchSrc("punch-logo.png")}
             alt="ПУНШ NEVER SLEEP"
             style={{
               width: "clamp(10rem, 22vw, 18rem)",
@@ -158,7 +159,7 @@ export function PunchFooter() {
             transition={{ duration: 0.9, delay: 0.65 }}
           >
             <img
-              src="/cases/punch/7dd49aa878b92dd7d27210878de79a8b07d14f7d.png"
+              src={punchSrc("7dd49aa878b92dd7d27210878de79a8b07d14f7d.png")}
               alt="ПУНШ logo"
               style={{
                 width: "clamp(4rem, 8vw, 6rem)",

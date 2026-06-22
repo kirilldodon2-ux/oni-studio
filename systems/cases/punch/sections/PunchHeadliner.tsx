@@ -2,11 +2,12 @@
 
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
+import { punchSrc } from "../punchAssets";
 
 const PURPLE = "#8f62c7";
 
 const IMG = {
-  rapper: "/cases/punch/xxxmanera-headliner.png",
+  rapper: punchSrc("xxxmanera-headliner.png"),
 };
 
 const PLATFORMS = [

@@ -2,9 +2,10 @@
 
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
+import { punchSrc } from "../punchAssets";
 
 const PURPLE = "#8f62c7";
-const LOGO   = "/cases/punch/punch-logo.png";
+const LOGO   = punchSrc("punch-logo.png");
 
 export function PunchAbout() {
   const ref = useRef<HTMLElement>(null);

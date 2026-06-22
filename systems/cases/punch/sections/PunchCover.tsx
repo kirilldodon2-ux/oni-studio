@@ -2,10 +2,11 @@
 
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
+import { punchSrc } from "../punchAssets";
 
 const PURPLE = "#8f62c7";
-const LOGO   = "/cases/punch/punch-logo.png";
-const PLANET = "/cases/punch/planet.png";
+const LOGO   = punchSrc("punch-logo.png");
+const PLANET = punchSrc("planet.png");
 
 export function PunchCover() {
   const ref = useRef<HTMLElement>(null);

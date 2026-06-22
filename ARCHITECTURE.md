@@ -912,7 +912,7 @@ query-string navigation.
 | Archive | `content/field.ts` | `public/archive/objects/[slug]/` | `systems/archive/` | `resolveArchiveMediaSrc()` → R2 or `public/` |
 | Works | `content/works/field.ts` | `public/works/[slug]/` (`00-cover.*`) | `systems/works/` | Site-relative paths — **Pages static only** (no archive transport) |
 | Brandbook | — (no registry) | `public/brandbook/` (wire-art PNGs) | `systems/brandbook/` | Pages static; route-scoped fonts in `app/brandbook/layout.tsx` |
-| Cases | — (no registry) | `public/cases/[slug]/` (cover images, optional) | `systems/cases/` | Pages static; no route-scoped fonts; content in `systems/cases/casesData.ts` |
+| Cases | — (no registry) | `public/cases/[slug]/` | `systems/cases/` | `resolveCasesMediaSrc()` → R2 or `public/`; see `docs/CASES_SYSTEM.md` |
 
 Works lane is a **parallel registry**, not a filter of `archiveObjects` (DEC-001).
 Brandbook is a **studio identity surface**, not an archive archetype lane.

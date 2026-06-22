@@ -2,8 +2,11 @@
 
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
+import { punchSrc } from "../punchAssets";
 
 const PURPLE = "#8f62c7";
+
+const stk = (file: string) => punchSrc(`stickers/${file}`);
 
 /**
  * All 28 stickers from НАКЛЕЙКИ project folder.
@@ -17,39 +20,39 @@ const STICKERS: Array<{
   delay: number;
 }> = [
   // Root stickers
-  { src: "/cases/punch/stickers/s-root-123.png",       size: 1.3, rot:  -8, from: "top",    delay: 0.00 },
-  { src: "/cases/punch/stickers/s-root-naklika.png",   size: 1.0, rot:   6, from: "left",   delay: 0.05 },
-  { src: "/cases/punch/stickers/s-root-nekurit.png",   size: 0.9, rot: -12, from: "right",  delay: 0.08 },
-  { src: "/cases/punch/stickers/s-root-stakan.png",    size: 1.1, rot:   9, from: "bottom", delay: 0.12 },
+  { src: stk("s-root-123.png"),       size: 1.3, rot:  -8, from: "top",    delay: 0.00 },
+  { src: stk("s-root-naklika.png"),   size: 1.0, rot:   6, from: "left",   delay: 0.05 },
+  { src: stk("s-root-nekurit.png"),   size: 0.9, rot: -12, from: "right",  delay: 0.08 },
+  { src: stk("s-root-stakan.png"),    size: 1.1, rot:   9, from: "bottom", delay: 0.12 },
   // МОБИЛЭНД × ПУНШ
-  { src: "/cases/punch/stickers/stk-mobiland-1.png",   size: 1.0, rot:  -5, from: "top",    delay: 0.14 },
-  { src: "/cases/punch/stickers/stk-mobiland-2.png",   size: 1.2, rot:  14, from: "right",  delay: 0.18 },
-  { src: "/cases/punch/stickers/stk-mobiland-3.png",   size: 0.85,rot:  -9, from: "left",   delay: 0.22 },
-  { src: "/cases/punch/stickers/stk-mobiland-4.png",   size: 1.0, rot:   7, from: "bottom", delay: 0.26 },
-  { src: "/cases/punch/stickers/stk-mobiland-5.png",   size: 1.1, rot: -16, from: "top",    delay: 0.30 },
-  { src: "/cases/punch/stickers/stk-mobiland-6.png",   size: 0.9, rot:  11, from: "right",  delay: 0.34 },
-  { src: "/cases/punch/stickers/stk-mobiland-7.png",   size: 1.3, rot:  -6, from: "left",   delay: 0.38 },
+  { src: stk("stk-mobiland-1.png"),   size: 1.0, rot:  -5, from: "top",    delay: 0.14 },
+  { src: stk("stk-mobiland-2.png"),   size: 1.2, rot:  14, from: "right",  delay: 0.18 },
+  { src: stk("stk-mobiland-3.png"),   size: 0.85,rot:  -9, from: "left",   delay: 0.22 },
+  { src: stk("stk-mobiland-4.png"),   size: 1.0, rot:   7, from: "bottom", delay: 0.26 },
+  { src: stk("stk-mobiland-5.png"),   size: 1.1, rot: -16, from: "top",    delay: 0.30 },
+  { src: stk("stk-mobiland-6.png"),   size: 0.9, rot:  11, from: "right",  delay: 0.34 },
+  { src: stk("stk-mobiland-7.png"),   size: 1.3, rot:  -6, from: "left",   delay: 0.38 },
   // ПЛАЗМА × ПУНШ
-  { src: "/cases/punch/stickers/stk-plazma-1.png",     size: 1.2, rot:  18, from: "top",    delay: 0.20 },
-  { src: "/cases/punch/stickers/stk-plazma-2.png",     size: 1.0, rot:  -4, from: "bottom", delay: 0.24 },
-  { src: "/cases/punch/stickers/stk-plazma-3.png",     size: 0.9, rot:  12, from: "left",   delay: 0.28 },
-  { src: "/cases/punch/stickers/stk-plazma-4.png",     size: 1.1, rot:  -8, from: "right",  delay: 0.32 },
-  { src: "/cases/punch/stickers/stk-plazma-5.png",     size: 1.0, rot:   5, from: "top",    delay: 0.36 },
+  { src: stk("stk-plazma-1.png"),     size: 1.2, rot:  18, from: "top",    delay: 0.20 },
+  { src: stk("stk-plazma-2.png"),     size: 1.0, rot:  -4, from: "bottom", delay: 0.24 },
+  { src: stk("stk-plazma-3.png"),     size: 0.9, rot:  12, from: "left",   delay: 0.28 },
+  { src: stk("stk-plazma-4.png"),     size: 1.1, rot:  -8, from: "right",  delay: 0.32 },
+  { src: stk("stk-plazma-5.png"),     size: 1.0, rot:   5, from: "top",    delay: 0.36 },
   // САМЕДИ × ПУНШ
-  { src: "/cases/punch/stickers/stk-samedi-1.png",     size: 1.3, rot: -10, from: "left",   delay: 0.16 },
-  { src: "/cases/punch/stickers/stk-samedi-2.png",     size: 1.0, rot:   8, from: "top",    delay: 0.21 },
-  { src: "/cases/punch/stickers/stk-samedi-3.png",     size: 0.9, rot: -14, from: "right",  delay: 0.25 },
-  { src: "/cases/punch/stickers/stk-samedi-4.png",     size: 1.1, rot:   6, from: "bottom", delay: 0.29 },
+  { src: stk("stk-samedi-1.png"),     size: 1.3, rot: -10, from: "left",   delay: 0.16 },
+  { src: stk("stk-samedi-2.png"),     size: 1.0, rot:   8, from: "top",    delay: 0.21 },
+  { src: stk("stk-samedi-3.png"),     size: 0.9, rot: -14, from: "right",  delay: 0.25 },
+  { src: stk("stk-samedi-4.png"),     size: 1.1, rot:   6, from: "bottom", delay: 0.29 },
   // ХХ
-  { src: "/cases/punch/stickers/stk-hh-1.png",         size: 1.4, rot:  10, from: "top",    delay: 0.10 },
-  { src: "/cases/punch/stickers/stk-hh-2.png",         size: 1.0, rot:  -7, from: "right",  delay: 0.15 },
-  { src: "/cases/punch/stickers/stk-hh-3.png",         size: 1.2, rot:  13, from: "left",   delay: 0.19 },
+  { src: stk("stk-hh-1.png"),         size: 1.4, rot:  10, from: "top",    delay: 0.10 },
+  { src: stk("stk-hh-2.png"),         size: 1.0, rot:  -7, from: "right",  delay: 0.15 },
+  { src: stk("stk-hh-3.png"),         size: 1.2, rot:  13, from: "left",   delay: 0.19 },
   // Новая папка
-  { src: "/cases/punch/stickers/stk-new-1.png",        size: 1.0, rot:  -9, from: "bottom", delay: 0.06 },
-  { src: "/cases/punch/stickers/stk-new-2.png",        size: 1.2, rot:  15, from: "top",    delay: 0.11 },
-  { src: "/cases/punch/stickers/stk-new-3.png",        size: 0.85,rot:  -5, from: "right",  delay: 0.17 },
-  { src: "/cases/punch/stickers/stk-new-4.png",        size: 1.0, rot:  11, from: "left",   delay: 0.23 },
-  { src: "/cases/punch/stickers/stk-new-5.png",        size: 1.3, rot:  -3, from: "bottom", delay: 0.27 },
+  { src: stk("stk-new-1.png"),        size: 1.0, rot:  -9, from: "bottom", delay: 0.06 },
+  { src: stk("stk-new-2.png"),        size: 1.2, rot:  15, from: "top",    delay: 0.11 },
+  { src: stk("stk-new-3.png"),        size: 0.85,rot:  -5, from: "right",  delay: 0.17 },
+  { src: stk("stk-new-4.png"),        size: 1.0, rot:  11, from: "left",   delay: 0.23 },
+  { src: stk("stk-new-5.png"),        size: 1.3, rot:  -3, from: "bottom", delay: 0.27 },
 ];
 
 function getInitialPos(from: "top" | "left" | "right" | "bottom") {

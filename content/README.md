@@ -20,6 +20,7 @@ Filesystem-native registries and types for ONI content lanes.
 | `field.ts` | Archive registry — `archiveObjects` / `archiveFieldEntries`, explicit metadata truth |
 | `types.ts` | Archive type system — `ArchiveObject`, `ArchiveTerritoryId`, contracts |
 | `archiveObjectPaths.ts` | Archive ontology + transport — `canonicalPreviewSrc()`, `resolveArchiveMediaSrc()` |
+| `casesMediaPaths.ts` | Cases ontology + transport — `caseAssetPath()`, `resolveCasesMediaSrc()` → `docs/CASES_SYSTEM.md` |
 | `sources/` | Reserved raw material staging (`.gitkeep` only — do not reorganize automatically) |
 | `works/field.ts` | Works registry — `worksRegistry`, explicit index order |
 | `works/types.ts` | Works type system — `Work`, `WorkDomain` |
@@ -27,6 +28,8 @@ Filesystem-native registries and types for ONI content lanes.
 **Archive object territory (media + sequence):** `public/archive/objects/[slug]/` — see `CONTENT_SYSTEM.md`.
 
 **Works territory (cover + future evidence):** `public/works/[slug]/` — see `CONTENT_SYSTEM.md` § Works lane.
+
+**Cases territory (preview + landing assets):** `public/cases/[slug]/` — see `docs/CASES_SYSTEM.md` § Media delivery. Transport via `resolveCasesMediaSrc()`; registry in `systems/cases/casesData.ts` (not `content/`).
 
 ---
 

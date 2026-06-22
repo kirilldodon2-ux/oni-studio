@@ -3,15 +3,16 @@
 import { motion, useInView } from "motion/react";
 import Link from "next/link";
 import { useRef } from "react";
+import { punchSrc } from "@/systems/cases/punch/punchAssets";
 
 const PUNCH_PURPLE = "#8f62c7";
 const BG = "#06040c";
 const SCOPE = ["Event Branding", "Visual Identity", "Merch", "Posters"];
 
 const IMG = {
-  rapper: "/cases/punch/216be9907372b69d0e269a72403e810c8a85e1e9.png",
-  planet: "/cases/punch/planet.png",
-  cup:    "/cases/punch/0911e0cbaf2f31314e861e459b1a42d26baf1d47.png",
+  rapper: punchSrc("216be9907372b69d0e269a72403e810c8a85e1e9.png"),
+  planet: punchSrc("planet.png"),
+  cup:    punchSrc("0911e0cbaf2f31314e861e459b1a42d26baf1d47.png"),
 } as const;
 
 export function CasesPunch() {

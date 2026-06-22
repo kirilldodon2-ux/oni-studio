@@ -2,23 +2,24 @@
 
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
+import { punchSrc } from "../punchAssets";
 
-const GRUNGE = "/cases/punch/33c8208a5b3400514fadf44d21a7c8d9cfce2062.png";
+const GRUNGE = punchSrc("33c8208a5b3400514fadf44d21a7c8d9cfce2062.png");
 
 /**
  * All available posters — portrait + landscape mixed.
  * w: relative flex width, rot: resting tilt.
  */
 const POSTERS = [
-  { src: "/cases/punch/ae2c09d84ca24b2aeee87b4189a59e6e39b1f5b5.png", w: 1.4, rot:  1.5, delay: 0.10 },
-  { src: "/cases/punch/0eca43d41f131fe927487ddbe01c702362fe4414.png", w: 1.0, rot: -2.0, delay: 0.18 },
-  { src: "/cases/punch/c5323e4366fbf3ead2c2af85b31275b52c4f7ecd.png", w: 1.0, rot:  2.5, delay: 0.26 },
-  { src: "/cases/punch/f47d65df327279b35fa097c276fd5e5261f519fe.png", w: 1.0, rot: -1.2, delay: 0.34 },
-  { src: "/cases/punch/3d72723582f1b340a8ca95e20708bcd1802238bf.png", w: 1.0, rot:  1.8, delay: 0.42 },
-  { src: "/cases/punch/5ad50bd3a5b8b9f8b22f796d983943d793075179.png", w: 1.0, rot: -2.2, delay: 0.50 },
-  { src: "/cases/punch/c4b0bf49266c7ebbed7ded91e0b5fd91e489cff2.png", w: 1.0, rot:  1.0, delay: 0.58 },
-  { src: "/cases/punch/10aa3444c95c4253f46440f0ef2aac8ccec8b61e.png", w: 1.0, rot: -1.5, delay: 0.66 },
-  { src: "/cases/punch/f2876a742250ce847a5689c7aea6781f2f71c47c.png", w: 1.0, rot:  2.0, delay: 0.74 },
+  { src: punchSrc("ae2c09d84ca24b2aeee87b4189a59e6e39b1f5b5.png"), w: 1.4, rot:  1.5, delay: 0.10 },
+  { src: punchSrc("0eca43d41f131fe927487ddbe01c702362fe4414.png"), w: 1.0, rot: -2.0, delay: 0.18 },
+  { src: punchSrc("c5323e4366fbf3ead2c2af85b31275b52c4f7ecd.png"), w: 1.0, rot:  2.5, delay: 0.26 },
+  { src: punchSrc("f47d65df327279b35fa097c276fd5e5261f519fe.png"), w: 1.0, rot: -1.2, delay: 0.34 },
+  { src: punchSrc("3d72723582f1b340a8ca95e20708bcd1802238bf.png"), w: 1.0, rot:  1.8, delay: 0.42 },
+  { src: punchSrc("5ad50bd3a5b8b9f8b22f796d983943d793075179.png"), w: 1.0, rot: -2.2, delay: 0.50 },
+  { src: punchSrc("c4b0bf49266c7ebbed7ded91e0b5fd91e489cff2.png"), w: 1.0, rot:  1.0, delay: 0.58 },
+  { src: punchSrc("10aa3444c95c4253f46440f0ef2aac8ccec8b61e.png"), w: 1.0, rot: -1.5, delay: 0.66 },
+  { src: punchSrc("f2876a742250ce847a5689c7aea6781f2f71c47c.png"), w: 1.0, rot:  2.0, delay: 0.74 },
 ];
 
 export function PunchPosters() {

@@ -44,6 +44,7 @@ oni-site/
 │   ├── field.ts                 ← archiveObjects registry (explicit, not auto-discovered)
 │   ├── types.ts                 ← ArchiveObject schema
 │   ├── archiveObjectPaths.ts    ← canonicalPreviewSrc() (ontology) + resolveArchiveMediaSrc() (transport); R2 ops → CONTENT_SYSTEM.md § Media delivery
+│   ├── casesMediaPaths.ts       ← caseAssetPath() + resolveCasesMediaSrc() (cases lane transport); R2 ops → docs/CASES_SYSTEM.md § Media delivery
 │   ├── README.md                ← directory index
 │   ├── sources/                 ← reserved (.gitkeep)
 │   └── works/                   ← works registry (Lean Path — see docs/DECISIONS.md DEC-001)
@@ -136,6 +137,11 @@ oni-site/
 │       ├── CasesSectionContext.tsx ← activeSection, scrollContainerRef, scrollToSection
 │       ├── CasesSectionNav.tsx  ← dot rail (right edge, lg+, always light)
 │       ├── casesData.ts         ← CaseEntry type + casesRegistry (hardcoded, system-local)
+│       ├── _template/
+│       │   └── caseAssets.ts    ← copy per new case landing (casesSrc wrapper)
+│       ├── punch/
+│       │   ├── punchAssets.ts   ← punchSrc() → resolveCasesMediaSrc
+│       │   └── sections/        ← scroll-snap landing sections
 │       └── components/
 │           ├── CasesCover.tsx   ← intro slide: "26' / CASES" dark field
 │           └── CasesCard.tsx    ← reusable case slide (driven by CaseEntry)

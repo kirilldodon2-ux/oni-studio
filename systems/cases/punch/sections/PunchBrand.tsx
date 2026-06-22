@@ -2,13 +2,14 @@
 
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
+import { punchSrc } from "../punchAssets";
 
 const PURPLE = "#8f62c7";
 
 const IMG = {
-  main:  "/cases/punch/66233c76db34d637b5f0a2da5208a41b8cc8b3ff.png",
-  badge: "/cases/punch/386398f5faf9366a6343534c166c85faf25c7779.png",
-  logo:  "/cases/punch/7dd49aa878b92dd7d27210878de79a8b07d14f7d.png",
+  main:  punchSrc("66233c76db34d637b5f0a2da5208a41b8cc8b3ff.png"),
+  badge: punchSrc("386398f5faf9366a6343534c166c85faf25c7779.png"),
+  logo:  punchSrc("7dd49aa878b92dd7d27210878de79a8b07d14f7d.png"),
 };
 
 export function PunchBrand() {
