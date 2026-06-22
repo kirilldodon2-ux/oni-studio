@@ -309,6 +309,7 @@ Light dot-nav sections: `COLORS` (4), `POSTERS` (5), `END` (11).
 | Asset | Path | Used in |
 |-------|------|---------|
 | PUNCH logo (twitch-like) | `public/cases/punch/punch-logo.png` | `PunchCover`, `PunchCredits`, `PunchFooter` |
+| Brand wall texture (grunge) | `public/cases/punch/brand-wall-texture.png` | `PunchBrand` |
 | XXXMANERA headliner (framed portrait, 506×1021, RGBA) | `public/cases/punch/xxxmanera-headliner.png` | `CasesPunch`, `PunchHeadliner` |
 | Planet (RGBA PNG) | `public/cases/punch/planet.png` | `CasesPunch`, `PunchCover`, `PunchCredits` |
 | Sticker kit | `public/cases/punch/stickers/*` | `PunchStickers` |

@@ -8,9 +8,10 @@ import { CaseImage } from "@/systems/cases/components/CaseImage";
 const PURPLE = "#8f62c7";
 
 const IMG = {
-  main:  punchSrc("66233c76db34d637b5f0a2da5208a41b8cc8b3ff.png"),
-  badge: punchSrc("386398f5faf9366a6343534c166c85faf25c7779.png"),
-  logo:  punchSrc("7dd49aa878b92dd7d27210878de79a8b07d14f7d.png"),
+  main:    punchSrc("66233c76db34d637b5f0a2da5208a41b8cc8b3ff.png"),
+  badge:   punchSrc("386398f5faf9366a6343534c166c85faf25c7779.png"),
+  logo:    punchSrc("7dd49aa878b92dd7d27210878de79a8b07d14f7d.png"),
+  wall:    punchSrc("brand-wall-texture.png"),
 };
 
 export function PunchBrand() {
@@ -89,10 +90,60 @@ export function PunchBrand() {
         </motion.div>
       </div>
 
+      {/* Right — grunge wall texture (party-place atmosphere) */}
+      <motion.div
+        className="pointer-events-none absolute right-0 top-0 z-0 h-full overflow-hidden"
+        style={{ width: "58%" }}
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 1.4, ease: "easeOut", delay: 0.08 }}
+        aria-hidden="true"
+      >
+        <CaseImage
+          src={IMG.wall}
+          alt=""
+          sectionInView={isInView}
+          className="h-full w-full object-cover"
+          style={{
+            objectPosition: "42% center",
+            filter: "brightness(0.38) contrast(1.18) saturate(0.55)",
+          }}
+        />
+        {/* Feather into left column — no hard split */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to right, #101010 0%, rgba(16,16,16,0.94) 14%, rgba(16,16,16,0.55) 32%, rgba(16,16,16,0.15) 52%, transparent 68%)",
+          }}
+        />
+        {/* Purple club wash */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 75% 65% at 58% 42%, rgba(143,98,199,0.14) 0%, transparent 72%)",
+            mixBlendMode: "screen",
+          }}
+        />
+        {/* Top / bottom vignette */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(16,16,16,0.55) 0%, transparent 22%, transparent 78%, rgba(16,16,16,0.7) 100%)",
+          }}
+        />
+      </motion.div>
+
       {/* Right — large sticker art */}
       <div className="relative z-10 flex w-1/2 items-center justify-center pr-6 md:pr-10">
         <motion.div
-          style={{ width: "clamp(14rem, 36vw, 28rem)", transform: "rotate(2deg)" }}
+          style={{
+            width: "clamp(14rem, 36vw, 28rem)",
+            transform: "rotate(2deg)",
+            filter: "drop-shadow(0 24px 48px rgba(0,0,0,0.55)) drop-shadow(0 0 32px rgba(143,98,199,0.18))",
+          }}
           initial={{ opacity: 0, x: 40, rotate: 8 }}
           animate={isInView
             ? { opacity: 1, x: 0, rotate: 2 }
