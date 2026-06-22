@@ -12,7 +12,7 @@ const SWATCHES = [
 
 export function PunchColors() {
   const ref = useRef<HTMLElement>(null);
-  const isInView = useInView(ref, { amount: 0.3 });
+  const isInView = useInView(ref, { amount: 0.2 });
 
   return (
     <section
@@ -20,8 +20,10 @@ export function PunchColors() {
       className="relative flex flex-col overflow-hidden"
       style={{ height: "100vh", scrollSnapAlign: "start", flexShrink: 0, backgroundColor: "#d9d9d9" }}
     >
-      {/* Top label — starts below fixed navbar */}
-      <div className="relative z-10 flex items-start justify-between px-8 md:px-10 lg:px-14" style={{ paddingTop: "calc(var(--oni-header-h, 4rem) + 1.5rem)" }}>
+      <div
+        className="relative z-10 flex shrink-0 items-start justify-between px-8 md:px-10 lg:px-14"
+        style={{ paddingTop: "calc(var(--oni-header-h, 4rem) + 1rem)" }}
+      >
         <motion.p
           className="text-[9px] font-medium tracking-[0.38em] text-black/30"
           initial={{ opacity: 0 }}
@@ -40,11 +42,10 @@ export function PunchColors() {
         </motion.p>
       </div>
 
-      {/* Title */}
-      <div className="relative z-10 overflow-hidden px-8 pt-4 md:px-10 lg:px-14">
+      <div className="relative z-10 shrink-0 overflow-hidden px-8 pt-3 md:px-10 lg:px-14">
         <motion.h2
           className="font-bebas leading-[0.9] text-black"
-          style={{ fontSize: "clamp(4rem, 10vw, 9rem)" }}
+          style={{ fontSize: "clamp(3rem, 14vw, 9rem)" }}
           initial={{ y: "110%" }}
           animate={isInView ? { y: "0%" } : { y: "110%" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
@@ -53,9 +54,8 @@ export function PunchColors() {
         </motion.h2>
       </div>
 
-      {/* Narrative subtitle */}
       <motion.p
-        className="relative z-10 px-8 pb-2 pt-3 text-[10px] leading-[1.75] tracking-[0.03em] text-black/40 md:px-10 lg:max-w-[55%] lg:px-14"
+        className="relative z-10 shrink-0 px-8 pb-2 pt-2 text-[10px] leading-[1.75] tracking-[0.03em] text-black/40 md:px-10 lg:max-w-[55%] lg:px-14"
         initial={{ opacity: 0, y: 6 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
         transition={{ duration: 0.7, delay: 0.3 }}
@@ -64,12 +64,12 @@ export function PunchColors() {
         антрацит — бетон и грязь, туман — дым перед рассветом.
       </motion.p>
 
-      {/* Swatches grid */}
-      <div className="relative z-10 flex flex-1 gap-[2px] px-8 pb-10 pt-6 md:px-10 lg:px-14">
+      {/* Mobile: 2×2 grid — Desktop: horizontal row */}
+      <div className="relative z-10 grid min-h-0 flex-1 grid-cols-2 grid-rows-2 gap-1 px-8 pb-8 pt-4 md:flex md:gap-[2px] md:px-10 md:pb-10 md:pt-6 lg:px-14">
         {SWATCHES.map((sw, i) => (
           <motion.div
             key={sw.name}
-            className="flex flex-1 flex-col justify-end overflow-hidden rounded-sm p-4 md:p-5"
+            className="flex min-h-0 flex-col justify-end overflow-hidden rounded-sm p-3 md:flex-1 md:p-5"
             style={{ backgroundColor: sw.hex }}
             initial={{ scaleY: 0, originY: 1 }}
             animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
@@ -85,19 +85,19 @@ export function PunchColors() {
               transition={{ duration: 0.5, delay: 0.55 + i * 0.06 }}
             >
               <p
-                className="text-[9px] font-medium tracking-[0.32em]"
+                className="text-[8px] font-medium tracking-[0.28em] md:text-[9px] md:tracking-[0.32em]"
                 style={{ color: sw.text, opacity: 0.5 }}
               >
                 {sw.name}
               </p>
               <p
-                className="mt-1 font-bebas text-[1.2rem] leading-none"
+                className="mt-0.5 font-bebas text-[1rem] leading-none md:mt-1 md:text-[1.2rem]"
                 style={{ color: sw.text }}
               >
                 {sw.hex.toUpperCase()}
               </p>
               <p
-                className="mt-1 font-mono text-[9px]"
+                className="mt-0.5 hidden font-mono text-[9px] md:block"
                 style={{ color: sw.text, opacity: 0.35 }}
               >
                 RGB {sw.rgb}

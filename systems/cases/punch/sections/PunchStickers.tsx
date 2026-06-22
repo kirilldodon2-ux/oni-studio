@@ -87,10 +87,10 @@ export function PunchStickers() {
 
       {/* Header row — below navbar */}
       <div
-        className="relative z-20 flex items-center justify-between px-8 md:px-10 lg:px-14"
+        className="relative z-20 flex shrink-0 flex-col gap-3 px-8 sm:flex-row sm:items-center sm:justify-between md:px-10 lg:px-14"
         style={{ paddingTop: "calc(var(--oni-header-h, 4rem) + 1.2rem)" }}
       >
-        <div className="flex items-baseline gap-5">
+        <div className="flex items-baseline gap-3 sm:gap-5">
           <motion.h2
             className="font-bebas leading-none text-white"
             style={{ fontSize: "clamp(2.5rem, 5vw, 4.5rem)" }}

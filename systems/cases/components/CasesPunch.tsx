@@ -93,15 +93,14 @@ export function CasesPunch() {
         />
       </motion.div>
 
-      {/* CUP — floating over planet, center-left */}
+      {/* CUP — floats in upper-left void, above title */}
       <motion.div
         className="pointer-events-none absolute hidden md:block"
         style={{
-          left: "34%",
-          top: "46%",
-          translateX: "-50%",
-          zIndex: 6,
-          width: "clamp(3.2rem, 5.5vw, 5rem)",
+          left: "clamp(7rem, 19vw, 13rem)",
+          top: "calc(var(--oni-header-h, 4rem) + 5rem)",
+          zIndex: 8,
+          width: "clamp(3.6rem, 6vw, 5.5rem)",
         }}
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : { opacity: 0 }}
@@ -117,11 +116,11 @@ export function CasesPunch() {
             filter: "drop-shadow(0 0 18px rgba(143,98,199,0.95)) drop-shadow(0 0 6px rgba(200,160,255,0.55))",
           }}
           animate={{
-            x: [0, 14, 4, -8, 0],
-            y: [0, -10, -18, -6, 0],
-            rotate: [-12, -6, -18, -8, -12],
+            x: [0, 10, 3, -6, 0],
+            y: [0, -14, -22, -8, 0],
+            rotate: [-10, -4, -14, -6, -10],
           }}
-          transition={{ duration: 7, ease: "easeInOut", repeat: Infinity }}
+          transition={{ duration: 8, ease: "easeInOut", repeat: Infinity }}
         />
       </motion.div>
 

@@ -14,7 +14,7 @@ const IMG = {
 
 export function PunchPeople() {
   const ref = useRef<HTMLElement>(null);
-  const isInView = useInView(ref, { amount: 0.25 });
+  const isInView = useInView(ref, { amount: 0.2 });
 
   return (
     <section
@@ -22,11 +22,10 @@ export function PunchPeople() {
       className="relative flex flex-col overflow-hidden"
       style={{ height: "100vh", scrollSnapAlign: "start", flexShrink: 0, backgroundColor: "#080808" }}
     >
-      {/* Full-bleed image grid */}
-      <div className="absolute inset-0 grid grid-cols-2">
-        {/* Left photo */}
+      {/* Photos — stacked on mobile, side-by-side on desktop */}
+      <div className="absolute inset-0 grid grid-rows-2 md:grid-cols-2 md:grid-rows-1">
         <motion.div
-          className="relative overflow-hidden"
+          className="relative min-h-0 overflow-hidden"
           initial={{ opacity: 0, scale: 1.05 }}
           animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.05 }}
           transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
@@ -40,9 +39,8 @@ export function PunchPeople() {
           />
         </motion.div>
 
-        {/* Right photo */}
         <motion.div
-          className="relative overflow-hidden"
+          className="relative min-h-0 overflow-hidden"
           initial={{ opacity: 0, scale: 1.05 }}
           animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.05 }}
           transition={{ duration: 1.2, ease: "easeOut", delay: 0.25 }}
@@ -57,26 +55,25 @@ export function PunchPeople() {
         </motion.div>
       </div>
 
-      {/* Overlay gradient */}
       <div
         className="pointer-events-none absolute inset-0 z-10"
         style={{
           background:
-            "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%, rgba(0,0,0,0.4) 100%)",
+            "linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.25) 45%, rgba(0,0,0,0.35) 100%)",
         }}
         aria-hidden="true"
       />
 
-      {/* Center divider line */}
+      {/* Divider — horizontal on mobile, vertical on desktop */}
       <motion.div
-        className="absolute left-1/2 top-0 z-20 w-px -translate-x-1/2 bg-white/10"
-        style={{ height: "100%" }}
-        initial={{ scaleY: 0, originY: 0 }}
-        animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
+        className="absolute left-0 top-1/2 z-20 h-px w-full -translate-y-1/2 bg-white/10 md:left-1/2 md:top-0 md:h-full md:w-px md:-translate-x-1/2 md:translate-y-0"
+        initial={{ scaleX: 0, scaleY: 0 }}
+        animate={isInView ? { scaleX: 1, scaleY: 1 } : { scaleX: 0, scaleY: 0 }}
         transition={{ duration: 1, delay: 0.4 }}
+        style={{ originX: 0, originY: 0 }}
+        aria-hidden="true"
       />
 
-      {/* Bottom content */}
       <div className="relative z-20 mt-auto px-8 pb-10 md:px-10 lg:px-14">
         <motion.p
           className="mb-3 text-[9px] font-medium tracking-[0.38em] text-white/25"
@@ -87,12 +84,12 @@ export function PunchPeople() {
           SECTION 07 / EVENT
         </motion.p>
 
-        <div className="flex items-end justify-between gap-6">
+        <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between md:gap-6">
           <div>
             <div className="overflow-hidden">
               <motion.h2
                 className="font-bebas leading-[0.9] text-white"
-                style={{ fontSize: "clamp(3rem, 7vw, 6rem)" }}
+                style={{ fontSize: "clamp(2.5rem, 11vw, 6rem)" }}
                 initial={{ y: "110%" }}
                 animate={isInView ? { y: "0%" } : { y: "110%" }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.55 }}
@@ -103,7 +100,7 @@ export function PunchPeople() {
             <div className="overflow-hidden">
               <motion.h2
                 className="font-bebas leading-[0.9]"
-                style={{ fontSize: "clamp(3rem, 7vw, 6rem)", color: PURPLE }}
+                style={{ fontSize: "clamp(2.5rem, 11vw, 6rem)", color: PURPLE }}
                 initial={{ y: "110%" }}
                 animate={isInView ? { y: "0%" } : { y: "110%" }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.62 }}
@@ -113,9 +110,9 @@ export function PunchPeople() {
             </div>
           </div>
 
-          <div className="hidden flex-col items-end gap-4 lg:flex">
+          <div className="flex flex-col gap-4 md:items-end">
             <motion.p
-              className="max-w-[18rem] text-right text-[10px] leading-[1.75] text-white/30"
+              className="max-w-[18rem] text-[10px] leading-[1.75] text-white/30 md:text-right"
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : { opacity: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
@@ -131,7 +128,7 @@ export function PunchPeople() {
             >
               {[["1700", "ГОСТЕЙ"], ["1", "НОЧЬ"], ["∞", "ВАЙБ"]].map(([num, label]) => (
                 <div key={label} className="flex flex-col items-center gap-1">
-                  <span className="font-bebas text-[1.6rem] leading-none text-white">{num}</span>
+                  <span className="font-bebas text-[1.4rem] leading-none text-white md:text-[1.6rem]">{num}</span>
                   <span className="text-[8px] tracking-[0.30em] text-white/25">{label}</span>
                 </div>
               ))}
@@ -139,17 +136,6 @@ export function PunchPeople() {
           </div>
         </div>
       </div>
-
-      {/* Top-left label — cleared below fixed navbar */}
-      <motion.div
-        className="absolute left-8 z-20 md:left-10 lg:left-14"
-        style={{ top: "calc(var(--oni-header-h, 4rem) + 1.5rem)" }}
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.7, delay: 0.6 }}
-      >
-        <p className="text-[9px] tracking-[0.28em] text-white/20">PUNCH · ПУНШ</p>
-      </motion.div>
     </section>
   );
 }
