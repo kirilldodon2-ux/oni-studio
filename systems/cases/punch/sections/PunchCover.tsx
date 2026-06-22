@@ -5,7 +5,7 @@ import { useRef } from "react";
 
 const PURPLE = "#8f62c7";
 const LOGO   = "/cases/punch/punch-logo.png";
-const PLANET = "/cases/punch/73f66c1ea445178c5f4724f0e9f11f454db905cf.png";
+const PLANET = "/cases/punch/planet.png";
 
 export function PunchCover() {
   const ref = useRef<HTMLElement>(null);
@@ -27,12 +27,17 @@ export function PunchCover() {
         aria-hidden="true"
       />
 
-      {/* Planet — ambient BG, slow spin */}
+      {/* Planet — huge ambient BG, bottom-right, slow spin */}
       <motion.div
-        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-        style={{ width: "clamp(22rem, 48vw, 42rem)", zIndex: 0 }}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={isInView ? { opacity: 0.18, scale: 1 } : { opacity: 0, scale: 0.8 }}
+        className="pointer-events-none absolute"
+        style={{
+          bottom: "-28%",
+          right: "-18%",
+          width: "clamp(28rem, 62vw, 56rem)",
+          zIndex: 0,
+        }}
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={isInView ? { opacity: 0.22, scale: 1 } : { opacity: 0, scale: 0.85 }}
         transition={{ duration: 2.5, ease: "easeOut" }}
         aria-hidden="true"
       >
@@ -40,7 +45,7 @@ export function PunchCover() {
           src={PLANET}
           alt=""
           className="h-auto w-full"
-          style={{ mixBlendMode: "screen", filter: "drop-shadow(0 0 60px rgba(143,98,199,0.4))" }}
+          style={{ filter: "drop-shadow(0 0 60px rgba(143,98,199,0.35))" }}
           animate={{ rotate: 360 }}
           transition={{ duration: 50, ease: "linear", repeat: Infinity }}
         />

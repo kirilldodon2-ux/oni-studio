@@ -41,7 +41,7 @@ export function PunchSocial() {
       </div>
 
       {/* Left — label + copy */}
-      <div className="relative z-10 flex w-[28%] flex-col justify-center pl-8 md:pl-10 lg:pl-14">
+      <div className="relative z-10 flex w-[20%] min-w-[10rem] flex-col justify-center pl-8 md:pl-10 lg:pl-14">
         <motion.p
           className="mb-4 text-[9px] font-medium tracking-[0.38em] text-white/25"
           initial={{ opacity: 0 }}
@@ -98,10 +98,10 @@ export function PunchSocial() {
         </motion.div>
       </div>
 
-      {/* Center — LARGE phone */}
+      {/* Center — LARGE phone (×2.5) */}
       <div className="relative z-10 flex flex-1 items-center justify-center">
         <motion.div
-          style={{ width: "clamp(18rem, 34vw, 30rem)" }}
+          style={{ width: "clamp(45rem, 85vw, 75rem)" }}
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
@@ -110,17 +110,17 @@ export function PunchSocial() {
             src={IMG.phoneLarge}
             alt="Большой телефон с Telegram"
             className="h-auto w-full"
-            style={{ filter: "drop-shadow(0 0 40px rgba(143,98,199,0.35)) drop-shadow(0 20px 30px rgba(0,0,0,0.7))" }}
-            animate={{ y: [-6, 6, -6] }}
+            style={{ filter: "drop-shadow(0 0 50px rgba(143,98,199,0.4)) drop-shadow(0 24px 40px rgba(0,0,0,0.75))" }}
+            animate={{ y: [-8, 8, -8] }}
             transition={{ duration: 5, ease: "easeInOut", repeat: Infinity }}
           />
         </motion.div>
       </div>
 
-      {/* Right — small phone, offset */}
-      <div className="relative z-10 flex w-[22%] items-center justify-start pr-4 md:pr-6">
+      {/* Right — secondary phone (×2) */}
+      <div className="relative z-10 flex w-[24%] items-center justify-start pr-2 md:pr-4">
         <motion.div
-          style={{ width: "clamp(9rem, 15vw, 13rem)", transform: "rotate(5deg)" }}
+          style={{ width: "clamp(18rem, 30vw, 26rem)", transform: "rotate(5deg)" }}
           initial={{ opacity: 0, y: 30, rotate: 10 }}
           animate={isInView ? { opacity: 1, y: 0, rotate: 5 } : { opacity: 0, y: 30, rotate: 10 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
@@ -128,9 +128,9 @@ export function PunchSocial() {
           <motion.img
             src={IMG.phoneSmall}
             alt="Телефон с постером"
-            className="h-auto w-full drop-shadow-xl"
-            style={{ opacity: 0.85 }}
-            animate={{ y: [6, -6, 6] }}
+            className="h-auto w-full"
+            style={{ opacity: 0.9, filter: "drop-shadow(0 16px 28px rgba(0,0,0,0.65))" }}
+            animate={{ y: [8, -8, 8] }}
             transition={{ duration: 5, ease: "easeInOut", repeat: Infinity, delay: 0.5 }}
           />
         </motion.div>

@@ -9,7 +9,7 @@ const LOGO   = "/cases/punch/punch-logo.png";
 
 const IMG = {
   rapper: "/cases/punch/216be9907372b69d0e269a72403e810c8a85e1e9.png",
-  planet: "/cases/punch/73f66c1ea445178c5f4724f0e9f11f454db905cf.png",
+  planet: "/cases/punch/planet.png",
 };
 
 export function PunchCredits() {
@@ -51,13 +51,13 @@ export function PunchCredits() {
 
       {/* Right: planet in slow spin */}
       <motion.div
-        className="pointer-events-none absolute right-[-10%] top-1/2 -translate-y-1/2 z-[2]"
-        style={{ width: "clamp(16rem, 38vw, 34rem)", opacity: 0.12 }}
+        className="pointer-events-none absolute right-[-14%] top-1/2 -translate-y-1/2 z-[2]"
+        style={{ width: "clamp(22rem, 48vw, 44rem)", opacity: 0.16 }}
         animate={{ rotate: 360 }}
         transition={{ duration: 60, ease: "linear", repeat: Infinity }}
         aria-hidden="true"
       >
-        <img src={IMG.planet} alt="" className="h-auto w-full" style={{ mixBlendMode: "screen" }} />
+        <img src={IMG.planet} alt="" className="h-auto w-full" />
       </motion.div>
 
       {/* Content */}
