@@ -153,6 +153,25 @@ All case media `src` values must go through `casesSrc()` / `resolveCasesMediaSrc
 
 Template for new case landings: `systems/cases/_template/caseAssets.ts` → copy to `systems/cases/[slug]/[slug]Assets.ts`.
 
+### Performance
+
+| Layer | Mechanism |
+|-------|-----------|
+| **WebP on CDN** | `resolveCasesMediaSrc()` maps `.png` → `.webp` when `NEXT_PUBLIC_CASES_MEDIA_ORIGIN` is set. PNG stays in repo for local dev. |
+| **WebP generation** | `npm run optimize:cases-webp` — creates siblings under `public/cases/` (`*.webp` gitignored). Re-run after PNG edits, then `sync:cases-r2`. |
+| **Lazy / viewport** | `CaseImage` / `CaseMotionImage` — no network fetch until section or element nears viewport. Cover uses `priority`. |
+| **Pages deploy trim** | `prebuild` → `scripts/strip-cases-public.mjs` strips `public/cases/` when `CF_PAGES=1` + cases CDN env are set. Prod = R2 only. |
+
+**Archive comparison:** archive has R2 transport, `next/image` on browse tiles, and `useCinematicVideo` for video. Archive does **not** have WebP pipeline, Pages deploy strip, or viewport-gated case images.
+
+### Operator checklist (edit → ship)
+
+1. Edit PNG in `public/cases/[slug]/`
+2. `npm run optimize:cases-webp`
+3. `npm run sync:cases-r2`
+4. Commit PNG changes (WebP stays local/gitignored)
+5. Push — Pages rebuild strips `public/cases/` when CDN env is set
+
 ---
 
 ## Dot navigation
@@ -290,12 +309,12 @@ Light dot-nav sections: `COLORS` (4), `POSTERS` (5), `END` (11).
 | Asset | Path | Used in |
 |-------|------|---------|
 | PUNCH logo (twitch-like) | `public/cases/punch/punch-logo.png` | `PunchCover`, `PunchCredits`, `PunchFooter` |
-| XXXMANERA headliner (framed portrait, 506×1021) | `public/cases/punch/xxxmanera-headliner.png` | `PunchHeadliner` |
-| Planet (RGBA PNG, black keyed) | `public/cases/punch/planet.png` | `CasesPunch`, `PunchCover`, `PunchCredits` |
+| XXXMANERA headliner (framed portrait, 506×1021, RGBA) | `public/cases/punch/xxxmanera-headliner.png` | `CasesPunch`, `PunchHeadliner` |
+| Planet (RGBA PNG) | `public/cases/punch/planet.png` | `CasesPunch`, `PunchCover`, `PunchCredits` |
 | Sticker kit | `public/cases/punch/stickers/*` | `PunchStickers` |
 | Merch photos | `public/cases/punch/merch-*.png` | `PunchMerch` |
 
-`PunchHeadliner` renders the headliner photo with `object-contain` (full height, centered) — the asset is pre-framed; do not crop with `object-cover`. Black background removed via `mix-blend-mode: screen`.
+`PunchHeadliner` renders the headliner photo with `object-contain` — RGBA asset, no `mix-blend-mode: screen`.
 
 `PunchFooter` is the reusable case-footer template: light gray editorial strip (`#CBCAC5`), LINKS rail, project description, client logo + `created by ONI`.
 

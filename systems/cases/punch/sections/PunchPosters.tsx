@@ -3,6 +3,7 @@
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { punchSrc } from "../punchAssets";
+import { CaseImage } from "@/systems/cases/components/CaseImage";
 
 const GRUNGE = punchSrc("33c8208a5b3400514fadf44d21a7c8d9cfce2062.png");
 
@@ -36,7 +37,7 @@ export function PunchPosters() {
       <div
         className="pointer-events-none absolute inset-0 z-10"
         style={{
-          backgroundImage: `url(${GRUNGE})`,
+          backgroundImage: isInView ? `url(${GRUNGE})` : undefined,
           backgroundSize: "cover",
           backgroundPosition: "center",
           mixBlendMode: "multiply",
@@ -92,10 +93,11 @@ export function PunchPosters() {
             }
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: p.delay }}
           >
-            <img
+            <CaseImage
               src={p.src}
               alt=""
               className="h-full w-full object-cover shadow-xl"
+              sectionInView={isInView}
               style={{
                 borderRadius: "2px",
                 boxShadow: "0 8px 32px rgba(0,0,0,0.22)",

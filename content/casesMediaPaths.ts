@@ -19,15 +19,25 @@ function casesMediaOrigin(): string {
   return (process.env.NEXT_PUBLIC_CASES_MEDIA_ORIGIN ?? "").replace(/\/$/, "");
 }
 
+/** CDN transport prefers WebP siblings for PNG ontology paths. */
+function casesTransportPath(path: string): string {
+  const origin = casesMediaOrigin();
+  if (!origin) return path;
+  if (/\.png$/i.test(path)) return path.replace(/\.png$/i, ".webp");
+  return path;
+}
+
 /**
  * Transport layer — prepends NEXT_PUBLIC_CASES_MEDIA_ORIGIN when set.
  * When unset, returns the path unchanged (local dev + Pages static fallback).
+ * On CDN: .png ontology paths resolve to .webp object keys on R2.
  */
 export function resolveCasesMediaSrc(path: string): string {
   if (/^https?:\/\//i.test(path)) return path;
   const origin = casesMediaOrigin();
   if (!origin) return path;
-  return `${origin}${path.startsWith("/") ? path : `/${path}`}`;
+  const transportPath = casesTransportPath(path);
+  return `${origin}${transportPath.startsWith("/") ? transportPath : `/${transportPath}`}`;
 }
 
 /** Ontology + transport in one call for case components. */

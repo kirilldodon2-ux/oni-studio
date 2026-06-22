@@ -3,6 +3,7 @@
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { punchSrc } from "../punchAssets";
+import { CaseImage } from "@/systems/cases/components/CaseImage";
 
 const PURPLE = "#8f62c7";
 const LOGO   = punchSrc("punch-logo.png");
@@ -57,10 +58,11 @@ export function PunchAbout() {
           animate={isInView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.8, y: 20 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
         >
-          <img
+          <CaseImage
             src={LOGO}
             alt="ПУНШ NEVER SLEEP"
             className="h-auto w-full"
+            sectionInView={isInView}
             style={{ filter: "drop-shadow(0 0 20px rgba(0,0,0,0.4))" }}
           />
         </motion.div>

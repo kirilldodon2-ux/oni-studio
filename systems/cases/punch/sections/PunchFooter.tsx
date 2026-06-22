@@ -3,6 +3,7 @@
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { punchSrc } from "../punchAssets";
+import { CaseImage } from "@/systems/cases/components/CaseImage";
 
 const BG   = "#CBCAC5";
 const INK  = "#111111";
@@ -60,9 +61,10 @@ export function PunchFooter() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
         >
-          <img
+          <CaseImage
             src={punchSrc("punch-logo.png")}
             alt="ПУНШ NEVER SLEEP"
+            sectionInView={isInView}
             style={{
               width: "clamp(10rem, 22vw, 18rem)",
               display: "block",
@@ -158,9 +160,10 @@ export function PunchFooter() {
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.9, delay: 0.65 }}
           >
-            <img
+            <CaseImage
               src={punchSrc("7dd49aa878b92dd7d27210878de79a8b07d14f7d.png")}
               alt="ПУНШ logo"
+              sectionInView={isInView}
               style={{
                 width: "clamp(4rem, 8vw, 6rem)",
                 height: "auto",

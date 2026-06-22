@@ -32,6 +32,9 @@ yarn-error.log*
 # ad-hoc upload/debug artifacts
 /test.jpg
 
+# cases WebP — generated locally, uploaded to R2 (see scripts/optimize-cases-webp.sh)
+public/cases/**/*.webp
+
 # vercel
 .vercel
 

@@ -3,6 +3,7 @@
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { punchSrc } from "../punchAssets";
+import { CaseMotionImage } from "@/systems/cases/components/CaseMotionImage";
 
 const PURPLE = "#8f62c7";
 
@@ -117,9 +118,10 @@ export function PunchSocial() {
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
         transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
       >
-        <motion.img
+        <CaseMotionImage
           src={IMG.phoneLarge}
           alt="Большой телефон с Telegram"
+          sectionInView={isInView}
           className="h-auto w-full"
           style={{
             maxHeight: "88vh",
@@ -143,9 +145,10 @@ export function PunchSocial() {
         animate={isInView ? { opacity: 1, y: 0, rotate: 5 } : { opacity: 0, y: 30, rotate: 10 }}
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
       >
-        <motion.img
+        <CaseMotionImage
           src={IMG.phoneSmall}
           alt="Телефон с постером"
+          sectionInView={isInView}
           className="h-auto w-full"
           style={{
             opacity: 0.9,

@@ -4,6 +4,8 @@ import { motion, useInView } from "motion/react";
 import Link from "next/link";
 import { useRef } from "react";
 import { punchSrc } from "../punchAssets";
+import { CaseImage } from "@/systems/cases/components/CaseImage";
+import { CaseMotionImage } from "@/systems/cases/components/CaseMotionImage";
 
 const PURPLE = "#8f62c7";
 const LOGO   = punchSrc("punch-logo.png");
@@ -42,10 +44,11 @@ export function PunchCredits() {
         transition={{ duration: 2.5, ease: "easeOut", delay: 0.6 }}
         aria-hidden="true"
       >
-        <img
+        <CaseImage
           src={IMG.rapper}
           alt=""
           className="h-auto w-full"
+          sectionInView={isInView}
           style={{ mixBlendMode: "screen", filter: "brightness(0.6) saturate(0.5)" }}
         />
       </motion.div>
@@ -58,7 +61,7 @@ export function PunchCredits() {
         transition={{ duration: 60, ease: "linear", repeat: Infinity }}
         aria-hidden="true"
       >
-        <img src={IMG.planet} alt="" className="h-auto w-full" />
+        <CaseImage src={IMG.planet} alt="" className="h-auto w-full" sectionInView={isInView} />
       </motion.div>
 
       {/* Content */}
@@ -73,16 +76,18 @@ export function PunchCredits() {
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
         >
           {/* Base logo */}
-          <img
+          <CaseImage
             src={LOGO}
             alt="ПУНШ NEVER SLEEP"
             className="h-auto w-full"
+            sectionInView={isInView}
             style={{ filter: `drop-shadow(0 0 40px rgba(143,98,199,0.5))` }}
           />
           {/* Intermittent red glitch layer */}
-          <motion.img
+          <CaseMotionImage
             src={LOGO}
             alt=""
+            sectionInView={isInView}
             className="pointer-events-none absolute inset-0 h-auto w-full"
             style={{ mixBlendMode: "screen" }}
             animate={{
@@ -106,9 +111,10 @@ export function PunchCredits() {
             aria-hidden="true"
           />
           {/* Cyan glitch layer */}
-          <motion.img
+          <CaseMotionImage
             src={LOGO}
             alt=""
+            sectionInView={isInView}
             className="pointer-events-none absolute inset-0 h-auto w-full"
             style={{ mixBlendMode: "screen" }}
             animate={{

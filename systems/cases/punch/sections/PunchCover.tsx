@@ -3,6 +3,8 @@
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { punchSrc } from "../punchAssets";
+import { CaseImage } from "@/systems/cases/components/CaseImage";
+import { CaseMotionImage } from "@/systems/cases/components/CaseMotionImage";
 
 const PURPLE = "#8f62c7";
 const LOGO   = punchSrc("punch-logo.png");
@@ -42,9 +44,10 @@ export function PunchCover() {
         transition={{ duration: 2.5, ease: "easeOut" }}
         aria-hidden="true"
       >
-        <motion.img
+        <CaseMotionImage
           src={PLANET}
           alt=""
+          priority
           className="h-auto w-full"
           style={{ filter: "drop-shadow(0 0 60px rgba(143,98,199,0.35))" }}
           animate={{ rotate: 360 }}
@@ -64,17 +67,19 @@ export function PunchCover() {
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
         >
           {/* Base logo */}
-          <img
+          <CaseImage
             src={LOGO}
             alt="ПУНШ NEVER SLEEP"
+            priority
             className="h-auto w-full"
             style={{ filter: "drop-shadow(0 0 40px rgba(143,98,199,0.55))" }}
           />
 
           {/* Red glitch layer */}
-          <motion.img
+          <CaseMotionImage
             src={LOGO}
             alt=""
+            priority
             className="pointer-events-none absolute inset-0 h-auto w-full"
             style={{ mixBlendMode: "screen" }}
             animate={{
@@ -99,9 +104,10 @@ export function PunchCover() {
           />
 
           {/* Cyan glitch layer */}
-          <motion.img
+          <CaseMotionImage
             src={LOGO}
             alt=""
+            priority
             className="pointer-events-none absolute inset-0 h-auto w-full"
             style={{ mixBlendMode: "screen" }}
             animate={{

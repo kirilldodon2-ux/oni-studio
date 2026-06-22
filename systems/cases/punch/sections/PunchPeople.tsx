@@ -3,6 +3,7 @@
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { punchSrc } from "../punchAssets";
+import { CaseImage } from "@/systems/cases/components/CaseImage";
 
 const PURPLE = "#8f62c7";
 
@@ -30,10 +31,11 @@ export function PunchPeople() {
           animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.05 }}
           transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
         >
-          <img
+          <CaseImage
             src={IMG.group}
             alt=""
             className="h-full w-full object-cover"
+            sectionInView={isInView}
             style={{ filter: "brightness(0.65) saturate(0.8)" }}
           />
         </motion.div>
@@ -45,10 +47,11 @@ export function PunchPeople() {
           animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.05 }}
           transition={{ duration: 1.2, ease: "easeOut", delay: 0.25 }}
         >
-          <img
+          <CaseImage
             src={IMG.suits}
             alt=""
             className="h-full w-full object-cover"
+            sectionInView={isInView}
             style={{ filter: "brightness(0.55) saturate(0.7)" }}
           />
         </motion.div>

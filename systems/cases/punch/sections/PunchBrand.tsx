@@ -3,6 +3,7 @@
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { punchSrc } from "../punchAssets";
+import { CaseImage } from "@/systems/cases/components/CaseImage";
 
 const PURPLE = "#8f62c7";
 
@@ -83,8 +84,8 @@ export function PunchBrand() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
           transition={{ duration: 0.7, delay: 0.6 }}
         >
-          <img src={IMG.logo}  alt="" className="h-auto w-14 md:w-18" />
-          <img src={IMG.badge} alt="" className="h-auto w-14 md:w-18" />
+          <CaseImage src={IMG.logo} alt="" className="h-auto w-14 md:w-18" sectionInView={isInView} />
+          <CaseImage src={IMG.badge} alt="" className="h-auto w-14 md:w-18" sectionInView={isInView} />
         </motion.div>
       </div>
 
@@ -98,7 +99,7 @@ export function PunchBrand() {
             : { opacity: 0, x: 40, rotate: 8 }}
           transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
         >
-          <img src={IMG.main} alt="PUNCH sticker art" className="h-auto w-full" />
+          <CaseImage src={IMG.main} alt="PUNCH sticker art" className="h-auto w-full" sectionInView={isInView} />
         </motion.div>
       </div>
 

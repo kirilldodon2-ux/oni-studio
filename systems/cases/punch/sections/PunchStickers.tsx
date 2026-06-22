@@ -3,6 +3,7 @@
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { punchSrc } from "../punchAssets";
+import { CaseMotionImage } from "@/systems/cases/components/CaseMotionImage";
 
 const PURPLE = "#8f62c7";
 
@@ -148,9 +149,10 @@ export function PunchStickers() {
               aria-hidden="true"
             >
               {/* Subtle float */}
-              <motion.img
+              <CaseMotionImage
                 src={s.src}
                 alt=""
+                sectionInView={isInView}
                 className="h-auto w-full"
                 style={{ mixBlendMode: "screen" }}
                 animate={{ y: [0, i % 2 === 0 ? -4 : 4, 0] }}

@@ -4,13 +4,15 @@ import { motion, useInView } from "motion/react";
 import Link from "next/link";
 import { useRef } from "react";
 import { punchSrc } from "@/systems/cases/punch/punchAssets";
+import { CaseImage } from "@/systems/cases/components/CaseImage";
+import { CaseMotionImage } from "@/systems/cases/components/CaseMotionImage";
 
 const PUNCH_PURPLE = "#8f62c7";
 const BG = "#06040c";
 const SCOPE = ["Event Branding", "Visual Identity", "Merch", "Posters"];
 
 const IMG = {
-  rapper: punchSrc("216be9907372b69d0e269a72403e810c8a85e1e9.png"),
+  rapper: punchSrc("xxxmanera-headliner.png"),
   planet: punchSrc("planet.png"),
   cup:    punchSrc("0911e0cbaf2f31314e861e459b1a42d26baf1d47.png"),
 } as const;
@@ -79,9 +81,10 @@ export function CasesPunch() {
         transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
         aria-hidden="true"
       >
-        <motion.img
+        <CaseMotionImage
           src={IMG.planet}
           alt=""
+          sectionInView={isInView}
           style={{
             width: "100%",
             display: "block",
@@ -92,17 +95,16 @@ export function CasesPunch() {
         />
       </motion.div>
 
-      {/* RAPPER — z=1, left column */}
+      {/* RAPPER — z=1, left column (RGBA headliner — no screen blend) */}
       <motion.div
         className="pointer-events-none absolute hidden md:block"
         style={{
-          left: "-2%",
+          left: "-4%",
           top: "50%",
-          translateY: "-40%",
-          width: "clamp(22rem, 42vw, 36rem)",
-          mixBlendMode: "screen",
+          translateY: "-48%",
+          width: "clamp(16rem, 28vw, 24rem)",
           zIndex: 1,
-          filter: "drop-shadow(0 0 30px rgba(143,98,199,0.25))",
+          filter: "drop-shadow(0 0 40px rgba(143,98,199,0.35))",
         }}
         initial={{ opacity: 0, y: 50 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
@@ -121,7 +123,13 @@ export function CasesPunch() {
           }}
           transition={{ duration: 0.25, times: [0, 0.2, 0.6, 1], repeat: Infinity, repeatDelay: 5.8, delay: 2 }}
         >
-          <img src={IMG.rapper} alt="" className="h-auto w-full" />
+          <CaseImage
+            src={IMG.rapper}
+            alt=""
+            className="h-auto w-full object-contain"
+            sectionInView={isInView}
+            priority
+          />
         </motion.div>
       </motion.div>
 
@@ -139,9 +147,10 @@ export function CasesPunch() {
         transition={{ duration: 1, delay: 0.8 }}
         aria-hidden="true"
       >
-        <motion.img
+        <CaseMotionImage
           src={IMG.cup}
           alt=""
+          sectionInView={isInView}
           style={{
             width: "100%",
             mixBlendMode: "screen",
@@ -172,9 +181,10 @@ export function CasesPunch() {
 
         {/* Mobile: planet */}
         <div className="pointer-events-none mb-4 block md:hidden" aria-hidden="true">
-          <motion.img
+          <CaseMotionImage
             src={IMG.planet}
             alt=""
+            sectionInView={isInView}
             style={{
               width: "88vw",
               display: "block",

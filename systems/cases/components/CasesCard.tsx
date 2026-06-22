@@ -3,6 +3,7 @@
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { resolveCasesMediaSrc } from "@/content/casesMediaPaths";
+import { CaseImage } from "@/systems/cases/components/CaseImage";
 import type { CaseEntry } from "../casesData";
 
 interface CasesCardProps {
@@ -57,10 +58,11 @@ export function CasesCard({ entry }: CasesCardProps) {
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 1.4, delay: 0 }}
         >
-          <img
+          <CaseImage
             src={resolveCasesMediaSrc(entry.cover)}
             alt={`${entry.client} — ${entry.title}`}
             className="h-full w-full object-cover opacity-30"
+            sectionInView={isInView}
           />
         </motion.div>
       ) : (

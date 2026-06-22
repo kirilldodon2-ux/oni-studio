@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "prebuild": "node scripts/strip-cases-public.mjs",
+    "optimize:cases-webp": "./scripts/optimize-cases-webp.sh",
     "sync:cases-r2": "./scripts/sync-cases-r2.sh"
   },
   "dependencies": {

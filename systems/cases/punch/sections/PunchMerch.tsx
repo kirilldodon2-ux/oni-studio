@@ -3,6 +3,7 @@
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { punchSrc } from "../punchAssets";
+import { CaseImage } from "@/systems/cases/components/CaseImage";
 
 const PURPLE = "#8f62c7";
 
@@ -30,10 +31,11 @@ export function PunchMerch() {
         animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -40 }}
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
       >
-        <img
+        <CaseImage
           src={IMG.event}
           alt="PUNCH merch — event atmosphere"
           className="h-full w-full object-cover object-center"
+          sectionInView={isInView}
           style={{ filter: "brightness(0.78) saturate(0.9)" }}
         />
         {/* Right edge fade */}
@@ -53,10 +55,11 @@ export function PunchMerch() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
         >
-          <img
+          <CaseImage
             src={IMG.purple}
             alt="PUNCH merch — purple"
             className="h-full w-full object-cover object-center"
+            sectionInView={isInView}
             style={{ filter: "brightness(0.85)" }}
           />
           {/* Left + bottom fade */}
@@ -77,10 +80,11 @@ export function PunchMerch() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
         >
-          <img
+          <CaseImage
             src={IMG.black}
             alt="PUNCH merch — black"
             className="h-full w-full object-cover object-center"
+            sectionInView={isInView}
             style={{ filter: "brightness(0.9)" }}
           />
           {/* Left + top fade */}

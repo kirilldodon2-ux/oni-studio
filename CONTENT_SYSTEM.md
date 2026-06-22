@@ -321,6 +321,8 @@ If Works media moves off-repo, require a **lane-specific** decision: documented 
 
 **Rollback:** unset `NEXT_PUBLIC_CASES_MEDIA_ORIGIN` → redeploy → `public/cases/` fallback.
 
+**Performance:** WebP on CDN (`.png` → `.webp` at transport), `CaseImage` viewport gating, `prebuild` strips `public/cases/` on Pages when CDN active — see `docs/CASES_SYSTEM.md` § Performance.
+
 **Do not** pass cases paths through `resolveArchiveMediaSrc()`.
 
 ---

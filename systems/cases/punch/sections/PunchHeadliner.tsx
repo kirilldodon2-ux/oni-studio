@@ -3,6 +3,7 @@
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { punchSrc } from "../punchAssets";
+import { CaseImage } from "@/systems/cases/components/CaseImage";
 
 const PURPLE = "#8f62c7";
 
@@ -84,11 +85,12 @@ export function PunchHeadliner() {
           animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
           transition={{ duration: 1.5, ease: "easeOut", delay: 0.15 }}
         >
-          <img
+          <CaseImage
             src={IMG.rapper}
             alt="XXXMANERA"
             className="h-full w-auto max-w-full object-contain"
-            style={{ mixBlendMode: "screen", filter: "brightness(1.06) saturate(0.9) contrast(1.04)" }}
+            sectionInView={isInView}
+            style={{ filter: "brightness(1.06) saturate(0.95) contrast(1.04) drop-shadow(0 0 24px rgba(143,98,199,0.2))" }}
           />
         </motion.div>
 
