@@ -63,10 +63,22 @@ export function PunchHeadliner() {
         XXXMANERA
       </div>
 
-      {/* Left: XXXMANERA figure — atmospheric, screen blend */}
-      <div className="relative z-10 flex w-1/2 items-end overflow-hidden">
+      {/* Left: XXXMANERA figure — full-height, face visible at top */}
+      <div className="relative z-10 w-1/2 overflow-hidden" style={{ height: "100%" }}>
+
+        {/* Contour glow — purple radial behind the figure */}
+        <div
+          className="pointer-events-none absolute inset-0 z-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 75% 90% at 38% 40%, rgba(143,98,199,0.52) 0%, rgba(143,98,199,0.12) 45%, transparent 72%)",
+          }}
+          aria-hidden="true"
+        />
+
+        {/* Photo — object-top shows face, screen blend removes black bg */}
         <motion.div
-          className="pointer-events-none absolute bottom-0 left-0 w-[115%]"
+          className="pointer-events-none absolute inset-0 z-10"
           initial={{ opacity: 0, x: -20 }}
           animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
           transition={{ duration: 1.5, ease: "easeOut", delay: 0.15 }}
@@ -74,14 +86,24 @@ export function PunchHeadliner() {
           <img
             src={IMG.rapper}
             alt="XXXMANERA"
-            className="h-auto w-full"
-            style={{ mixBlendMode: "screen", filter: "brightness(0.9) saturate(0.75)" }}
+            className="h-full w-full object-cover object-top"
+            style={{ mixBlendMode: "screen", filter: "brightness(1.08) saturate(0.88) contrast(1.05)" }}
           />
         </motion.div>
 
+        {/* Bottom fade — blends figure into section bg */}
+        <div
+          className="pointer-events-none absolute bottom-0 left-0 right-0 z-20"
+          style={{
+            height: "38%",
+            background: "linear-gradient(to top, #06040c 0%, rgba(6,4,12,0.6) 45%, transparent 100%)",
+          }}
+          aria-hidden="true"
+        />
+
         {/* Purple vertical edge accent */}
         <motion.div
-          className="absolute right-0 top-0 h-full w-[2px]"
+          className="absolute right-0 top-0 z-30 h-full w-[2px]"
           style={{ backgroundColor: PURPLE, opacity: 0.5 }}
           initial={{ scaleY: 0, originY: 0 }}
           animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}

@@ -53,6 +53,17 @@ export function PunchColors() {
         </motion.h2>
       </div>
 
+      {/* Narrative subtitle */}
+      <motion.p
+        className="relative z-10 px-8 pb-2 pt-3 text-[10px] leading-[1.75] tracking-[0.03em] text-black/40 md:px-10 lg:max-w-[55%] lg:px-14"
+        initial={{ opacity: 0, y: 6 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
+        transition={{ duration: 0.7, delay: 0.3 }}
+      >
+        Каждый цвет выбран с весом: фиолетовый — ночь и избыток,
+        антрацит — бетон и грязь, туман — дым перед рассветом.
+      </motion.p>
+
       {/* Swatches grid */}
       <div className="relative z-10 flex flex-1 gap-[2px] px-8 pb-10 pt-6 md:px-10 lg:px-14">
         {SWATCHES.map((sw, i) => (

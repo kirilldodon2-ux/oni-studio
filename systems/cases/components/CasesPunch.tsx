@@ -96,17 +96,49 @@ export function CasesPunch() {
       </motion.div>
 
       {/* ─────────────────────────────────────────────────
-          RAPPER — centred vertically, upper body + face visible
-          Planet will rest at his hands level (mid-body)
-          Occasional glitch jitter
+          PLANET — HUGE background sphere, rising from below center.
+          z=0: behind everything. mix-blend-mode:screen removes black bg.
+          Bottom gradient layer (z=4) darkens lower portion.
       ───────────────────────────────────────────────── */}
       <motion.div
         className="pointer-events-none absolute hidden md:block"
         style={{
-          left: "1%",
+          bottom: "-28%",
+          left: "50%",
+          translateX: "-50%",
+          width: "clamp(30rem, 70vw, 62rem)",
+          zIndex: 0,
+        }}
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85 }}
+        transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+        aria-hidden="true"
+      >
+        <motion.img
+          src={IMG.planet}
+          alt=""
+          style={{
+            width: "100%",
+            display: "block",
+            mixBlendMode: "screen",
+            filter: "drop-shadow(0 0 100px rgba(143,98,199,0.35)) drop-shadow(0 0 40px rgba(143,98,199,0.2))",
+          }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 32, ease: "linear", repeat: Infinity }}
+        />
+      </motion.div>
+
+      {/* ─────────────────────────────────────────────────
+          RAPPER — z=1, in front of planet.
+          Slightly wider for stronger presence.
+      ───────────────────────────────────────────────── */}
+      <motion.div
+        className="pointer-events-none absolute hidden md:block"
+        style={{
+          left: "0%",
           top: "50%",
-          translateY: "-38%",
-          width: "clamp(20rem, 38vw, 32rem)",
+          translateY: "-40%",
+          width: "clamp(22rem, 42vw, 36rem)",
           mixBlendMode: "screen",
           zIndex: 1,
           filter: "drop-shadow(0 0 30px rgba(143,98,199,0.25))",
@@ -116,7 +148,7 @@ export function CasesPunch() {
         transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
         aria-hidden="true"
       >
-        {/* Glitch jitter — fires every ~6s */}
+        {/* Periodic glitch jitter */}
         <motion.div
           animate={{
             x: [0, -4, 3, -2, 0],
@@ -127,96 +159,53 @@ export function CasesPunch() {
               "hue-rotate(0deg)",
             ],
           }}
-          transition={{
-            duration: 0.25,
-            times: [0, 0.2, 0.6, 1],
-            repeat: Infinity,
-            repeatDelay: 5.8,
-            delay: 2,
-          }}
+          transition={{ duration: 0.25, times: [0, 0.2, 0.6, 1], repeat: Infinity, repeatDelay: 5.8, delay: 2 }}
         >
           <img src={IMG.rapper} alt="" className="h-auto w-full" />
         </motion.div>
       </motion.div>
 
       {/* ─────────────────────────────────────────────────
-          PLANET + ORBIT — sits at rapper's hands level (~55% from top)
-          mix-blend-mode: screen removes black bg
+          CUP — z=3, floating near rapper's hands.
+          Loose orbit-like float, screen blend.
       ───────────────────────────────────────────────── */}
-      <div
+      <motion.div
         className="pointer-events-none absolute hidden md:block"
         style={{
-          left: "clamp(7rem, 18vw, 16rem)",
-          top: "clamp(6rem, 30vh, 22rem)",
-          zIndex: 2,
+          left: "clamp(18rem, 30vw, 28rem)",
+          top: "clamp(30%, 44vh, 58%)",
+          zIndex: 3,
+          width: "clamp(2.8rem, 4.5vw, 4rem)",
         }}
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 1, delay: 0.8 }}
         aria-hidden="true"
       >
-        <motion.div
-          className="relative"
-          initial={{ opacity: 0, scale: 0.7 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.7 }}
-          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-        >
-          {/* Planet — spinning, screen blend removes black background */}
-          <motion.img
-            src={IMG.planet}
-            alt=""
-            style={{
-              width: "clamp(16rem, 28vw, 24rem)",
-              display: "block",
-              mixBlendMode: "screen",
-              filter: "drop-shadow(0 0 60px rgba(143,98,199,0.55)) drop-shadow(0 0 20px rgba(143,98,199,0.3))",
-            }}
-            animate={{ rotate: 360 }}
-            transition={{ duration: 22, ease: "linear", repeat: Infinity }}
-          />
+        <motion.img
+          src={IMG.cup}
+          alt=""
+          style={{
+            width: "100%",
+            mixBlendMode: "screen",
+            filter: "drop-shadow(0 0 14px rgba(143,98,199,0.95)) drop-shadow(0 0 5px rgba(200,160,255,0.5))",
+          }}
+          animate={{
+            x: [0, 18, 6, -10, 0],
+            y: [0, -12, -20, -8, 0],
+            rotate: [-15, -8, -20, -10, -15],
+          }}
+          transition={{ duration: 7, ease: "easeInOut", repeat: Infinity }}
+        />
+      </motion.div>
 
-          {/* Orbit arm */}
-          <motion.div
-            style={{ position: "absolute", top: "50%", left: "50%", width: 0, height: 0 }}
-            animate={{ rotate: 360 }}
-            transition={{ duration: 8, ease: "linear", repeat: Infinity }}
-          >
-            <div
-              style={{
-                position: "absolute",
-                left: "clamp(8.5rem, 15vw, 13rem)",
-                top: 0,
-                transform: "translateY(-50%)",
-              }}
-            >
-              <motion.div
-                animate={{ rotate: -360 }}
-                transition={{ duration: 8, ease: "linear", repeat: Infinity }}
-              >
-                <motion.img
-                  src={IMG.cup}
-                  alt=""
-                  style={{
-                    width: "clamp(2.8rem, 4.5vw, 4rem)",
-                    filter: "drop-shadow(0 0 12px rgba(143,98,199,0.9)) drop-shadow(0 0 4px rgba(200,160,255,0.4))",
-                    mixBlendMode: "screen",
-                  }}
-                  animate={{
-                    scale:   [1.0, 0.8, 0.4, 0.8, 1.0],
-                    opacity: [1.0, 0.9, 0.2, 0.9, 1.0],
-                  }}
-                  transition={{ duration: 8, ease: "linear", repeat: Infinity, times: [0, 0.25, 0.5, 0.75, 1] }}
-                />
-              </motion.div>
-            </div>
-          </motion.div>
-        </motion.div>
-      </div>
-
-      {/* Bottom gradient — fades left composition into text */}
+      {/* Full-width bottom gradient — z=4, darkens planet bottom */}
       <div
-        className="pointer-events-none absolute bottom-0 left-0 z-[3] hidden md:block"
+        className="pointer-events-none absolute bottom-0 left-0 right-0 hidden md:block"
         style={{
-          width: "60%",
-          height: "52%",
-          background: `linear-gradient(to top, ${BG} 0%, ${BG} 28%, transparent 100%)`,
+          height: "55%",
+          zIndex: 4,
+          background: `linear-gradient(to top, ${BG} 0%, ${BG} 18%, rgba(6,4,12,0.75) 45%, transparent 100%)`,
         }}
         aria-hidden="true"
       />

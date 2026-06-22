@@ -6,7 +6,7 @@ import { useRef } from "react";
 const PURPLE = "#8f62c7";
 
 const IMG = {
-  phoneLarge: "/cases/punch/ac4d7bed4406252e0a53e85280bac753e014229a.png",
+  phoneLarge: "/cases/punch/10aa3444c95c4253f46440f0ef2aac8ccec8b61e.png",
   phoneSmall: "/cases/punch/357158fc1890baecb5c5e89ea5c1ce0fd88ae697.png",
 };
 
@@ -101,7 +101,7 @@ export function PunchSocial() {
       {/* Center — LARGE phone */}
       <div className="relative z-10 flex flex-1 items-center justify-center">
         <motion.div
-          style={{ width: "clamp(16rem, 28vw, 24rem)" }}
+          style={{ width: "clamp(18rem, 34vw, 30rem)" }}
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
@@ -109,7 +109,8 @@ export function PunchSocial() {
           <motion.img
             src={IMG.phoneLarge}
             alt="Большой телефон с Telegram"
-            className="h-auto w-full drop-shadow-2xl"
+            className="h-auto w-full"
+            style={{ filter: "drop-shadow(0 0 40px rgba(143,98,199,0.35)) drop-shadow(0 20px 30px rgba(0,0,0,0.7))" }}
             animate={{ y: [-6, 6, -6] }}
             transition={{ duration: 5, ease: "easeInOut", repeat: Infinity }}
           />

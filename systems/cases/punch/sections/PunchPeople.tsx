@@ -83,7 +83,7 @@ export function PunchPeople() {
           SECTION 07 / EVENT
         </motion.p>
 
-        <div className="flex items-end justify-between">
+        <div className="flex items-end justify-between gap-6">
           <div>
             <div className="overflow-hidden">
               <motion.h2
@@ -109,15 +109,30 @@ export function PunchPeople() {
             </div>
           </div>
 
-          <motion.p
-            className="hidden max-w-[16rem] text-right text-[10px] leading-[1.7] text-white/30 lg:block"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-          >
-            Brand presence at the event —
-            visual identity carried from posters to the stage.
-          </motion.p>
+          <div className="hidden flex-col items-end gap-4 lg:flex">
+            <motion.p
+              className="max-w-[18rem] text-right text-[10px] leading-[1.75] text-white/30"
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+            >
+              1700 гостей. Одна ночь. Каждый брендированный элемент —
+              от арки входа до стакана в руке — говорил на одном визуальном языке.
+            </motion.p>
+            <motion.div
+              className="flex gap-6"
+              initial={{ opacity: 0, y: 6 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
+              transition={{ duration: 0.7, delay: 1.0 }}
+            >
+              {[["1700", "ГОСТЕЙ"], ["1", "НОЧЬ"], ["∞", "ВАЙБ"]].map(([num, label]) => (
+                <div key={label} className="flex flex-col items-center gap-1">
+                  <span className="font-bebas text-[1.6rem] leading-none text-white">{num}</span>
+                  <span className="text-[8px] tracking-[0.30em] text-white/25">{label}</span>
+                </div>
+              ))}
+            </motion.div>
+          </div>
         </div>
       </div>
 

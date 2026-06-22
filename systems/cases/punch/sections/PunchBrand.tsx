@@ -70,8 +70,9 @@ export function PunchBrand() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
           transition={{ duration: 0.8, delay: 0.45 }}
         >
-          Full event branding system for PUNCH NEVER SLEEP — logo, typography,
-          colour palette, sticker kit, and merch identity.
+          Задача: создать визуальную систему для многодневного клубного ивента.
+          Дерзко, уличного, невозможного игнорировать. Бренд должен был работать везде —
+          от постера форматом 2×3 до принта на худи.
         </motion.p>
 
         {/* Two small logo badges */}
