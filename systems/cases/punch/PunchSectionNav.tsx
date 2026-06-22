@@ -14,8 +14,8 @@ const LABELS = [
   "END",
 ];
 
-/** Light section: Footer = index 7 */
-const LIGHT_SECTIONS = new Set([7]);
+/** Light sections: Posters = 4, Footer = 7 */
+const LIGHT_SECTIONS = new Set([4, 7]);
 
 export function PunchSectionNav() {
   const { activeSection, scrollToSection } = usePunchSection();
