@@ -19,6 +19,5 @@ export const casesRegistry: CaseEntry[] = [
     year: "2026",
     scope: ["Event Branding", "Visual Identity", "Merch", "Posters"],
     cover: "/cases/punch/66233c76db34d637b5f0a2da5208a41b8cc8b3ff.png",
-    sections: 2,
   },
 ];

@@ -4,16 +4,7 @@ import { motion } from "motion/react";
 import { useCasesSection } from "./CasesSectionContext";
 import { casesRegistry } from "./casesData";
 
-// Each entry with sections > 1 gets multiple dots.
-// First dot uses the case id; subsequent dots use id + "·" suffix.
-const LABELS = [
-  "CASES",
-  ...casesRegistry.flatMap((c) =>
-    Array.from({ length: c.sections ?? 1 }, (_, i) =>
-      i === 0 ? c.id : `${c.id}·`
-    )
-  ),
-];
+const LABELS = ["CASES", ...casesRegistry.map((c) => c.id)];
 
 const DOT_ACTIVE = "#F7F7F7";
 const DOT_INACTIVE = "rgba(200,200,200,0.32)";

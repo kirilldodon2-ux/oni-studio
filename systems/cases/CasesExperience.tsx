@@ -7,9 +7,7 @@ import { CasesPunch } from "./components/CasesPunch";
 import { useCasesSection } from "./CasesSectionContext";
 import { casesRegistry } from "./casesData";
 
-// cover (1) + sum of each case's section count (default 1 per case)
-const TOTAL_SECTIONS =
-  1 + casesRegistry.reduce((sum, e) => sum + (e.sections ?? 1), 0);
+const TOTAL_SECTIONS = 1 + casesRegistry.length; // cover + one section per case
 
 function renderCase(entry: (typeof casesRegistry)[number]) {
   // Cases with custom components — extend this map as new cases are ported

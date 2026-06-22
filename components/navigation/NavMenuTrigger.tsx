@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { ArtifactConsumptionPair, ONINavigationSigil } from "@/systems/spatial";
 
 interface NavMenuTriggerProps {
@@ -14,6 +15,7 @@ interface NavMenuTriggerProps {
 export function NavMenuTrigger({ isOpen, onToggle }: NavMenuTriggerProps) {
   const [hovered, setHovered] = useState(false);
   const [impulseKey, setImpulseKey] = useState(0);
+  const pathname = usePathname();
 
   function handleToggle() {
     setImpulseKey((k) => k + 1);
@@ -21,6 +23,8 @@ export function NavMenuTrigger({ isOpen, onToggle }: NavMenuTriggerProps) {
   }
 
   const label = isOpen ? "CLOSE" : "MENU";
+  const isDark = pathname.startsWith("/cases");
+  const textColor = isDark ? "text-white/70" : "text-black/60";
 
   return (
     <button
@@ -30,7 +34,7 @@ export function NavMenuTrigger({ isOpen, onToggle }: NavMenuTriggerProps) {
       onMouseLeave={() => setHovered(false)}
       onFocus={() => setHovered(true)}
       onBlur={() => setHovered(false)}
-      className="pointer-events-auto text-[11px] font-medium text-black/60"
+      className={`pointer-events-auto text-[11px] font-medium ${textColor}`}
       aria-label={isOpen ? "Close menu" : "Open menu"}
       aria-expanded={isOpen}
       aria-controls="nav-overlay"
