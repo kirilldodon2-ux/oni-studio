@@ -1,48 +1,54 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { PunchCanvas } from "./imports/PunchCanvas";
+import { useCallback, useEffect, useRef } from "react";
+import { usePunchSection } from "./PunchSectionContext";
+import { PunchCover }    from "./sections/PunchCover";
+import { PunchBrand }    from "./sections/PunchBrand";
+import { PunchPosters }  from "./sections/PunchPosters";
+import { PunchSocial }   from "./sections/PunchSocial";
+import { PunchPeople }   from "./sections/PunchPeople";
+import { PunchStickers } from "./sections/PunchStickers";
+import { PunchCredits }  from "./sections/PunchCredits";
 
-// Figma Make export dimensions — 1920×16485px fixed canvas
-const CANVAS_W = 1920;
-const CANVAS_H = 16485;
+const TOTAL_SECTIONS = 7;
 
-/**
- * PunchExperience — scales the fixed-px Figma Make PUNCH landing
- * to fill the current viewport width. Height adjusts proportionally.
- */
 export function PunchExperience() {
-  const [scale, setScale] = useState(1);
+  const { setActiveSection, scrollContainerRef } = usePunchSection();
+  const ticking = useRef(false);
+
+  const handleScroll = useCallback(() => {
+    if (ticking.current) return;
+    ticking.current = true;
+    requestAnimationFrame(() => {
+      const el = scrollContainerRef.current;
+      if (el) {
+        const section = Math.round(el.scrollTop / el.clientHeight);
+        setActiveSection(Math.min(Math.max(section, 0), TOTAL_SECTIONS - 1));
+      }
+      ticking.current = false;
+    });
+  }, [setActiveSection, scrollContainerRef]);
 
   useEffect(() => {
-    const update = () => setScale(window.innerWidth / CANVAS_W);
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, [handleScroll, scrollContainerRef]);
 
   return (
     <div
-      style={{
-        position: "relative",
-        width: "100%",
-        height: `${CANVAS_H * scale}px`,
-        overflow: "hidden",
-      }}
+      ref={scrollContainerRef}
+      className="h-screen overflow-y-scroll"
+      style={{ scrollSnapType: "y mandatory", scrollBehavior: "auto" }}
     >
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: `${CANVAS_W}px`,
-          height: `${CANVAS_H}px`,
-          transformOrigin: "top left",
-          transform: `scale(${scale})`,
-        }}
-      >
-        <PunchCanvas />
-      </div>
+      <PunchCover />
+      <PunchBrand />
+      <PunchPosters />
+      <PunchSocial />
+      <PunchPeople />
+      <PunchStickers />
+      <PunchCredits />
     </div>
   );
 }
