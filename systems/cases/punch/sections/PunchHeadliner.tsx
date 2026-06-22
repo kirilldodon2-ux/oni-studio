@@ -6,7 +6,7 @@ import { useRef } from "react";
 const PURPLE = "#8f62c7";
 
 const IMG = {
-  rapper: "/cases/punch/xxxmanera-yellow.png",
+  rapper: "/cases/punch/xxxmanera-headliner.png",
 };
 
 const PLATFORMS = [
@@ -63,22 +63,22 @@ export function PunchHeadliner() {
         XXXMANERA
       </div>
 
-      {/* Left: XXXMANERA figure — full-height, face visible at top */}
-      <div className="relative z-10 w-1/2 overflow-hidden" style={{ height: "100%" }}>
+      {/* Left: XXXMANERA — framed portrait (506×1021), full height, centered */}
+      <div className="relative z-10 flex w-1/2 items-center justify-center overflow-hidden" style={{ height: "100%" }}>
 
         {/* Contour glow — purple radial behind the figure */}
         <div
           className="pointer-events-none absolute inset-0 z-0"
           style={{
             background:
-              "radial-gradient(ellipse 75% 90% at 38% 40%, rgba(143,98,199,0.52) 0%, rgba(143,98,199,0.12) 45%, transparent 72%)",
+              "radial-gradient(ellipse 70% 85% at 50% 42%, rgba(143,98,199,0.48) 0%, rgba(143,98,199,0.10) 50%, transparent 75%)",
           }}
           aria-hidden="true"
         />
 
-        {/* Photo — object-top shows face, screen blend removes black bg */}
+        {/* Photo — pre-framed asset, contain fit preserves composition */}
         <motion.div
-          className="pointer-events-none absolute inset-0 z-10"
+          className="pointer-events-none relative z-10 flex h-full items-center justify-center"
           initial={{ opacity: 0, x: -20 }}
           animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
           transition={{ duration: 1.5, ease: "easeOut", delay: 0.15 }}
@@ -86,17 +86,17 @@ export function PunchHeadliner() {
           <img
             src={IMG.rapper}
             alt="XXXMANERA"
-            className="h-full w-full object-cover object-top"
-            style={{ mixBlendMode: "screen", filter: "brightness(1.08) saturate(0.88) contrast(1.05)" }}
+            className="h-full w-auto max-w-full object-contain"
+            style={{ mixBlendMode: "screen", filter: "brightness(1.06) saturate(0.9) contrast(1.04)" }}
           />
         </motion.div>
 
-        {/* Bottom fade — blends figure into section bg */}
+        {/* Bottom fade — soft blend into section bg */}
         <div
           className="pointer-events-none absolute bottom-0 left-0 right-0 z-20"
           style={{
-            height: "38%",
-            background: "linear-gradient(to top, #06040c 0%, rgba(6,4,12,0.6) 45%, transparent 100%)",
+            height: "28%",
+            background: "linear-gradient(to top, #06040c 0%, rgba(6,4,12,0.5) 50%, transparent 100%)",
           }}
           aria-hidden="true"
         />

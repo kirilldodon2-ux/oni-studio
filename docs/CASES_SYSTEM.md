@@ -177,3 +177,53 @@ Route (app)                              Size     First Load JS
 3. **Mobile dot nav** — `CasesSectionNav` is `lg:flex` only; consider a bottom-bar nav for mobile if needed
 4. **Homepage entry** — optional teaser section linking to `/cases` (analogous to `BrandIdentitySection → /brandbook`)
 5. **NavOverlay annotation** — `CASES OPEN` bottom-right in overlay already wired (Phase 1)
+
+---
+
+## Full case landing — `/cases/punch`
+
+**Route:** `app/cases/punch/page.tsx`  
+**System:** `systems/cases/punch/`  
+**Assets:** `public/cases/punch/`
+
+The PUNCH case has a dedicated scroll-snap landing (same architecture as `/brandbook` and `/cases` index). Preview slide on `/cases` links via `WATCH FULL → /cases/punch`.
+
+### Sections (12 total)
+
+| Index | Label | Component |
+|-------|-------|-----------|
+| 0 | INTRO | `PunchCover` |
+| 1 | BRAND | `PunchBrand` |
+| 2 | ARTIST | `PunchHeadliner` |
+| 3 | ABOUT | `PunchAbout` |
+| 4 | COLORS | `PunchColors` |
+| 5 | POSTERS | `PunchPosters` |
+| 6 | DIGITAL | `PunchSocial` |
+| 7 | EVENT | `PunchPeople` |
+| 8 | MERCH | `PunchMerch` |
+| 9 | STICKERS | `PunchStickers` |
+| 10 | FIN | `PunchCredits` |
+| 11 | END | `PunchFooter` |
+
+Light dot-nav sections: `COLORS` (4), `POSTERS` (5), `END` (11).
+
+### Key assets
+
+| Asset | Path | Used in |
+|-------|------|---------|
+| PUNCH logo (twitch-like) | `public/cases/punch/punch-logo.png` | `PunchCover`, `PunchCredits`, `PunchFooter` |
+| XXXMANERA headliner (framed portrait, 506×1021) | `public/cases/punch/xxxmanera-headliner.png` | `PunchHeadliner` |
+| Planet (transparent) | `public/cases/punch/73f66c1ea445178c5f4724f0e9f11f454db905cf.png` | `CasesPunch`, `PunchCover`, `PunchCredits` |
+| Sticker kit | `public/cases/punch/stickers/*` | `PunchStickers` |
+| Merch photos | `public/cases/punch/merch-*.png` | `PunchMerch` |
+
+`PunchHeadliner` renders the headliner photo with `object-contain` (full height, centered) — the asset is pre-framed; do not crop with `object-cover`. Black background removed via `mix-blend-mode: screen`.
+
+`PunchFooter` is the reusable case-footer template: light gray editorial strip (`#CBCAC5`), LINKS rail, project description, client logo + `created by ONI`.
+
+### Adding the next full case landing
+
+1. Create `app/cases/[slug]/page.tsx` + `systems/cases/[slug]/` mirroring `punch/`
+2. Add preview component in `systems/cases/components/Cases[Name].tsx`
+3. Register in `casesData.ts` with `href` or wire `WATCH FULL` link manually
+4. Reuse `PunchFooter` pattern for the editorial end section
