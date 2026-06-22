@@ -6,8 +6,9 @@ import { useRef } from "react";
 const PURPLE = "#8f62c7";
 
 const IMG = {
-  dark:  "/cases/punch/1e2883204045a1bf2ec7e8d609cd34ac932ced5c.png",
-  light: "/cases/punch/16694f0603c5866c29bb58303fa0a90fd95bf968.png",
+  event:  "/cases/punch/merch-event.png",
+  purple: "/cases/punch/merch-shirt-purple.png",
+  black:  "/cases/punch/merch-shirt-black.png",
 };
 
 export function PunchMerch() {
@@ -18,67 +19,87 @@ export function PunchMerch() {
     <section
       ref={ref}
       className="relative flex overflow-hidden"
-      style={{ height: "100vh", scrollSnapAlign: "start", flexShrink: 0, backgroundColor: "#101010" }}
+      style={{ height: "100vh", scrollSnapAlign: "start", flexShrink: 0, backgroundColor: "#080808" }}
     >
-      {/* Left half — dark merch full-bleed */}
+      {/* Left 58% — atmospheric event photo */}
       <motion.div
-        className="relative w-1/2 overflow-hidden"
-        initial={{ opacity: 0, x: -30 }}
-        animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-        transition={{ duration: 1, ease: "easeOut", delay: 0.1 }}
+        className="relative overflow-hidden"
+        style={{ width: "58%" }}
+        initial={{ opacity: 0, x: -40 }}
+        animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -40 }}
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
       >
         <img
-          src={IMG.dark}
-          alt="PUNCH merch dark"
-          className="h-full w-full object-cover"
-          style={{ filter: "brightness(0.85)" }}
+          src={IMG.event}
+          alt="PUNCH merch — event atmosphere"
+          className="h-full w-full object-cover object-center"
+          style={{ filter: "brightness(0.78) saturate(0.9)" }}
         />
+        {/* Right edge fade */}
         <div
           className="pointer-events-none absolute inset-0"
-          style={{
-            background: "linear-gradient(to right, transparent 60%, rgba(16,16,16,0.6) 100%)",
-          }}
+          style={{ background: "linear-gradient(to right, transparent 55%, rgba(8,8,8,0.85) 100%)" }}
           aria-hidden="true"
         />
       </motion.div>
 
-      {/* Right half — light merch full-bleed */}
-      <motion.div
-        className="relative w-1/2 overflow-hidden"
-        initial={{ opacity: 0, x: 30 }}
-        animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
-        transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-      >
-        <img
-          src={IMG.light}
-          alt="PUNCH merch light"
-          className="h-full w-full object-cover"
-          style={{ filter: "brightness(0.9)" }}
-        />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background: "linear-gradient(to left, transparent 60%, rgba(16,16,16,0.6) 100%)",
-          }}
-          aria-hidden="true"
-        />
-      </motion.div>
+      {/* Right 42% — two product shots stacked */}
+      <div className="relative flex flex-1 flex-col overflow-hidden">
+        {/* Top: purple bg shirt */}
+        <motion.div
+          className="relative flex-1 overflow-hidden border-b border-white/[0.06]"
+          initial={{ opacity: 0, y: -30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
+        >
+          <img
+            src={IMG.purple}
+            alt="PUNCH merch — purple"
+            className="h-full w-full object-cover object-center"
+            style={{ filter: "brightness(0.85)" }}
+          />
+          {/* Left + bottom fade */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to left, transparent 60%, rgba(8,8,8,0.6) 100%), linear-gradient(to top, rgba(8,8,8,0.5) 0%, transparent 40%)",
+            }}
+            aria-hidden="true"
+          />
+        </motion.div>
 
-      {/* Vertical divider */}
-      <motion.div
-        className="absolute left-1/2 top-0 z-20 w-[2px] -translate-x-1/2 bg-white/10"
-        style={{ height: "100%" }}
-        initial={{ scaleY: 0, originY: 0 }}
-        animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
-        transition={{ duration: 1, delay: 0.35 }}
-      />
+        {/* Bottom: black bg shirt */}
+        <motion.div
+          className="relative flex-1 overflow-hidden"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
+        >
+          <img
+            src={IMG.black}
+            alt="PUNCH merch — black"
+            className="h-full w-full object-cover object-center"
+            style={{ filter: "brightness(0.9)" }}
+          />
+          {/* Left + top fade */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to left, transparent 60%, rgba(8,8,8,0.6) 100%), linear-gradient(to bottom, rgba(8,8,8,0.5) 0%, transparent 40%)",
+            }}
+            aria-hidden="true"
+          />
+        </motion.div>
+      </div>
 
-      {/* Overlay gradient — top + bottom */}
+      {/* Global overlays */}
       <div
         className="pointer-events-none absolute inset-0 z-10"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(16,16,16,0.5) 0%, transparent 25%, transparent 75%, rgba(16,16,16,0.7) 100%)",
+            "linear-gradient(to bottom, rgba(8,8,8,0.55) 0%, transparent 22%, transparent 72%, rgba(8,8,8,0.8) 100%)",
         }}
         aria-hidden="true"
       />
@@ -93,7 +114,7 @@ export function PunchMerch() {
         >
           SECTION 08 / MERCH
         </motion.p>
-        <div className="flex items-end justify-between">
+        <div className="flex items-end justify-between gap-4">
           <div>
             <div className="overflow-hidden">
               <motion.h2
@@ -119,12 +140,13 @@ export function PunchMerch() {
             </div>
           </div>
           <motion.p
-            className="hidden max-w-[14rem] text-right text-[10px] leading-[1.7] text-white/30 lg:block"
+            className="hidden max-w-[18rem] text-right text-[10px] leading-[1.75] text-white/28 lg:block"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            Branded clothing line — the identity taken off-screen and into the real world.
+            Фирменный мерч: брендинг вышел за экран и стал частью реальной жизни.
+            Мурманск на груди — пункш на спине.
           </motion.p>
         </div>
       </div>

@@ -15,10 +15,11 @@ const LABELS = [
   "MERCH",
   "STICKERS",
   "FIN",
+  "END",
 ];
 
-/** Light sections (index → light dot colour): Colors=4, Posters=5 */
-const LIGHT_SECTIONS = new Set([4, 5]);
+/** Light sections (index → light dot colour): Colors=4, Posters=5, Footer=11 */
+const LIGHT_SECTIONS = new Set([4, 5, 11]);
 
 export function PunchSectionNav() {
   const { activeSection, scrollToSection } = usePunchSection();
