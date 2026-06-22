@@ -55,7 +55,7 @@ export function PunchPosters() {
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.7, delay: 0.05 }}
         >
-          SECTION 02 / EVENT POSTERS
+          SECTION 04 / EVENT POSTERS
         </motion.p>
         <motion.p
           className="text-[9px] font-medium tracking-[0.28em] text-black/20"

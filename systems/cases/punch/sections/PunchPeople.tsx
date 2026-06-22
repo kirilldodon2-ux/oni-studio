@@ -80,7 +80,7 @@ export function PunchPeople() {
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.7, delay: 0.5 }}
         >
-          SECTION 04 / EVENT
+          SECTION 06 / EVENT
         </motion.p>
 
         <div className="flex items-end justify-between">

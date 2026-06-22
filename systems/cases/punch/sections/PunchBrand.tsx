@@ -38,7 +38,7 @@ export function PunchBrand() {
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.7, delay: 0.05 }}
         >
-          SECTION 01 / BRAND MARK
+          SECTION 01 / BRAND
         </motion.p>
 
         <div className="overflow-hidden">

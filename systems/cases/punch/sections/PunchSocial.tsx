@@ -48,7 +48,7 @@ export function PunchSocial() {
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.7, delay: 0.05 }}
         >
-          SECTION 03 / DIGITAL
+          SECTION 05 / DIGITAL
         </motion.p>
 
         <div className="overflow-hidden">

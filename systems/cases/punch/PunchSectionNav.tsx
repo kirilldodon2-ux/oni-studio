@@ -3,21 +3,32 @@
 import { motion } from "motion/react";
 import { usePunchSection } from "./PunchSectionContext";
 
-const LABELS = ["INTRO", "BRAND", "POSTERS", "DIGITAL", "EVENT", "STICKERS", "FIN"];
+const LABELS = [
+  "INTRO",
+  "BRAND",
+  "ABOUT",
+  "COLORS",
+  "POSTERS",
+  "DIGITAL",
+  "EVENT",
+  "MERCH",
+  "STICKERS",
+  "FIN",
+];
 
-/** Dark-on-dark sections → always light dots. */
-const DARK_SECTIONS = new Set([0, 1, 3, 4, 6]);
+/** Light sections (index → light dot colour) */
+const LIGHT_SECTIONS = new Set([3, 4]);
 
 export function PunchSectionNav() {
   const { activeSection, scrollToSection } = usePunchSection();
-  const isDark = DARK_SECTIONS.has(activeSection);
-  const DOT_ACTIVE   = isDark ? "#F7F7F7" : "#070707";
-  const DOT_INACTIVE = isDark ? "rgba(200,200,200,0.3)" : "rgba(60,60,60,0.35)";
+  const isLight = LIGHT_SECTIONS.has(activeSection);
+  const DOT_ACTIVE   = isLight ? "#070707" : "#F7F7F7";
+  const DOT_INACTIVE = isLight ? "rgba(60,60,60,0.35)" : "rgba(200,200,200,0.3)";
 
   return (
     <nav
       className="fixed right-6 top-1/2 z-[30] hidden -translate-y-1/2 flex-col items-end gap-3 md:right-8 lg:flex"
-      aria-label="Punch case sections"
+      aria-label="PUNCH case sections"
       data-oni-layer="decorative"
     >
       {LABELS.map((label, i) => {

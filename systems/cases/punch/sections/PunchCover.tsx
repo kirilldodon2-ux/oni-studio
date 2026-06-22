@@ -4,35 +4,8 @@ import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 
 const PURPLE = "#8f62c7";
+const LOGO   = "/cases/punch/punch-logo.png";
 const PLANET = "/cases/punch/73f66c1ea445178c5f4724f0e9f11f454db905cf.png";
-
-/** RGB-split glitch layer */
-function GlitchLayer({ color, delayOffset }: { color: string; delayOffset: number }) {
-  return (
-    <motion.span
-      className="pointer-events-none absolute inset-0 select-none font-bebas leading-none"
-      style={{
-        color,
-        mixBlendMode: "screen",
-        fontSize: "clamp(7rem, 24vw, 20rem)",
-      }}
-      animate={{
-        x: [0, color.includes("255,0") ? -5 : 5, 0, color.includes("255,0") ? 4 : -4, 0],
-        opacity: [0, 1, 0, 1, 0],
-      }}
-      transition={{
-        duration: 0.35,
-        times: [0, 0.15, 0.4, 0.65, 1],
-        repeat: Infinity,
-        repeatDelay: 5,
-        delay: delayOffset,
-      }}
-      aria-hidden="true"
-    >
-      ПУНШ
-    </motion.span>
-  );
-}
 
 export function PunchCover() {
   const ref = useRef<HTMLElement>(null);
@@ -49,71 +22,111 @@ export function PunchCover() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 80% 70% at 50% 50%, rgba(143,98,199,0.14) 0%, transparent 70%)",
+            "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(143,98,199,0.18) 0%, transparent 70%)",
         }}
         aria-hidden="true"
       />
 
-      {/* Planet — large ambient background, slow spin */}
+      {/* Planet — ambient BG, slow spin */}
       <motion.div
-        className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 md:block"
-        style={{ width: "clamp(28rem, 55vw, 50rem)", zIndex: 0 }}
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        style={{ width: "clamp(22rem, 48vw, 42rem)", zIndex: 0 }}
         initial={{ opacity: 0, scale: 0.8 }}
-        animate={isInView ? { opacity: 0.22, scale: 1 } : { opacity: 0, scale: 0.8 }}
-        transition={{ duration: 2, ease: "easeOut" }}
+        animate={isInView ? { opacity: 0.18, scale: 1 } : { opacity: 0, scale: 0.8 }}
+        transition={{ duration: 2.5, ease: "easeOut" }}
         aria-hidden="true"
       >
         <motion.img
           src={PLANET}
           alt=""
           className="h-auto w-full"
-          style={{ filter: "drop-shadow(0 0 80px rgba(143,98,199,0.5))" }}
+          style={{ filter: "drop-shadow(0 0 60px rgba(143,98,199,0.4))" }}
           animate={{ rotate: 360 }}
-          transition={{ duration: 40, ease: "linear", repeat: Infinity }}
+          transition={{ duration: 50, ease: "linear", repeat: Infinity }}
         />
       </motion.div>
 
-      {/* Content — center of viewport */}
+      {/* Main content */}
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-8 text-center">
 
-        {/* ПУНШ — glitch title */}
+        {/* ПУНШ logo — the actual brand mark with glitch effect */}
         <motion.div
           className="relative"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+          style={{ width: "clamp(14rem, 42vw, 36rem)" }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
         >
-          {/* Base text */}
-          <span
-            className="block select-none font-bebas leading-none text-white"
-            style={{ fontSize: "clamp(7rem, 24vw, 20rem)" }}
-          >
-            ПУНШ
-          </span>
-          {/* Red channel */}
-          <GlitchLayer color="rgba(255,0,80,0.75)"  delayOffset={0.8} />
-          {/* Cyan channel */}
-          <GlitchLayer color="rgba(0,255,200,0.65)" delayOffset={0.83} />
-        </motion.div>
+          {/* Base logo */}
+          <img
+            src={LOGO}
+            alt="ПУНШ NEVER SLEEP"
+            className="h-auto w-full"
+            style={{ filter: "drop-shadow(0 0 40px rgba(143,98,199,0.55))" }}
+          />
 
-        {/* NEVER SLEEP */}
-        <motion.p
-          className="mt-2 text-[11px] font-medium tracking-[0.55em] md:mt-3"
-          style={{ color: PURPLE }}
-          initial={{ opacity: 0, y: 8 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-          transition={{ duration: 0.8, delay: 0.35 }}
-        >
-          NEVER SLEEP
-        </motion.p>
+          {/* Red glitch layer */}
+          <motion.img
+            src={LOGO}
+            alt=""
+            className="pointer-events-none absolute inset-0 h-auto w-full"
+            style={{ mixBlendMode: "screen" }}
+            animate={{
+              x:       [0, -6, 0, 5, 0],
+              opacity: [0, 0.7, 0, 0.6, 0],
+              filter:  [
+                "hue-rotate(0deg) saturate(3)",
+                "hue-rotate(330deg) saturate(4)",
+                "hue-rotate(0deg) saturate(3)",
+                "hue-rotate(300deg) saturate(4)",
+                "hue-rotate(0deg) saturate(3)",
+              ],
+            }}
+            transition={{
+              duration: 0.3,
+              times: [0, 0.15, 0.4, 0.65, 1],
+              repeat: Infinity,
+              repeatDelay: 5,
+              delay: 1.2,
+            }}
+            aria-hidden="true"
+          />
+
+          {/* Cyan glitch layer */}
+          <motion.img
+            src={LOGO}
+            alt=""
+            className="pointer-events-none absolute inset-0 h-auto w-full"
+            style={{ mixBlendMode: "screen" }}
+            animate={{
+              x:       [0, 6, 0, -5, 0],
+              opacity: [0, 0.55, 0, 0.5, 0],
+              filter:  [
+                "hue-rotate(0deg) saturate(3)",
+                "hue-rotate(160deg) saturate(4)",
+                "hue-rotate(0deg) saturate(3)",
+                "hue-rotate(180deg) saturate(4)",
+                "hue-rotate(0deg) saturate(3)",
+              ],
+            }}
+            transition={{
+              duration: 0.3,
+              times: [0, 0.15, 0.4, 0.65, 1],
+              repeat: Infinity,
+              repeatDelay: 5,
+              delay: 1.23,
+            }}
+            aria-hidden="true"
+          />
+        </motion.div>
 
         {/* Divider */}
         <motion.div
           className="my-5 h-px bg-white/15 md:my-6"
-          style={{ width: "clamp(3rem, 8vw, 5rem)" }}
-          initial={{ scaleX: 0, originX: 0.5 }}
+          style={{ width: "clamp(3rem, 7vw, 4.5rem)" }}
+          initial={{ scaleX: 0 }}
           animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-          transition={{ duration: 0.7, delay: 0.55 }}
+          transition={{ duration: 0.7, delay: 0.5 }}
         />
 
         {/* Descriptor */}
@@ -121,7 +134,7 @@ export function PunchCover() {
           className="text-[10px] font-medium tracking-[0.32em] text-white/30"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.8, delay: 0.65 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
         >
           PARTY EVENT DESIGN · BRAND IDENTITY · 2026
         </motion.p>
@@ -132,21 +145,21 @@ export function PunchCover() {
         className="absolute bottom-8 left-8 z-10 md:bottom-10 md:left-10 lg:left-14"
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.8, delay: 0.8 }}
+        transition={{ duration: 0.8, delay: 0.85 }}
       >
         <p className="text-[9px] tracking-[0.28em] text-white/25">PUNCH · ПУНШ</p>
         <p className="mt-0.5 text-[9px] tracking-[0.28em] text-white/15">FULL CASE · ONI STUDIO</p>
       </motion.div>
 
-      {/* Scroll cue */}
+      {/* Scroll line */}
       <div className="absolute bottom-0 left-1/2 hidden -translate-x-1/2 md:block">
         <motion.div
           className="overflow-hidden"
           initial={{ height: 0 }}
-          animate={isInView ? { height: 72 } : { height: 0 }}
-          transition={{ duration: 1, ease: "easeOut", delay: 1.2 }}
+          animate={isInView ? { height: 64 } : { height: 0 }}
+          transition={{ duration: 1, ease: "easeOut", delay: 1.3 }}
         >
-          <div className="h-[72px] w-px bg-white/20" />
+          <div className="h-16 w-px bg-white/20" />
         </motion.div>
       </div>
     </section>
