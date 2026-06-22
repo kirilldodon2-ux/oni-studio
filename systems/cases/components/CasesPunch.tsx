@@ -9,37 +9,46 @@ const PUNCH_PURPLE = "#8f62c7";
 const SCOPE = ["Event Branding", "Visual Identity", "Merch", "Posters"];
 
 const IMG = {
-  // Event logo badge — purple circle "ПУНШ NEVER SLEEP" with MOBILAND
-  logo:   "/cases/punch/386398f5faf9366a6343534c166c85faf25c7779.png",
-  // XXXMANERA rapper from behind (rim-lit, dark bg blends via mix-blend-mode: screen)
+  // Transparent planet — Earth with ПУНШ NEVER SLEEP in clouds
+  planet: "/cases/punch/73f66c1ea445178c5f4724f0e9f11f454db905cf.png",
+  // Purple ПУНШ cup — satellite
+  cup:    "/cases/punch/0911e0cbaf2f31314e861e459b1a42d26baf1d47.png",
+  // XXXMANERA rapper from behind (rim-lit; mix-blend-mode:screen removes dark bg)
   rapper: "/cases/punch/9c4b5265bef96a23df48b66a20fdefac5f3870bf.png",
 } as const;
 
 /**
- * CasesPunch — PUNCH (ПУНШ) event brand identity case.
- * Single 100vh scroll-snap section.
- * WATCH FULL → links to /cases/punch (full Figma Make landing).
+ * CasesPunch — single 100vh snap section.
+ * Left: typography stack + WATCH FULL.
+ * Right: ПУНШ planet spinning, cup orbiting as satellite.
+ * WATCH FULL → /cases/punch (full Figma Make landing).
  */
 export function CasesPunch() {
   const ref = useRef<HTMLElement>(null);
-  const isInView = useInView(ref, { amount: 0.35 });
+  const isInView = useInView(ref, { amount: 0.3 });
 
   return (
     <section
       ref={ref}
-      className="relative flex flex-col overflow-hidden bg-[#0d0d0d]"
-      style={{ height: "100vh", scrollSnapAlign: "start", flexShrink: 0 }}
+      className="relative flex flex-col overflow-hidden"
+      style={{
+        height: "100vh",
+        scrollSnapAlign: "start",
+        flexShrink: 0,
+        backgroundColor: "#06040c",
+      }}
     >
-      {/* Ghost case number */}
+      {/* ── Space ambient: radial purple haze anchored to planet zone ── */}
       <div
-        className="pointer-events-none absolute -right-4 -top-2 select-none font-bebas leading-none text-white"
-        style={{ fontSize: "clamp(10rem, 32vw, 26rem)", opacity: 0.025 }}
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 80% at 72% 44%, rgba(143,98,199,0.18) 0%, rgba(143,98,199,0.06) 45%, transparent 72%)",
+        }}
         aria-hidden="true"
-      >
-        01
-      </div>
+      />
 
-      {/* Purple accent strip — left edge */}
+      {/* ── Purple accent strip — left edge ── */}
       <motion.div
         className="absolute left-0 top-0 hidden h-full w-[3px] md:block"
         style={{ backgroundColor: PUNCH_PURPLE }}
@@ -48,17 +57,14 @@ export function CasesPunch() {
         transition={{ duration: 0.9, ease: "easeOut", delay: 0.05 }}
       />
 
-      {/* Event logo badge — right side, desktop */}
-      <motion.div
-        className="absolute right-8 top-1/2 hidden -translate-y-1/2 md:block lg:right-14"
-        style={{ width: "clamp(9rem, 14vw, 13rem)" }}
-        initial={{ opacity: 0, scale: 0.88 }}
-        animate={isInView ? { opacity: 0.92, scale: 1 } : { opacity: 0, scale: 0.88 }}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+      {/* Ghost case number — bottom-right flood */}
+      <div
+        className="pointer-events-none absolute -bottom-4 -right-4 select-none font-bebas leading-none text-white"
+        style={{ fontSize: "clamp(10rem, 32vw, 26rem)", opacity: 0.022 }}
         aria-hidden="true"
       >
-        <img src={IMG.logo} alt="" className="h-auto w-full" />
-      </motion.div>
+        01
+      </div>
 
       {/* Category + year — top left */}
       <motion.div
@@ -77,33 +83,176 @@ export function CasesPunch() {
         </span>
       </motion.div>
 
-      {/* Main content — bottom-left */}
-      <div className="relative z-10 flex h-full flex-col justify-end px-8 pb-12 md:px-10 md:pb-14 lg:px-14 lg:pb-16">
+      {/* ─────────────────────────────────────────────────────────────────── */}
+      {/* PLANET + ORBIT SYSTEM — right side desktop, top center mobile     */}
+      {/* ─────────────────────────────────────────────────────────────────── */}
 
-        {/* XXXMANERA rapper — small silhouette above title, screen-blend float */}
+      {/* Desktop: right 60% zone, vertically centered at 44% */}
+      <div
+        className="pointer-events-none absolute hidden md:block"
+        style={{
+          right: "clamp(-8rem, -4vw, -2rem)",
+          top: "44%",
+          transform: "translateY(-50%)",
+          zIndex: 1,
+        }}
+        aria-hidden="true"
+      >
+        <motion.div
+          className="relative"
+          initial={{ opacity: 0, scale: 0.75 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.75 }}
+          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+        >
+          {/* Planet — transparent, spinning */}
+          <motion.img
+            src={IMG.planet}
+            alt=""
+            style={{
+              width: "clamp(18rem, 34vw, 30rem)",
+              display: "block",
+              filter: "drop-shadow(0 0 60px rgba(143,98,199,0.35)) drop-shadow(0 0 20px rgba(143,98,199,0.2))",
+            }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 24, ease: "linear", repeat: Infinity }}
+          />
+
+          {/* Orbit anchor — rotates to drive cup path */}
+          <motion.div
+            style={{ position: "absolute", top: "50%", left: "50%", width: 0, height: 0 }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 9, ease: "linear", repeat: Infinity }}
+          >
+            {/* Cup — positioned at orbit radius, counter-rotates to stay upright */}
+            <div
+              style={{
+                position: "absolute",
+                left: "clamp(9.5rem, 18.5vw, 16.5rem)",
+                top: 0,
+                transform: "translateY(-50%)",
+              }}
+            >
+              <motion.div
+                animate={{ rotate: -360 }}
+                transition={{ duration: 9, ease: "linear", repeat: Infinity }}
+              >
+                {/* Depth cue: fades + shrinks when "behind" planet */}
+                <motion.img
+                  src={IMG.cup}
+                  alt=""
+                  style={{
+                    width: "clamp(2.75rem, 4.5vw, 4rem)",
+                    filter:
+                      "drop-shadow(0 0 12px rgba(143,98,199,0.8)) drop-shadow(0 0 5px rgba(220,190,255,0.3))",
+                  }}
+                  animate={{
+                    scale:   [1.0, 0.82, 0.5, 0.82, 1.0],
+                    opacity: [1.0, 0.88, 0.28, 0.88, 1.0],
+                  }}
+                  transition={{
+                    duration: 9,
+                    ease: "linear",
+                    repeat: Infinity,
+                    times: [0, 0.25, 0.5, 0.75, 1],
+                  }}
+                />
+              </motion.div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* Mobile: planet at top, wide, bleeds off sides */}
+      <div
+        className="pointer-events-none absolute left-1/2 top-[22%] block -translate-x-1/2 -translate-y-1/2 md:hidden"
+        style={{ zIndex: 1 }}
+        aria-hidden="true"
+      >
+        <motion.div
+          className="relative"
+          initial={{ opacity: 0, scale: 0.7 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.7 }}
+          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+        >
+          <motion.img
+            src={IMG.planet}
+            alt=""
+            style={{
+              width: "110vw",
+              maxWidth: "none",
+              display: "block",
+              filter: "drop-shadow(0 0 40px rgba(143,98,199,0.4))",
+            }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 24, ease: "linear", repeat: Infinity }}
+          />
+          {/* Mobile orbit */}
+          <motion.div
+            style={{ position: "absolute", top: "50%", left: "50%", width: 0, height: 0 }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 9, ease: "linear", repeat: Infinity }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                left: "56vw",
+                top: 0,
+                transform: "translateY(-50%)",
+              }}
+            >
+              <motion.div
+                animate={{ rotate: -360 }}
+                transition={{ duration: 9, ease: "linear", repeat: Infinity }}
+              >
+                <motion.img
+                  src={IMG.cup}
+                  alt=""
+                  style={{ width: "10vw", minWidth: "2.5rem" }}
+                  animate={{
+                    scale:   [1.0, 0.8, 0.45, 0.8, 1.0],
+                    opacity: [1.0, 0.85, 0.25, 0.85, 1.0],
+                  }}
+                  transition={{
+                    duration: 9,
+                    ease: "linear",
+                    repeat: Infinity,
+                    times: [0, 0.25, 0.5, 0.75, 1],
+                  }}
+                />
+              </motion.div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────────── */}
+      {/* TEXT CONTENT — bottom-left, z-10 (above planet layer)             */}
+      {/* ─────────────────────────────────────────────────────────────────── */}
+      <div className="relative z-10 flex h-full flex-col justify-end px-8 pb-10 md:max-w-[58%] md:px-10 md:pb-12 lg:max-w-[52%] lg:px-14 lg:pb-14">
+
+        {/* XXXMANERA — tiny screen-blend silhouette, floats above title */}
         <motion.div
           className="pointer-events-none mb-1 select-none"
           style={{
-            width: "clamp(3.5rem, 6vw, 5.5rem)",
+            width: "clamp(3rem, 5.5vw, 5rem)",
             mixBlendMode: "screen",
-            opacity: 0.75,
           }}
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={isInView
-            ? { opacity: 0.75, y: [0, -7, 0] }
-            : { opacity: 0, y: 10 }}
+            ? { opacity: 0.8, y: [0, -6, 0] }
+            : { opacity: 0, y: 8 }}
           transition={isInView ? {
-            opacity: { duration: 0.8, delay: 0.05 },
-            y: { duration: 3.2, ease: "easeInOut", repeat: Infinity, delay: 0.8 },
+            opacity: { duration: 0.8, delay: 0.08 },
+            y: { duration: 3.2, ease: "easeInOut", repeat: Infinity, delay: 0.9 },
           } : { duration: 0.4 }}
           aria-hidden="true"
         >
           <img src={IMG.rapper} alt="" className="h-auto w-full" />
         </motion.div>
 
-        {/* "NEVER SLEEP" tagline */}
+        {/* "NEVER SLEEP" */}
         <motion.p
-          className="mb-2 text-[10px] font-medium tracking-[0.40em] text-white/20 md:mb-3"
+          className="mb-2 text-[10px] font-medium tracking-[0.40em] text-white/22 md:mb-3"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
@@ -122,11 +271,11 @@ export function CasesPunch() {
           PUNCH · ПУНШ
         </motion.p>
 
-        {/* Project title */}
+        {/* Title */}
         <div className="overflow-hidden">
           <motion.h2
             className="font-bebas leading-[0.88] text-white"
-            style={{ fontSize: "clamp(2.8rem, 9.5vw, 7.5rem)" }}
+            style={{ fontSize: "clamp(2.6rem, 8.5vw, 7rem)" }}
             initial={{ y: "105%" }}
             animate={isInView ? { y: "0%" } : { y: "105%" }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
@@ -154,7 +303,7 @@ export function CasesPunch() {
 
         {/* WATCH FULL button */}
         <motion.div
-          className="mt-6 md:mt-7"
+          className="mt-5 md:mt-6"
           initial={{ opacity: 0, y: 6 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
           transition={{ duration: 0.7, ease: "easeOut", delay: 0.52 }}
@@ -173,18 +322,6 @@ export function CasesPunch() {
           </Link>
         </motion.div>
       </div>
-
-      {/* Mobile: logo badge centered upper area */}
-      <motion.div
-        className="absolute left-1/2 top-[16%] -translate-x-1/2 block md:hidden"
-        style={{ width: "min(55vw, 11rem)" }}
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 0.85 } : { opacity: 0 }}
-        transition={{ duration: 1, delay: 0.3 }}
-        aria-hidden="true"
-      >
-        <img src={IMG.logo} alt="" className="h-auto w-full" />
-      </motion.div>
     </section>
   );
 }
