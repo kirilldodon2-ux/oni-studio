@@ -33,9 +33,12 @@ oni-site/
 │   │   ├── page.tsx             ← index: /works (WorksIndex)
 │   │   └── [slug]/
 │   │       └── page.tsx         ← detail: /works/[slug] (WorkPageView)
-│   └── brandbook/
-│       ├── layout.tsx           ← route fonts (Outfit, JetBrains Mono) + metadata
-│       └── page.tsx             ← /brandbook (ControlSurface + BrandbookExperience)
+│   ├── brandbook/
+│   │   ├── layout.tsx           ← route fonts (Outfit, JetBrains Mono) + metadata
+│   │   └── page.tsx             ← /brandbook (ControlSurface + BrandbookExperience)
+│   └── cases/
+│       ├── layout.tsx           ← metadata only; no route-scoped fonts
+│       └── page.tsx             ← /cases (ControlSurface + CasesSectionNav + CasesExperience)
 │
 ├── content/                     ← archive registry + types (see CONTENT_SYSTEM.md)
 │   ├── field.ts                 ← archiveObjects registry (explicit, not auto-discovered)
@@ -122,12 +125,20 @@ oni-site/
 │   │   ├── WorksIndex.tsx
 │   │   ├── WorkPageView.tsx
 │   │   └── index.ts
-│   └── brandbook/               ← interactive brandbook (Phase 1 — see docs/BRANDBOOK_INTEGRATION.md)
-│       ├── BrandbookExperience.tsx
-│       ├── BrandbookSectionContext.tsx
-│       ├── BrandbookSectionNav.tsx
-│       ├── components/          ← six sections; cover = BrandbookHero + BrandbookHeroMetallicDrift (unified desktop/mobile — hero spec in docs/BRANDBOOK_INTEGRATION.md)
-│       └── imports/             ← hero + logo SVG paths
+│   ├── brandbook/               ← interactive brandbook (Phase 1 — see docs/BRANDBOOK_INTEGRATION.md)
+│   │   ├── BrandbookExperience.tsx
+│   │   ├── BrandbookSectionContext.tsx
+│   │   ├── BrandbookSectionNav.tsx
+│   │   ├── components/          ← six sections; cover = BrandbookHero + BrandbookHeroMetallicDrift (unified desktop/mobile — hero spec in docs/BRANDBOOK_INTEGRATION.md)
+│   │   └── imports/             ← hero + logo SVG paths
+│   └── cases/                   ← interactive cases surface (Phase 1 — see docs/CASES_SYSTEM.md)
+│       ├── CasesExperience.tsx  ← scroll-snap orchestrator
+│       ├── CasesSectionContext.tsx ← activeSection, scrollContainerRef, scrollToSection
+│       ├── CasesSectionNav.tsx  ← dot rail (right edge, lg+, always light)
+│       ├── casesData.ts         ← CaseEntry type + casesRegistry (hardcoded, system-local)
+│       └── components/
+│           ├── CasesCover.tsx   ← intro slide: "26' / CASES" dark field
+│           └── CasesCard.tsx    ← reusable case slide (driven by CaseEntry)
 │
 ├── components/                  ← atomic / global UI (not section-level)
 │   └── navigation/              ← floating control surface (Phase 5)
@@ -214,6 +225,7 @@ oni-site/
 - `components/` is atomic/global UI only — no section-level concerns
 - `components/navigation/` is the Phase 5 floating control surface — `SiteHeader.tsx` removed; route awareness DEC-005; no scroll-state DEC-004; see `NAVIGATION_ARCHITECTURE.md`
 - `systems/brandbook/` + `app/brandbook/` — interactive brandbook route (Phase 1); no `PageBackdrop`; route-scoped fonts; cover hero = one composition (`BrandbookHero` + drift layer) — see `docs/BRANDBOOK_INTEGRATION.md` § Cover hero
+- `systems/cases/` + `app/cases/` — interactive cases surface (Phase 1); no `PageBackdrop`; no route-scoped fonts; dark field (`#070707`); content = `casesData.ts` (system-local, not a `content/` registry) — see `docs/CASES_SYSTEM.md`
 - `sections/ArchivePreviewSection/` + `sections/BrandIdentitySection/` — homepage field glimpse + identity threshold (composed on `app/page.tsx` between Work and Showreel) — see `docs/ARCHIVE_FRAGMENT_V2.md`, `docs/BRAND_IDENTITY_SECTION.md`
 - `_archive/brandbook-make-export/` — Figma Make reference export only; excluded from typecheck; production is `app/brandbook/`
 - `content/works/` + `public/works/[slug]/` — Works lane; covers are Pages-static — do not use `resolveArchiveMediaSrc()` (`CONTENT_SYSTEM.md`)

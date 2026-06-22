@@ -90,6 +90,9 @@ app/
   brandbook/
     layout.tsx        ← route-scoped Outfit + JetBrains Mono; metadata
     page.tsx          ← /brandbook: ControlSurface + BrandbookExperience island
+  cases/
+    layout.tsx        ← metadata only; no route-scoped fonts
+    page.tsx          ← /cases: ControlSurface + CasesSectionNav + CasesExperience island
 
 sections/
   HeroSection/
@@ -841,6 +844,8 @@ atmospheric infrastructure.
 
 **Shipped (Layer 3 — partial):** brandbook identity surface (`/brandbook`, `systems/brandbook/`, `public/brandbook/`). No content registry — route-local experience port. See `docs/BRANDBOOK_INTEGRATION.md`.
 
+**Shipped (Layer 3 — partial):** cases portfolio surface (`/cases`, `systems/cases/`). No content registry — system-local `casesData.ts`. No public media territory until cover images are added. See `docs/CASES_SYSTEM.md`.
+
 **Deferred (maturity work):** Zod schemas, `shared/content/`, MDX interiors, evidence sequences, writings/code routes, route transitions. See `ROADMAP.md` Layer 1 routing/schema track and Layers 2–3.
 
 See `CONTENT_PHILOSOPHY.md` for the full editorial position and archetype definitions.
@@ -876,6 +881,7 @@ environment.
 | Code Artifacts       | `/code/[slug]`         | Experiment surface    | Pending         |
 | Atmospheric Fragments| contextual embedding   | Encounter-based       | Deferred        |
 | Brandbook (identity) | `/brandbook`           | Scroll-snap experience | **Shipped** (Phase 1) |
+| Cases (portfolio)    | `/cases`               | Scroll-snap case slides | **Shipped** (Phase 1) |
 
 ---
 
@@ -894,6 +900,7 @@ query-string navigation.
 /archive            cross-archetype browse field (shipped)
 /archive/[slug]     object inspect (shipped)
 /brandbook          interactive identity surface (shipped — Phase 1)
+/cases              interactive case studies surface (shipped — Phase 1)
 ```
 
 ---
@@ -905,6 +912,7 @@ query-string navigation.
 | Archive | `content/field.ts` | `public/archive/objects/[slug]/` | `systems/archive/` | `resolveArchiveMediaSrc()` → R2 or `public/` |
 | Works | `content/works/field.ts` | `public/works/[slug]/` (`00-cover.*`) | `systems/works/` | Site-relative paths — **Pages static only** (no archive transport) |
 | Brandbook | — (no registry) | `public/brandbook/` (wire-art PNGs) | `systems/brandbook/` | Pages static; route-scoped fonts in `app/brandbook/layout.tsx` |
+| Cases | — (no registry) | `public/cases/[slug]/` (cover images, optional) | `systems/cases/` | Pages static; no route-scoped fonts; content in `systems/cases/casesData.ts` |
 
 Works lane is a **parallel registry**, not a filter of `archiveObjects` (DEC-001).
 Brandbook is a **studio identity surface**, not an archive archetype lane.
@@ -920,6 +928,7 @@ Brandbook is a **studio identity surface**, not an archive archetype lane.
 | `systems/backdrop/`           | `PageBackdrop` on `/archive`, `/works`, and work detail routes — **not** on `/brandbook` |
 | `components/navigation/`      | All routes; route awareness via `usePathname()` (DEC-005); brandbook section lane via optional context |
 | `systems/brandbook/`          | `/brandbook` only — scroll-snap, section nav (z-30), unified cover hero + metallic drift; design spec → `docs/BRANDBOOK_INTEGRATION.md` |
+| `systems/cases/`              | `/cases` only — scroll-snap, dot nav (z-30), dark field; `casesData.ts` content; `CasesCover` + `CasesCard`; design spec → `docs/CASES_SYSTEM.md` |
 | `systems/spatial/`            | `ONI_SILHOUETTE_FILTER` on archive inspect hero; nav sigil infrastructure   |
 | `ShowreelMediaCard`           | Reference for future Work evidence / cinematic media (not wired to Lean Path) |
 

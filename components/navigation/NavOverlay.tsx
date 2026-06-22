@@ -42,6 +42,15 @@ const NAV_ITEMS: readonly NavItem[] = [
     listClassName: "mt-[clamp(0.5rem,1.2vh,0.75rem)]",
   },
   {
+    id: "cases",
+    label: "CASES",
+    href: "/cases",
+    ariaLabel: "Go to CASES",
+    className:
+      "text-[clamp(3.8rem,12vw,8rem)] text-black/80 md:text-[clamp(4.5rem,7.5vw,8rem)]",
+    listClassName: "mt-[clamp(0.5rem,1.2vh,0.75rem)]",
+  },
+  {
     id: "contact",
     label: "CONTACT",
     href: "/#contact",
@@ -64,6 +73,7 @@ function isNavItemCurrent(href: string, pathname: string): boolean {
 function overlayFieldAnnotation(pathname: string): string {
   if (pathname === "/") return "HOME FIELD";
   if (pathname.startsWith("/brandbook")) return "BRANDBOOK OPEN";
+  if (pathname.startsWith("/cases")) return "CASES OPEN";
   if (pathname === "/works") return "WORKS INDEX";
   if (pathname.startsWith("/works/")) return "WORK OPEN";
   if (pathname === "/archive") return "ARCHIVE FIELD";

@@ -19,6 +19,7 @@
   "exclude": [
     "node_modules",
     "_archive/brandbook-make-export",
+    "_archive/punch-make-export",
     "_archive_graveyard",
     "workers/contact"
   ]
