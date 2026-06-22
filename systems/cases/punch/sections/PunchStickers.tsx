@@ -29,7 +29,7 @@ export function PunchStickers() {
 
   return (
     <section ref={ref} className="relative flex flex-col overflow-hidden" style={punchSectionStyle("#0a000f")}>
-      <PunchSectionMeta index="08" label="STICKERS" visible={isInView} />
+      <PunchSectionMeta index="07" label="STICKERS" visible={isInView} />
 
       <div
         className="absolute inset-x-0 bottom-0 top-[calc(var(--oni-header-h,4rem)+4.25rem)] grid grid-cols-3 grid-rows-4 gap-px bg-white/[0.05] px-8 pb-8 md:grid-cols-4 md:grid-rows-3 md:px-10 md:pb-10 lg:px-14 lg:pb-12"

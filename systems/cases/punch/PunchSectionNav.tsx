@@ -9,14 +9,13 @@ const LABELS = [
   "ARTIST",
   "ABOUT",
   "POSTERS",
-  "EVENT",
   "MERCH",
   "STICKERS",
   "END",
 ];
 
-/** Light section: Footer = index 8 */
-const LIGHT_SECTIONS = new Set([8]);
+/** Light section: Footer = index 7 */
+const LIGHT_SECTIONS = new Set([7]);
 
 export function PunchSectionNav() {
   const { activeSection, scrollToSection } = usePunchSection();

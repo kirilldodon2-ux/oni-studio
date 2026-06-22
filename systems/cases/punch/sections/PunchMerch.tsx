@@ -18,7 +18,7 @@ export function PunchMerch() {
 
   return (
     <section ref={ref} className="relative flex flex-col overflow-hidden" style={punchSectionStyle("#0a0a0a")}>
-      <PunchSectionMeta index="07" label="MERCH" visible={isInView} />
+      <PunchSectionMeta index="06" label="MERCH" visible={isInView} />
 
       <div
         className="absolute inset-x-0 bottom-0 top-[calc(var(--oni-header-h,4rem)+4.25rem)] flex flex-col gap-px bg-white/[0.06] px-8 pb-8 md:flex-row md:px-10 md:pb-10 lg:px-14 lg:pb-12"

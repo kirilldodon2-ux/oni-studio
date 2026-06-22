@@ -31,7 +31,7 @@ export function PunchFooter() {
         transition={{ duration: 0.7, delay: 0.05 }}
       >
         <p className="text-[10px] font-medium tracking-[0.30em]" style={{ color: MUTE }}>
-          09 — END
+          08 — END
         </p>
       </motion.div>
 

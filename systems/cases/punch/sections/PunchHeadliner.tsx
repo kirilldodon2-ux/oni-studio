@@ -6,7 +6,7 @@ import { punchSrc } from "../punchAssets";
 import { CaseImage } from "@/systems/cases/components/CaseImage";
 import { PunchCaption, PunchSectionMeta, punchSectionStyle } from "../punchLayout";
 
-const IMG = { rapper: punchSrc("xxxmanera-headliner.png") };
+const IMG = { headliner: punchSrc("headliner.png") };
 
 const PLATFORMS = [
   { name: "Yandex Music", href: "https://music.yandex.ru/search?text=xxxmanera" },
@@ -26,24 +26,24 @@ export function PunchHeadliner() {
     >
       <PunchSectionMeta index="03" label="ARTIST" visible={isInView} />
 
-      <div className="relative z-10 flex h-[46vh] shrink-0 items-center justify-center overflow-hidden md:h-full md:flex-1">
+      <div className="relative z-10 flex min-h-0 flex-[1.15] items-center justify-center overflow-hidden bg-black md:h-full">
         <motion.div
-          className="relative flex h-full items-center justify-center px-4"
+          className="relative flex h-full w-full items-center justify-center"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 1.1, ease: "easeOut", delay: 0.08 }}
         >
           <CaseImage
-            src={IMG.rapper}
-            alt="XXXMANERA"
-            className="h-full w-auto max-w-full object-contain"
+            src={IMG.headliner}
+            alt="XXXMANERA — PUNCH headliner"
+            className="h-full w-full object-contain object-center"
             sectionInView={isInView}
             priority
           />
         </motion.div>
       </div>
 
-      <div className="relative z-10 flex flex-1 flex-col justify-end px-8 pb-10 pt-4 md:w-[34%] md:shrink-0 md:justify-center md:pb-0 md:pr-10 lg:pr-14">
+      <div className="relative z-10 flex shrink-0 flex-col justify-end px-8 pb-10 pt-4 md:w-[32%] md:shrink-0 md:justify-center md:pb-0 md:pr-10 lg:pr-14">
         <motion.p
           className="font-bebas text-[clamp(2.5rem,9vw,4.5rem)] leading-[0.9] text-white"
           initial={{ opacity: 0 }}

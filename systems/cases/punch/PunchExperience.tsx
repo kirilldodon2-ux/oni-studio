@@ -8,12 +8,11 @@ import { PunchBrand }       from "./sections/PunchBrand";
 import { PunchHeadliner }   from "./sections/PunchHeadliner";
 import { PunchAbout }       from "./sections/PunchAbout";
 import { PunchPosters }     from "./sections/PunchPosters";
-import { PunchPeople }      from "./sections/PunchPeople";
 import { PunchMerch }       from "./sections/PunchMerch";
 import { PunchStickers }    from "./sections/PunchStickers";
 import { PunchFooter }      from "./sections/PunchFooter";
 
-const TOTAL_SECTIONS = 9;
+const TOTAL_SECTIONS = 8;
 
 export function PunchExperience() {
   const { setActiveSection, scrollContainerRef } = usePunchSection();
@@ -51,7 +50,6 @@ export function PunchExperience() {
       <PunchHeadliner />
       <PunchAbout />
       <PunchPosters />
-      <PunchPeople />
       <PunchMerch />
       <PunchStickers />
       <PunchFooter />
