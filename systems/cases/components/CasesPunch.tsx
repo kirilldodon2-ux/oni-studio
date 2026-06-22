@@ -84,6 +84,7 @@ export function CasesPunch() {
           style={{
             width: "100%",
             display: "block",
+            mixBlendMode: "screen",
             filter: "drop-shadow(0 0 80px rgba(143,98,199,0.28)) drop-shadow(0 0 30px rgba(143,98,199,0.15))",
           }}
           animate={{ rotate: 360 }}
@@ -178,6 +179,7 @@ export function CasesPunch() {
               width: "88vw",
               display: "block",
               margin: "0 auto",
+              mixBlendMode: "screen",
               filter: "drop-shadow(0 0 30px rgba(143,98,199,0.4))",
             }}
             animate={{ rotate: 360 }}
