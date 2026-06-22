@@ -80,7 +80,7 @@ export function PunchPeople() {
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.7, delay: 0.5 }}
         >
-          SECTION 06 / EVENT
+          SECTION 07 / EVENT
         </motion.p>
 
         <div className="flex items-end justify-between">
@@ -121,9 +121,10 @@ export function PunchPeople() {
         </div>
       </div>
 
-      {/* Top-left label */}
+      {/* Top-left label — cleared below fixed navbar */}
       <motion.div
-        className="absolute left-8 top-10 z-20 md:left-10 lg:left-14"
+        className="absolute left-8 z-20 md:left-10 lg:left-14"
+        style={{ top: "calc(var(--oni-header-h, 4rem) + 1.5rem)" }}
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.7, delay: 0.6 }}

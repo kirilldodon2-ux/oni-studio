@@ -90,7 +90,7 @@ export function PunchStickers() {
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
         >
-          SECTION 08 / STICKER KIT
+          SECTION 09 / STICKER KIT
         </motion.p>
 
         <div className="overflow-hidden">

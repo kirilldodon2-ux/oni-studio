@@ -5,10 +5,10 @@ import Link from "next/link";
 import { useRef } from "react";
 
 const PURPLE = "#8f62c7";
+const LOGO   = "/cases/punch/punch-logo.png";
 
 const IMG = {
-  suits:  "/cases/punch/7574754a58983ab6d7aceca6d269603f69699401.png",
-  badge:  "/cases/punch/386398f5faf9366a6343534c166c85faf25c7779.png",
+  rapper: "/cases/punch/216be9907372b69d0e269a72403e810c8a85e1e9.png",
   planet: "/cases/punch/73f66c1ea445178c5f4724f0e9f11f454db905cf.png",
 };
 
@@ -22,36 +22,37 @@ export function PunchCredits() {
       className="relative flex flex-col overflow-hidden"
       style={{ height: "100vh", scrollSnapAlign: "start", flexShrink: 0, backgroundColor: "#06040c" }}
     >
-      {/* Background: "ЛИХО ТЫ ЛИСТАНУЛ" image at very low opacity */}
-      <motion.div
-        className="pointer-events-none absolute inset-0"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 0.12 } : { opacity: 0 }}
-        transition={{ duration: 1.5, delay: 0.3 }}
-        aria-hidden="true"
-      >
-        <img
-          src={IMG.suits}
-          alt=""
-          className="h-full w-full object-cover"
-          style={{ filter: "grayscale(0.6) brightness(0.5)" }}
-        />
-      </motion.div>
-
-      {/* Gradient over the bg image */}
+      {/* Radial vignette */}
       <div
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 z-[1]"
         style={{
           background:
-            "radial-gradient(ellipse 90% 80% at 50% 50%, rgba(6,4,12,0.75) 0%, rgba(6,4,12,0.98) 70%)",
+            "radial-gradient(ellipse 80% 70% at 50% 50%, rgba(6,4,12,0.55) 0%, rgba(6,4,12,0.97) 80%)",
         }}
         aria-hidden="true"
       />
 
-      {/* Spinning planet — subtle */}
+      {/* Left: XXXMANERA in deep shadow */}
       <motion.div
-        className="pointer-events-none absolute right-[-8%] top-1/2 -translate-y-1/2"
-        style={{ width: "clamp(16rem, 38vw, 32rem)", opacity: 0.12 }}
+        className="pointer-events-none absolute left-[-10%] top-1/2 -translate-y-1/2 z-[2]"
+        style={{ width: "clamp(18rem, 44vw, 38rem)" }}
+        initial={{ opacity: 0, x: -30 }}
+        animate={isInView ? { opacity: 0.13, x: 0 } : { opacity: 0, x: -30 }}
+        transition={{ duration: 2.5, ease: "easeOut", delay: 0.6 }}
+        aria-hidden="true"
+      >
+        <img
+          src={IMG.rapper}
+          alt=""
+          className="h-auto w-full"
+          style={{ mixBlendMode: "screen", filter: "brightness(0.6) saturate(0.5)" }}
+        />
+      </motion.div>
+
+      {/* Right: planet in slow spin */}
+      <motion.div
+        className="pointer-events-none absolute right-[-10%] top-1/2 -translate-y-1/2 z-[2]"
+        style={{ width: "clamp(16rem, 38vw, 34rem)", opacity: 0.12 }}
         animate={{ rotate: 360 }}
         transition={{ duration: 60, ease: "linear", repeat: Infinity }}
         aria-hidden="true"
@@ -61,48 +62,83 @@ export function PunchCredits() {
 
       {/* Content */}
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-8 text-center">
-        {/* Badge */}
-        <motion.div
-          className="mb-8"
-          style={{ width: "clamp(4rem, 8vw, 6rem)" }}
-          initial={{ opacity: 0, scale: 0.8, rotate: -20 }}
-          animate={isInView ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0.8, rotate: -20 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-        >
-          <img src={IMG.badge} alt="" className="h-auto w-full" />
-        </motion.div>
 
-        {/* Main title */}
-        <div className="overflow-hidden">
-          <motion.h2
-            className="font-bebas leading-[0.88] text-white"
-            style={{ fontSize: "clamp(4rem, 13vw, 11rem)" }}
-            initial={{ y: "110%" }}
-            animate={isInView ? { y: "0%" } : { y: "110%" }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
-          >
-            PUNCH
-          </motion.h2>
-        </div>
-        <div className="overflow-hidden">
-          <motion.h2
-            className="font-bebas leading-[0.88]"
-            style={{ fontSize: "clamp(4rem, 13vw, 11rem)", color: PURPLE }}
-            initial={{ y: "110%" }}
-            animate={isInView ? { y: "0%" } : { y: "110%" }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.32 }}
-          >
-            ПУНШ
-          </motion.h2>
-        </div>
+        {/* Main logo — the real brand mark */}
+        <motion.div
+          className="relative mb-8"
+          style={{ width: "clamp(12rem, 34vw, 28rem)" }}
+          initial={{ opacity: 0, scale: 0.88 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.88 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+        >
+          {/* Base logo */}
+          <img
+            src={LOGO}
+            alt="ПУНШ NEVER SLEEP"
+            className="h-auto w-full"
+            style={{ filter: `drop-shadow(0 0 40px rgba(143,98,199,0.5))` }}
+          />
+          {/* Intermittent red glitch layer */}
+          <motion.img
+            src={LOGO}
+            alt=""
+            className="pointer-events-none absolute inset-0 h-auto w-full"
+            style={{ mixBlendMode: "screen" }}
+            animate={{
+              x:       [0, -5, 0, 4, 0],
+              opacity: [0, 0.65, 0, 0.55, 0],
+              filter:  [
+                "hue-rotate(0deg) saturate(3)",
+                "hue-rotate(330deg) saturate(4)",
+                "hue-rotate(0deg)",
+                "hue-rotate(300deg) saturate(4)",
+                "hue-rotate(0deg)",
+              ],
+            }}
+            transition={{
+              duration: 0.28,
+              times: [0, 0.15, 0.4, 0.65, 1],
+              repeat: Infinity,
+              repeatDelay: 6,
+              delay: 2,
+            }}
+            aria-hidden="true"
+          />
+          {/* Cyan glitch layer */}
+          <motion.img
+            src={LOGO}
+            alt=""
+            className="pointer-events-none absolute inset-0 h-auto w-full"
+            style={{ mixBlendMode: "screen" }}
+            animate={{
+              x:       [0, 5, 0, -4, 0],
+              opacity: [0, 0.5, 0, 0.45, 0],
+              filter:  [
+                "hue-rotate(0deg) saturate(3)",
+                "hue-rotate(160deg) saturate(4)",
+                "hue-rotate(0deg)",
+                "hue-rotate(180deg) saturate(4)",
+                "hue-rotate(0deg)",
+              ],
+            }}
+            transition={{
+              duration: 0.28,
+              times: [0, 0.15, 0.4, 0.65, 1],
+              repeat: Infinity,
+              repeatDelay: 6,
+              delay: 2.03,
+            }}
+            aria-hidden="true"
+          />
+        </motion.div>
 
         {/* Divider */}
         <motion.div
-          className="my-6 h-px bg-white/12 md:my-8"
+          className="mb-6 h-px bg-white/10 md:mb-8"
           style={{ width: "clamp(3rem, 8vw, 5rem)" }}
           initial={{ scaleX: 0 }}
           animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-          transition={{ duration: 0.7, delay: 0.55 }}
+          transition={{ duration: 0.7, delay: 0.7 }}
         />
 
         {/* Credits row */}
@@ -110,7 +146,7 @@ export function PunchCredits() {
           className="text-[10px] tracking-[0.4em] text-white/20"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
+          transition={{ duration: 0.8, delay: 0.85 }}
         >
           CREATED BY ONI STUDIO · 2026
         </motion.p>
@@ -120,7 +156,7 @@ export function PunchCredits() {
           className="mt-4 flex flex-wrap justify-center gap-3"
           initial={{ opacity: 0, y: 6 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
-          transition={{ duration: 0.8, delay: 0.85 }}
+          transition={{ duration: 0.8, delay: 1 }}
         >
           {["Event Branding", "Visual Identity", "Merch", "Posters"].map((tag) => (
             <span
@@ -137,11 +173,11 @@ export function PunchCredits() {
           className="mt-10 md:mt-12"
           initial={{ opacity: 0, y: 8 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-          transition={{ duration: 0.8, delay: 1 }}
+          transition={{ duration: 0.8, delay: 1.1 }}
         >
           <Link
             href="/cases"
-            className="group inline-flex items-center gap-3 text-[10px] font-medium tracking-[0.35em] text-white/30 transition-colors hover:text-white/70"
+            className="group inline-flex items-center gap-3 text-[10px] font-medium tracking-[0.35em] text-white/30 transition-opacity hover:opacity-60"
           >
             <span className="inline-block transition-transform duration-300 group-hover:-translate-x-1">←</span>
             ALL CASES

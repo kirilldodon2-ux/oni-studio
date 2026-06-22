@@ -20,15 +20,15 @@ export function PunchColors() {
       className="relative flex flex-col overflow-hidden"
       style={{ height: "100vh", scrollSnapAlign: "start", flexShrink: 0, backgroundColor: "#d9d9d9" }}
     >
-      {/* Top label */}
-      <div className="relative z-10 flex items-start justify-between px-8 pt-10 md:px-10 lg:px-14">
+      {/* Top label — starts below fixed navbar */}
+      <div className="relative z-10 flex items-start justify-between px-8 md:px-10 lg:px-14" style={{ paddingTop: "calc(var(--oni-header-h, 4rem) + 1.5rem)" }}>
         <motion.p
           className="text-[9px] font-medium tracking-[0.38em] text-black/30"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.7, delay: 0.05 }}
         >
-          SECTION 03 / BRAND COLOURS
+          SECTION 04 / BRAND COLOURS
         </motion.p>
         <motion.p
           className="text-[9px] font-medium tracking-[0.28em] text-black/20"

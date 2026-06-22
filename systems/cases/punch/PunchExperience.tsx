@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { usePunchSection } from "./PunchSectionContext";
-import { PunchCover }    from "./sections/PunchCover";
-import { PunchBrand }    from "./sections/PunchBrand";
-import { PunchAbout }    from "./sections/PunchAbout";
+import { PunchCover }       from "./sections/PunchCover";
+import { PunchBrand }       from "./sections/PunchBrand";
+import { PunchHeadliner }   from "./sections/PunchHeadliner";
+import { PunchAbout }       from "./sections/PunchAbout";
 import { PunchColors }   from "./sections/PunchColors";
 import { PunchPosters }  from "./sections/PunchPosters";
 import { PunchSocial }   from "./sections/PunchSocial";
@@ -13,7 +14,7 @@ import { PunchMerch }    from "./sections/PunchMerch";
 import { PunchStickers } from "./sections/PunchStickers";
 import { PunchCredits }  from "./sections/PunchCredits";
 
-const TOTAL_SECTIONS = 10;
+const TOTAL_SECTIONS = 11;
 
 export function PunchExperience() {
   const { setActiveSection, scrollContainerRef } = usePunchSection();
@@ -47,6 +48,7 @@ export function PunchExperience() {
     >
       <PunchCover />
       <PunchBrand />
+      <PunchHeadliner />
       <PunchAbout />
       <PunchColors />
       <PunchPosters />

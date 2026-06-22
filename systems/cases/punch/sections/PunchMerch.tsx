@@ -91,7 +91,7 @@ export function PunchMerch() {
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.7, delay: 0.5 }}
         >
-          SECTION 07 / MERCH
+          SECTION 08 / MERCH
         </motion.p>
         <div className="flex items-end justify-between">
           <div>

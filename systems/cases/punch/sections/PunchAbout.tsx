@@ -34,7 +34,7 @@ export function PunchAbout() {
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.7, delay: 0.05 }}
         >
-          SECTION 02 / ABOUT
+          SECTION 03 / ABOUT
         </motion.p>
 
         <motion.div

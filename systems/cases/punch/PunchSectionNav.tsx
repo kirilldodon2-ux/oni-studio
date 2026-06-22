@@ -6,6 +6,7 @@ import { usePunchSection } from "./PunchSectionContext";
 const LABELS = [
   "INTRO",
   "BRAND",
+  "ARTIST",
   "ABOUT",
   "COLORS",
   "POSTERS",
@@ -16,8 +17,8 @@ const LABELS = [
   "FIN",
 ];
 
-/** Light sections (index → light dot colour) */
-const LIGHT_SECTIONS = new Set([3, 4]);
+/** Light sections (index → light dot colour): Colors=4, Posters=5 */
+const LIGHT_SECTIONS = new Set([4, 5]);
 
 export function PunchSectionNav() {
   const { activeSection, scrollToSection } = usePunchSection();
