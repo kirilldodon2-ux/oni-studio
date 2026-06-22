@@ -14,13 +14,13 @@ const STICKERS = [
   stk("stk-hh-1.png"),
   stk("stk-hh-2.png"),
   stk("stk-mobiland-2.png"),
-  stk("stk-mobiland-7.png"),
+  stk("stk-mobiland-1.png"),
   stk("stk-plazma-1.png"),
   stk("stk-plazma-4.png"),
   stk("stk-samedi-1.png"),
   stk("stk-samedi-4.png"),
   stk("stk-new-2.png"),
-  stk("stk-new-5.png"),
+  stk("stk-hh-3.png"),
 ];
 
 export function PunchStickers() {
