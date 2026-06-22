@@ -57,7 +57,7 @@ export function PunchCredits() {
         transition={{ duration: 60, ease: "linear", repeat: Infinity }}
         aria-hidden="true"
       >
-        <img src={IMG.planet} alt="" className="h-auto w-full" style={{ mixBlendMode: "screen" }} />
+        <img src={IMG.planet} alt="" className="h-auto w-full" />
       </motion.div>
 
       {/* Content */}

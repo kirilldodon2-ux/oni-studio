@@ -213,7 +213,7 @@ Light dot-nav sections: `COLORS` (4), `POSTERS` (5), `END` (11).
 |-------|------|---------|
 | PUNCH logo (twitch-like) | `public/cases/punch/punch-logo.png` | `PunchCover`, `PunchCredits`, `PunchFooter` |
 | XXXMANERA headliner (framed portrait, 506×1021) | `public/cases/punch/xxxmanera-headliner.png` | `PunchHeadliner` |
-| Planet (transparent) | `public/cases/punch/planet.png` | `CasesPunch`, `PunchCover`, `PunchCredits` |
+| Planet (RGBA PNG, black keyed) | `public/cases/punch/planet.png` | `CasesPunch`, `PunchCover`, `PunchCredits` |
 | Sticker kit | `public/cases/punch/stickers/*` | `PunchStickers` |
 | Merch photos | `public/cases/punch/merch-*.png` | `PunchMerch` |
 
