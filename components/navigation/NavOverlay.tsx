@@ -30,7 +30,7 @@ const NAV_ITEMS: readonly NavItem[] = [
     ariaLabel: "Go to ARCHIVE",
     className:
       "text-[clamp(4.4rem,14vw,9.25rem)] text-black/80 md:text-[clamp(5rem,8.5vw,9.25rem)]",
-    listClassName: "mt-[clamp(1.25rem,3vh,1.75rem)] md:-ml-3",
+    listClassName: "mt-[clamp(1.25rem,3vh,1.75rem)]",
   },
   {
     id: "brandbook",
