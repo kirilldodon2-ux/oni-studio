@@ -4,7 +4,6 @@ import { ControlSurface } from "@/components/navigation";
 import { ExportModeProvider, isExportMode } from "@/systems/export";
 import { HeroSection } from "@/sections/HeroSection";
 import { ArchivePreviewSection } from "@/sections/ArchivePreviewSection";
-import { BrandIdentitySection } from "@/sections/BrandIdentitySection";
 import { ShowreelSection } from "@/sections/ShowreelSection";
 import { ContactFooterSection } from "@/sections/ContactFooterSection";
 
@@ -46,7 +45,6 @@ export default function Home({ searchParams }: HomePageProps) {
         <ControlSurface />
         <HeroSection exportMode={exportMode} />
         <ArchivePreviewSection />
-        <BrandIdentitySection />
         <ShowreelSection />
         <ContactFooterSection />
       </div>
