@@ -2,7 +2,6 @@
 
 import { SectionContainer } from "@/systems/layout/SectionContainer";
 import { RevealUp } from "@/systems/atmosphere";
-import { ProjectContactForm } from "./ProjectContactForm";
 
 const FOOTER_NAV = [
   { label: "WORKS", href: "/works" },
@@ -36,8 +35,6 @@ export function ContactFooterSection() {
           <p className="mt-6 max-w-md font-sans text-[13px] leading-relaxed tracking-[0.02em] text-neutral-500 md:mt-8">
             Tell us about your project.
           </p>
-
-          <ProjectContactForm />
 
           <div className="mt-12 flex flex-col gap-1 md:mt-16">
             <a
