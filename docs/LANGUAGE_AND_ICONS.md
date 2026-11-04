@@ -24,8 +24,10 @@ do not advertise that as already complete.
 
 ## Icons
 
-- `app/icon.svg` reuses the original mark from `public/logo/oni_logo_black.svg`,
+- `public/icon.svg` reuses the original mark from `public/logo/oni_logo_black.svg`,
   with a dark-tab color override. The source logo is not edited.
 - PNG sizes in `public/icons/` are exports of the same mark on white, not new art.
-- `app/favicon.ico` and `app/apple-icon.png` are the browser and touch variants.
+- `public/favicon.ico` and `public/apple-icon.png` are the browser and touch variants.
+- Root metadata links the static files explicitly. Do not move them into `app/`:
+  the production next-on-pages adapter rejects generated icon routes as non-edge.
 - The large social preview remains the user-supplied image in `public/social/`.

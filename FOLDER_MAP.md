@@ -2,7 +2,7 @@
 
 DEC-012: `systems/i18n/` owns the global language context and translations;
 `components/navigation/LanguageSwitch.tsx` is the shared EN/RU selector.
-`app/icon.svg`, `app/favicon.ico`, `app/apple-icon.png`, and `public/icons/`
+`public/icon.svg`, `public/favicon.ico`, `public/apple-icon.png`, and `public/icons/`
 provide favicon/touch variants of the existing ONI mark.
 
 DEC-011 additions: `app/fonts/` contains local Bounded and Cascadia Code PL;

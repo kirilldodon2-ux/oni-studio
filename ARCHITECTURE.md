@@ -2,8 +2,9 @@
 
 DEC-012 adds `systems/i18n/`: a root client context with English SSR default,
 optional persisted EN/RU preference, explicit text translations and no DOM wrapper
-or routing migration. Icon metadata is file-based (`app/icon.svg`, `favicon.ico`,
-`apple-icon.png`); `public/icons/` holds exports of the unchanged source mark.
+or routing migration. Root metadata explicitly links static `public/icon.svg`,
+`public/favicon.ico` and `public/apple-icon.png` for next-on-pages compatibility;
+`public/icons/` holds exports of the unchanged source mark.
 
 ## Current Landing Update (2026-11-04)
 
