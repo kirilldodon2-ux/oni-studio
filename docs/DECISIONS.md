@@ -2,6 +2,30 @@
 
 Operational decision log. Read before changing navigation, content lanes, or control-surface behavior.
 
+## DEC-013 — Hide Legacy Works And Bound Ambient Rendering (2026-11-04)
+
+Works / Работы is removed from visible navigation, not deleted or redirected.
+Existing Works URLs and sitemap entries remain to preserve published links.
+Current menu: HOME, PROJECTS, CASES, ARCHIVE, BRANDBOOK, CONTACT.
+
+Hero and navigation sigil use demand-mode Canvas with RenderWhenVisible:
+30fps invalidation only while intersecting the viewport in a visible document;
+reduced-motion users get a resting scene. Rotation deltas are clamped on resume.
+Hero DPR is capped at 1.5 instead of the default 2; models, materials, shadows
+and scene composition are unchanged. Overlay timings are shortened and its
+redundant second backdrop blur is removed; the scrim blur remains.
+
+The pre-change browser probe counted 105 hero draw calls in two seconds while
+the hero was offscreen at DPR 2 (headless software rendering, not a hardware FPS
+benchmark). Validate the same case after the change and preserve live motion.
+
+Post-change probe: offscreen hero 0 calls; simulated hidden-tab and reduced-motion
+states 0 calls on both canvases. Visible/resumed hero still renders. At DPR 2,
+its buffer changed from 1920x1800 to 1440x1350 (43.75% fewer pixels). These are
+local rendering-work checks, not a claimed real-device FPS or Web Vitals score.
+
+---
+
 ## DEC-012 — Global Reading Language And Site Icons (2026-11-04)
 
 English remains the server default and indexed language. A root LocaleProvider

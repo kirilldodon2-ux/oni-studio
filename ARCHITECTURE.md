@@ -1,5 +1,9 @@
 # ONI Architecture
 
+DEC-013: Works is hidden from the menu, while published URLs remain. Hero and
+sigil demand-mode canvases use `systems/spatial/RenderWhenVisible.tsx` to avoid
+continuous hidden rendering and bound ambient redraw to 30fps. Hero DPR <= 1.5.
+
 DEC-012 adds `systems/i18n/`: a root client context with English SSR default,
 optional persisted EN/RU preference, explicit text translations and no DOM wrapper
 or routing migration. Root metadata explicitly links static `public/icon.svg`,

@@ -1,5 +1,8 @@
 # Folder Map
 
+`systems/spatial/RenderWhenVisible.tsx` schedules visible demand-mode canvases
+and stops ambient rendering for hidden tabs and reduced-motion preference.
+
 DEC-012: `systems/i18n/` owns the global language context and translations;
 `components/navigation/LanguageSwitch.tsx` is the shared EN/RU selector.
 `public/icon.svg`, `public/favicon.ico`, `public/apple-icon.png`, and `public/icons/`

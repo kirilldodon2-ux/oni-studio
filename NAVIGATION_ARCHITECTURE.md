@@ -1,5 +1,10 @@
 # ONI Navigation Architecture
 
+DEC-013: Works is hidden from the menu in both languages; its existing routes
+remain accessible. Menu reveal is shortened and retains one scrim blur, not two
+overlapping backdrop filters. The 3D sigil renders on demand at an ambient 30fps
+cadence only while visible, respecting tab visibility and reduced motion.
+
 DEC-012 adds a compact global EN/RU selector beside the menu trigger. Header ink
 follows existing Brandbook/PUNCH section contexts and reverts to dark ink over
 the open menu. Language state is owned by `systems/i18n/`, not by navigation.

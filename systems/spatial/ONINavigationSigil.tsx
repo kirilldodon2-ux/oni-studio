@@ -20,6 +20,7 @@ import {
 } from "react";
 import * as THREE from "three";
 import { clone as cloneObject } from "three/examples/jsm/utils/SkeletonUtils.js";
+import { RenderWhenVisible } from "./RenderWhenVisible";
 
 const MODEL_URL = "/models/ONI_3d_no_texture.glb";
 const TAU = Math.PI * 2;
@@ -111,6 +112,7 @@ function SigilMotion({
   }, [impulseKey]);
 
   useFrame((_, delta) => {
+    delta = Math.min(delta, 0.1);
     const g = group.current;
     if (!g || reducedMotion) return;
 
@@ -191,6 +193,7 @@ export function ONINavigationSigil({
       aria-hidden="true"
     >
       <Canvas
+        frameloop="demand"
         camera={{ position: [0, 0.08, 2.65], fov: 32, near: 0.1, far: 20 }}
         dpr={[1, 1.5]}
         gl={{
@@ -205,6 +208,7 @@ export function ONINavigationSigil({
           threeScene.background = null;
         }}
       >
+        <RenderWhenVisible />
         <SigilScene
           hovered={hovered}
           impulseKey={impulseKey}

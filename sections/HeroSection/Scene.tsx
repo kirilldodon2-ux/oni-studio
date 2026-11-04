@@ -7,6 +7,7 @@ import * as THREE from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { clone as cloneObject } from "three/examples/jsm/utils/SkeletonUtils.js";
 import { PMREMGenerator } from "three";
+import { RenderWhenVisible } from "@/systems/spatial/RenderWhenVisible";
 
 const MODEL_URL = "/models/ONI_3d_no_texture.glb";
 
@@ -43,7 +44,7 @@ function OniModel() {
 function SpinOnY({ children }: { children: ReactNode }) {
   const group = useRef<THREE.Group>(null);
   useFrame((_, delta) => {
-    if (group.current) group.current.rotation.y += Y_SPIN_SPEED * delta;
+    if (group.current) group.current.rotation.y += Y_SPIN_SPEED * Math.min(delta, 0.1);
   });
   return <group ref={group}>{children}</group>;
 }
@@ -95,6 +96,8 @@ function ModelFit({ children }: { children: ReactNode }) {
 export function Scene() {
   return (
     <Canvas
+      frameloop="demand"
+      dpr={[1, 1.5]}
       camera={{ position: [3.75, 2.5, 5], fov: 42, near: 0.1, far: 200 }}
       gl={{
         alpha: true,
@@ -108,6 +111,7 @@ export function Scene() {
         scene.background = null;
       }}
     >
+      <RenderWhenVisible />
       <ambientLight intensity={0.55} />
       <directionalLight position={[4, 6, 3]} intensity={0.9} />
       <HeroRoomEnvironment />

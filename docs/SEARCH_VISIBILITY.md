@@ -1,6 +1,6 @@
 # Search Visibility
 
-## Implemented Locally
+## Published On 2026-11-04
 
 - Original team-supplied social preview: `public/social/oni-preview.jpg`.
 - Open Graph / Twitter large-image metadata with production-absolute URLs.
@@ -8,7 +8,9 @@
 - `app/sitemap.ts` lists all published pages: homepage, brandbook, archive and
   Works indexes, cases index, PUNCH, every registered archive object and Work.
   It is independent of the homepage selection. No fabricated lastmod dates.
-- Main menu retains all page indexes alongside homepage anchors. Root copy and
+- Main menu retains the primary indexes alongside homepage anchors; legacy
+  Works is no longer visible there (DEC-013), but its published URLs remain.
+  Root copy and
   metadata identify ONI as an independent creative collective focused on 3D,
   motion design and web development. This is not a claim of legal cooperative status.
 - `app/robots.ts` permits crawling and points to the production sitemap.
@@ -26,8 +28,14 @@
 4. Review page-specific descriptions and project context for search quality.
 5. Check social-link unfurling. Platforms may retain an earlier cached image.
 
-No Search Console submission or verification has been performed. Crawl access
-and sitemap inclusion do not guarantee indexing, ranking, or AI citations.
+The owner confirmed Domain-property verification and successful sitemap
+submission on 2026-11-04. Production checks verified all 39 URLs, their canonical
+metadata, robots, icons and the original social preview. This does not confirm
+indexing, ranking, or AI citations.
+
+The TelegramBot user-agent probe received HTTP 200, server-rendered OG metadata
+and the original 1920x1080 JPEG (556372 bytes). This verifies the tested response,
+not Telegram's cached card or requests originating from Telegram's own network.
 
 Google's AI search features use the same SEO foundations; a special AI file or
 new schema is not required:

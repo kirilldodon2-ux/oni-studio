@@ -40,12 +40,6 @@ const NAV_ITEMS: readonly NavItem[] = [
     ariaLabel: "Go to ARCHIVE",
   },
   {
-    id: "works",
-    label: "WORKS",
-    href: "/works",
-    ariaLabel: "Go to WORKS",
-  },
-  {
     id: "brandbook",
     label: "BRANDBOOK",
     href: "/brandbook",
@@ -114,7 +108,7 @@ export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
       className={[
         "fixed inset-0 z-50",
         "transition-opacity",
-        isOpen ? "duration-[560ms] ease-out" : "duration-[420ms] ease-in",
+        isOpen ? "duration-200 ease-out" : "duration-200 ease-in",
         isOpen
           ? "pointer-events-auto opacity-100"
           : "pointer-events-none opacity-0",
@@ -126,8 +120,8 @@ export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
           "absolute inset-0 bg-black/[0.055] backdrop-blur-[1.5px]",
           "transition-opacity",
           isOpen
-            ? "opacity-100 duration-[640ms] ease-out"
-            : "opacity-0 duration-[360ms] ease-in",
+            ? "opacity-100 duration-300 ease-out"
+            : "opacity-0 duration-200 ease-in",
         ].join(" ")}
         aria-hidden="true"
       />
@@ -136,12 +130,12 @@ export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
         className={[
           "absolute inset-y-0 right-0 w-full overflow-hidden",
           "border-l border-black/[0.05]",
-          "bg-white/[0.82] backdrop-blur-[3px]",
+          "bg-white/[0.82]",
           "transition-[transform,opacity] will-change-transform",
           "md:w-[min(76vw,58rem)] lg:w-[min(68vw,64rem)]",
           isOpen
-            ? "translate-x-0 opacity-100 duration-[760ms] ease-out"
-            : "translate-x-full opacity-95 duration-[520ms] ease-in",
+            ? "translate-x-0 opacity-100 duration-300 ease-out"
+            : "translate-x-full opacity-95 duration-200 ease-in",
         ].join(" ")}
       >
         <nav
@@ -172,14 +166,14 @@ export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
                       tabIndex={isOpen ? 0 : -1}
                       className={[
                         "block py-1 font-display text-2xl font-bold uppercase leading-tight tracking-normal text-black md:text-3xl lg:text-4xl",
-                        "transition-[opacity,transform] duration-[420ms] ease-out motion-reduce:transition-none",
+                        "transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none",
                         isOpen ? "translate-x-0" : "translate-x-8",
                         !isOpen ? "opacity-0" : !isCurrent && !isHovered ? "opacity-60" : "opacity-100",
                       ].join(" ")}
                       style={{
                         transitionDelay:
                           isOpen && activeIndex === null
-                            ? `${260 + index * 90}ms`
+                            ? `${60 + index * 25}ms`
                             : "0ms",
                       }}
                     >
