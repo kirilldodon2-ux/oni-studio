@@ -1,5 +1,14 @@
 # ONI Roadmap
 
+## Project Folders (2026-11-04)
+
+DEC-014: Hero -> Showreel -> six large folders -> brandbook band -> CTA/footer.
+Folder/drag/Finder interactions are adapted from @mnzrrr with attribution.
+All 32 archive works plus PUNCH are presented via existing R2 transports;
+archive index becomes a redirect, not a second public browse experience.
+Validation covers desktop, mobile, short landscape, video cleanup, native touch,
+keyboard/focus, browser history and EN/RU. Publication is tracked per release.
+
 ## Language And Icons (2026-11-04)
 
 Implemented locally: EN-first global reading preference with RU translations,

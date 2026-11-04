@@ -1,5 +1,11 @@
 # ONI Architecture
 
+DEC-014 is the current homepage authority: Hero -> Showreel -> ProjectDesk folders
+-> BrandbookPreviewSection -> Contact. `content/projectFolders.ts` curates 33
+projects from existing registries; `systems/projectFolders/` owns folder cards,
+modal Finder/inspector, media lifecycle and deep links. Archive index redirects
+to the homepage; published detail URLs stay. See docs/PROJECT_FOLDERS.md.
+
 DEC-013: Works is hidden from the menu, while published URLs remain. Hero and
 sigil demand-mode canvases use `systems/spatial/RenderWhenVisible.tsx` to avoid
 continuous hidden rendering and bound ambient redraw to 30fps. Hero DPR <= 1.5.
@@ -12,10 +18,10 @@ or routing migration. Root metadata explicitly links static `public/icon.svg`,
 
 ## Current Landing Update (2026-11-04)
 
-DEC-011 supersedes historical landing descriptions below. Homepage composition:
-Hero -> `sections/ProjectsSection/` -> Showreel -> Contact. Five curated series
-reuse existing archive and case records with separate media transports.
-Legacy archive fragment code and published routes remain. Form is not mounted.
+DEC-014 supersedes historical landing descriptions below. Homepage composition:
+Hero -> Showreel -> `sections/ProjectsSection/` -> brandbook preview -> Contact.
+Six large folders reuse existing archive/case data and separate media transports.
+Legacy archive fragment code and published detail routes remain. Form is not mounted.
 
 `app/fonts/` holds local Cascadia Code PL (`font-sans`) and variable Bounded
 (`font-display`, landing/menu at 700). Bebas remains on legacy display surfaces.
@@ -636,6 +642,7 @@ All z-index values are formally owned. No undocumented or ad-hoc values.
 | Navigation control surface     | `40` / `50`*  | `components/navigation/index.tsx`              |
 | Menu overlay                   | `50`          | `components/navigation/NavOverlay.tsx` — full-viewport layer; adaptive plane (full-width `< md`, partial-width right plane `md+`) |
 | Showreel cinema viewer (portal)| `[60]`        | `ShowreelCinemaViewer.tsx` — mobile-only; `createPortal` → `document.body` (DEC-007) |
+| Project Finder / inspector (portal) | `[60]` | `systems/projectFolders/ProjectDesk.tsx`; mutually exclusive foreground, local window stack (DEC-014) |
 
 \* The control surface `<header>` is promoted from `z-40` to `z-50` while the overlay is
 active, so the trigger button remains interactive above the overlay. `NavOverlay` renders

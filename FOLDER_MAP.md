@@ -1,5 +1,11 @@
 # Folder Map
 
+DEC-014: `content/projectFolders.ts` owns authored folder membership and gallery
+associations. `systems/projectFolders/` contains FolderCard, ProjectDesk, types
+and scoped material/window CSS. `sections/ProjectsSection/` composes the folder
+section and a separate BrandbookPreviewSection. Old ProjectCard/selectedProjects
+files are reference-only. THIRD_PARTY_NOTICES.md records @mnzrrr attribution.
+
 `systems/spatial/RenderWhenVisible.tsx` schedules visible demand-mode canvases
 and stops ambient rendering for hidden tabs and reduced-motion preference.
 

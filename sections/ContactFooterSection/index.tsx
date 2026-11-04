@@ -21,7 +21,7 @@ export function ContactFooterSection() {
       id="contact"
       data-oni-section="contact"
       aria-labelledby="contact-heading"
-      className="pt-24 pb-10 md:pt-20 md:pb-10 lg:pt-20 lg:pb-10"
+      className="pt-14 pb-10 md:pt-16 md:pb-10 lg:pt-16 lg:pb-10"
     >
       <RevealUp>
         <div className="relative mx-auto max-w-oni-contact">
@@ -61,7 +61,7 @@ export function ContactFooterSection() {
             </a>
           </div>
 
-          <footer className="mt-16 border-t border-black/[0.08] pt-7 md:mt-28 md:pt-10">
+          <footer className="mt-12 border-t border-black/[0.08] pt-7 md:mt-20 md:pt-10">
             <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
               <nav aria-label={t("Footer navigation")}>
                 <ul className="flex flex-wrap items-center gap-y-2 font-sans text-[10px] font-medium uppercase tracking-[0.20em] text-neutral-400">

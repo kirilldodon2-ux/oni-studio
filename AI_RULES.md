@@ -1,5 +1,10 @@
 # AI Rules
 
+Current homepage: DEC-014 in docs/DECISIONS.md. Project folders, not the old
+ProjectCard list, own project discovery. Membership/gallery associations live in
+content/projectFolders.ts. Preserve @mnzrrr attribution, R2 transport, active-media
+cleanup and shared modal locking; do not restore the archive menu/index.
+
 Rules for AI assistants (Cursor, Claude, etc.) working on this codebase.
 
 ---

@@ -21,6 +21,13 @@ type LockSnapshot = {
 let lockCount = 0;
 let touchMoveBlockCount = 0;
 let snapshot: LockSnapshot | null = null;
+const lockListeners = new Set<() => void>();
+
+export const isDocumentScrollLocked = () => lockCount > 0;
+export function subscribeDocumentScrollLock(listener: () => void) {
+  lockListeners.add(listener);
+  return () => { lockListeners.delete(listener); };
+}
 
 function captureBodyStyles(body: HTMLElement): BodyStyleSnapshot {
   return {
@@ -107,6 +114,7 @@ export function useDocumentScrollLock(
     lockCount += 1;
     if (lockCount === 1) {
       applyDocumentScrollLock();
+      lockListeners.forEach((listener) => listener());
     }
 
     if (blockTouchMove) {
@@ -127,6 +135,7 @@ export function useDocumentScrollLock(
       lockCount -= 1;
       if (lockCount === 0) {
         releaseDocumentScrollLock();
+        lockListeners.forEach((listener) => listener());
       }
     };
   }, [enabled, blockTouchMove]);

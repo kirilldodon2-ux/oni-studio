@@ -28,18 +28,6 @@ const NAV_ITEMS: readonly NavItem[] = [
     ariaLabel: "Go to PROJECTS",
   },
   {
-    id: "cases",
-    label: "CASES",
-    href: "/cases",
-    ariaLabel: "Go to CASES",
-  },
-  {
-    id: "archive",
-    label: "ARCHIVE",
-    href: "/archive",
-    ariaLabel: "Go to ARCHIVE",
-  },
-  {
     id: "brandbook",
     label: "BRANDBOOK",
     href: "/brandbook",

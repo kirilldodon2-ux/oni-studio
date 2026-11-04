@@ -4,7 +4,7 @@ import { PageBackdrop } from "@/systems/backdrop";
 import { ContinuityField } from "@/systems/atmosphere";
 import { ExportModeProvider, isExportMode } from "@/systems/export";
 import { HeroSection } from "@/sections/HeroSection";
-import { ProjectsSection } from "@/sections/ProjectsSection";
+import { ProjectsSection, BrandbookPreviewSection } from "@/sections/ProjectsSection";
 import { ShowreelSection } from "@/sections/ShowreelSection";
 import { ContactFooterSection } from "@/sections/ContactFooterSection";
 
@@ -37,8 +37,9 @@ export default function Home({ searchParams }: HomePageProps) {
         </div>
         <ControlSurface />
         <HeroSection exportMode={exportMode} />
-        <ProjectsSection />
         <ShowreelSection />
+        <ProjectsSection />
+        <BrandbookPreviewSection />
         <ContactFooterSection />
       </div>
     </ExportModeProvider>

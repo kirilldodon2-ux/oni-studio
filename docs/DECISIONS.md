@@ -2,6 +2,46 @@
 
 Operational decision log. Read before changing navigation, content lanes, or control-surface behavior.
 
+## DEC-014 — Project Folders And Work Inspector (2026-11-04)
+
+User-approved composition: Hero -> Showreel -> large project folders -> brandbook
+preview band -> Contact/footer. Vertical spacing is reduced without changing
+the hero scene or calibrated showreel artwork.
+
+Folder interactions are adapted with permission from German Virre (@mnzrrr),
+`mnzrrr/portfolio`, revision `8a4a8f7`. See THIRD_PARTY_NOTICES.md. Only folder,
+drag and Finder/inspector concepts are adapted; his personal content is not copied.
+
+`content/projectFolders.ts` explicitly assigns all 32 registered archive objects
+and PUNCH to six folders: 3D / Motion, Digital Fashion, Events, Graphic Design,
+Web and Experiments. Events includes PUNCH and 4NWAY (@somovdes). This is authored
+presentation grouping, not a new tag taxonomy or a duplicate archive registry.
+The existing creators, media ontology and archive/cases R2 transports remain.
+
+Menu: HOME, PROJECTS, BRANDBOOK, CONTACT. `/archive` permanently redirects to
+`/#projects`; individual published archive/Works and full case URLs remain for
+compatibility and search. Sitemap excludes the redirected index (38 URLs).
+
+`systems/projectFolders/` owns CSS polyurethane folders, mouse/touch dragging,
+Finder search and grid/list views, one active media inspector, native video,
+image galleries, maximize/minimize/restore, focus containment and URL history.
+`?folder=...&project=...` opens a shareable view; query variants remain canonical
+to the homepage, not separate language or indexable project routes.
+
+ProjectDesk portals at z-60, with active dialogs inside the local stack. It uses
+the shared ref-counted document lock without document-level touchmove blocking;
+inner windows scroll natively. Background body children become inert and restore
+their previous state on close/minimize. Native video is paused and its source
+released on media switch, close or minimize. Closed folders/Finder use only
+small local image previews; originals load only in the inspector. No new WebGL.
+
+The lock utility now provides a subscription so RenderWhenVisible also suspends
+ambient canvases behind any locked modal/menu. Do not add a second body lock or
+restore autoplaying project videos on the homepage. Legacy ProjectCard and
+selectedProjects files are retained but no longer own the active homepage.
+
+---
+
 ## DEC-013 — Hide Legacy Works And Bound Ambient Rendering (2026-11-04)
 
 Works / Работы is removed from visible navigation, not deleted or redirected.

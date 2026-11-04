@@ -5,11 +5,13 @@
 - Original team-supplied social preview: `public/social/oni-preview.jpg`.
 - Open Graph / Twitter large-image metadata with production-absolute URLs.
 - Homepage canonical: `https://onidigital.net/`, including export-query variants.
-- `app/sitemap.ts` lists all published pages: homepage, brandbook, archive and
-  Works indexes, cases index, PUNCH, every registered archive object and Work.
+- `app/sitemap.ts` lists 38 published pages: homepage, brandbook, Works index,
+  cases index, PUNCH, every registered archive object and Work. The redirected
+  `/archive` index is excluded; old object URLs retain their canonical metadata.
   It is independent of the homepage selection. No fabricated lastmod dates.
-- Main menu retains the primary indexes alongside homepage anchors; legacy
-  Works is no longer visible there (DEC-013), but its published URLs remain.
+- Main menu exposes homepage/projects, brandbook and contact. Projects open in
+  homepage folders (DEC-014); legacy Works/archive/cases indexes are not menu
+  entries, but published detail URLs remain.
   Root copy and
   metadata identify ONI as an independent creative collective focused on 3D,
   motion design and web development. This is not a claim of legal cooperative status.
@@ -29,8 +31,9 @@
 5. Check social-link unfurling. Platforms may retain an earlier cached image.
 
 The owner confirmed Domain-property verification and successful sitemap
-submission on 2026-11-04. Production checks verified all 39 URLs, their canonical
-metadata, robots, icons and the original social preview. This does not confirm
+submission on 2026-11-04. The initial production check verified 39 URLs; DEC-014
+redirects the archive index and reduces the sitemap to 38. Canonical metadata,
+robots, icons and the original social preview are preserved. This does not confirm
 indexing, ranking, or AI citations.
 
 The TelegramBot user-agent probe received HTTP 200, server-rendered OG metadata

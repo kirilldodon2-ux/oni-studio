@@ -2,6 +2,7 @@
 
 import { useThree } from "@react-three/fiber";
 import { useEffect } from "react";
+import { isDocumentScrollLocked, subscribeDocumentScrollLock } from "@/systems/useDocumentScrollLock";
 
 const AMBIENT_FRAME_INTERVAL_MS = 1000 / 30;
 
@@ -18,7 +19,7 @@ export function RenderWhenVisible() {
     const sync = () => {
       clearInterval(timer);
       timer = undefined;
-      if (!visible || document.visibilityState !== "visible") return;
+      if (!visible || document.visibilityState !== "visible" || isDocumentScrollLocked()) return;
       invalidate();
       if (!reduced.matches) timer = setInterval(invalidate, AMBIENT_FRAME_INTERVAL_MS);
     };
@@ -29,11 +30,13 @@ export function RenderWhenVisible() {
     observer.observe(canvas);
     document.addEventListener("visibilitychange", sync);
     reduced.addEventListener("change", sync);
+    const unsubscribe = subscribeDocumentScrollLock(sync);
     return () => {
       clearInterval(timer);
       observer.disconnect();
       document.removeEventListener("visibilitychange", sync);
       reduced.removeEventListener("change", sync);
+      unsubscribe();
     };
   }, [canvas, invalidate]);
 

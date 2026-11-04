@@ -1,5 +1,11 @@
 # ONI Navigation Architecture
 
+DEC-014 current menu: HOME, PROJECTS, BRANDBOOK, CONTACT. Project discovery is
+the homepage folder desktop. Archive/cases browse links are not menu entries;
+full case pages and published detail URLs remain accessible. `/archive` redirects
+to `/#projects`. ProjectDesk has its own focus-contained z-60 portal and native
+inner scrolling under the shared document lock.
+
 DEC-013: Works is hidden from the menu in both languages; its existing routes
 remain accessible. Menu reveal is shortened and retains one scrim blur, not two
 overlapping backdrop filters. The 3D sigil renders on demand at an ambient 30fps

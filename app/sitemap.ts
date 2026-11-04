@@ -7,7 +7,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const paths = new Set([
     "/",
     "/brandbook",
-    "/archive",
     "/works",
     "/cases",
     "/cases/punch",

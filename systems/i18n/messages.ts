@@ -2,6 +2,16 @@ export type Locale = "en" | "ru";
 
 // Brandbook prose is translated from the original Russian copy, not rewritten.
 const pairs: readonly (readonly [string, string])[] = [
+  ["Open folder", "Открыть папку"], ["Folder", "Папка"], ["Events", "События"],
+  ["Graphic Design", "Графический дизайн"], ["Web", "Веб"], ["Experiments", "Эксперименты"],
+  ["Minimize", "Свернуть"], ["Maximize", "Развернуть"], ["Restore size", "Обычный размер"],
+  ["Restore window", "Восстановить окно"], ["Back to folder", "Назад в папку"],
+  ["Search", "Поиск"], ["Search projects", "Поиск проектов"], ["Nothing found", "Ничего не найдено"],
+  ["View", "Вид"], ["Grid view", "Значки"], ["List view", "Список"],
+  ["Previous project", "Предыдущий проект"], ["Next project", "Следующий проект"],
+  ["Previous image", "Предыдущее изображение"], ["Next image", "Следующее изображение"],
+  ["Open original", "Открыть оригинал"], ["Created by", "Автор"], ["Year", "Год"],
+  ["View full case", "Смотреть полный кейс"], ["Media unavailable", "Медиа недоступно"], ["Retry", "Повторить"],
   ["HOME", "ГЛАВНАЯ"], ["PROJECTS", "ПРОЕКТЫ"], ["CASES", "КЕЙСЫ"],
   ["ARCHIVE", "АРХИВ"], ["WORKS", "РАБОТЫ"], ["BRANDBOOK", "БРЕНДБУК"],
   ["CONTACT", "КОНТАКТЫ"], ["MENU", "МЕНЮ"], ["CLOSE", "ЗАКРЫТЬ"],
