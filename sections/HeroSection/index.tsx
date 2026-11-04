@@ -1,3 +1,4 @@
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
 import { FadeIn } from "@/systems/atmosphere";
 import { HeroAtmosphere } from "./HeroAtmosphere";
 import { HeroVisual } from "./HeroVisual";
@@ -18,25 +19,18 @@ export function HeroSection({ exportMode = false }: HeroSectionProps) {
     >
       <div className="relative flex min-h-[100svh] flex-col lg:grid lg:h-full lg:min-h-0 lg:grid-cols-12 lg:grid-rows-1">
 
-        {/* Environmental field — rings, guide axes, depth parallax; desktop only */}
-        <HeroAtmosphere />
-
         {/* Editorial text column — FadeIn becomes the column div itself (no extra wrapper).
             Opacity 0→1 over 1200ms; text materializes on page load, not on scroll. */}
+        <HeroAtmosphere />
         <FadeIn
           className="relative z-20 flex shrink-0 flex-col items-center px-6 pb-4 pt-[calc(var(--oni-header-h)+2.5rem)] text-center sm:px-8 md:px-10 lg:col-start-2 lg:col-end-8 lg:row-start-1 lg:h-full lg:min-h-0 lg:w-full lg:max-w-none lg:-translate-y-[2vh] lg:items-start lg:justify-center lg:self-center lg:justify-self-start lg:px-0 lg:pb-0 lg:pl-[clamp(0.5rem,3.5vw,4rem)] lg:pt-[clamp(2rem,8vh,6rem)] lg:text-left"
           threshold={0}
         >
-          <h1 className="font-bebas text-[clamp(5.75rem,20vw,15rem)] leading-[0.82] tracking-[0.015em] lg:translate-x-[-0.02em]">
+          <h1 className="font-display text-8xl font-bold leading-none tracking-normal md:text-[10rem] lg:text-[12rem] xl:text-[14rem]">
             ONI
           </h1>
-          <p className="mt-5 max-w-[18rem] text-[1.0625rem] font-semibold leading-[1.08] tracking-tight text-black md:mt-7 md:text-xl lg:mt-[clamp(1.25rem,3vh,2.25rem)] lg:max-w-[22rem] lg:text-[clamp(1.05rem,1.3vw,1.32rem)]">
-            One studio. Every task.
-          </p>
-          <p className="mt-5 max-w-[21rem] text-[0.9375rem] leading-[1.72] text-neutral-500 md:mt-6 md:text-base lg:mt-[clamp(1.5rem,3.5vh,2.75rem)] lg:max-w-[24rem] lg:text-[0.96rem] lg:leading-[1.78]">
-            We design motion, identity and digital worlds for brands that move
-            culture forward.
-          </p>
+          <p className="mt-5 max-w-[18rem] text-base font-semibold leading-snug tracking-normal text-black md:mt-7 md:text-lg lg:mt-[clamp(1.25rem,3vh,2.25rem)] lg:max-w-[22rem]"><LocalizedText value={"3D. Motion. Web."} /></p>
+          <p className="mt-5 max-w-[21rem] text-[0.9375rem] leading-[1.72] text-neutral-500 md:mt-6 md:text-base lg:mt-[clamp(1.5rem,3.5vh,2.75rem)] lg:max-w-[24rem] lg:text-[0.96rem] lg:leading-[1.78]"><LocalizedText value={"A visual studio and creative collective specializing in 3D, motion, web development and digital design."} /></p>
           <ViewWorkLink className="mt-8 hidden lg:mt-[clamp(2rem,5vh,4rem)] lg:inline-flex" />
         </FadeIn>
 

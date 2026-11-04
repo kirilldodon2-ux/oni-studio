@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText, useLocale } from "@/systems/i18n/LocaleProvider";
+
 import Image from "next/image";
 import { useCallback, useEffect, useRef, type RefObject } from "react";
 import { useDocumentScrollLock } from "@/systems/useDocumentScrollLock";
@@ -36,6 +38,7 @@ export function ShowreelInstallationViewer({
   onTimeSync,
   returnFocusRef,
 }: ShowreelInstallationViewerProps) {
+  const { t } = useLocale();
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const viewerVideoRef = useRef<HTMLVideoElement>(null);
@@ -109,7 +112,7 @@ export function ShowreelInstallationViewer({
       ref={dialogRef}
       role="dialog"
       aria-modal="true"
-      aria-label="ONI showreel installation"
+      aria-label={t("ONI showreel installation")}
       aria-hidden={!isOpen}
       className={[
         "fixed inset-0 z-30 flex items-center justify-center px-4 py-16",
@@ -130,9 +133,7 @@ export function ShowreelInstallationViewer({
         type="button"
         className="absolute right-5 top-20 z-[1] font-sans text-[9px] uppercase tracking-[0.35em] text-neutral-400 hover:opacity-60"
         onClick={handleClose}
-      >
-        CLOSE
-      </button>
+      ><LocalizedText value={"CLOSE"} /></button>
 
       <div
         className={[

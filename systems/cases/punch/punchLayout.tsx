@@ -1,3 +1,4 @@
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
 import type { CSSProperties, ReactNode } from "react";
 import { motion } from "motion/react";
 
@@ -44,7 +45,7 @@ export function PunchSectionMeta({ index, label, light = false, visible = true }
       </span>
       <span className="h-px w-4" style={{ backgroundColor: rule }} aria-hidden="true" />
       <span className="text-[10px] font-medium tracking-[0.30em]" style={{ color: mute }}>
-        {label}
+        <LocalizedText value={label} />
       </span>
     </motion.div>
   );

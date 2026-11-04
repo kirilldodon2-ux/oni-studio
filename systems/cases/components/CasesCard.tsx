@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { resolveCasesMediaSrc } from "@/content/casesMediaPaths";
@@ -42,7 +44,7 @@ export function CasesCard({ entry }: CasesCardProps) {
         transition={{ duration: 0.8, delay: 0.05 }}
       >
         <span className="text-[10px] font-medium tracking-[0.30em] text-white/30">
-          {entry.category}
+          <LocalizedText value={entry.category} />
         </span>
         <span className="h-px w-4 bg-white/15" />
         <span className="text-[10px] font-medium tracking-[0.30em] text-white/20">
@@ -94,7 +96,7 @@ export function CasesCard({ entry }: CasesCardProps) {
       <div className="relative z-10 flex h-full flex-col justify-end px-8 pb-14 md:px-14 md:pb-16 lg:px-20 lg:pb-20">
         {/* Client signal */}
         <motion.p
-          className="mb-1 text-[10px] font-medium tracking-[0.32em] text-[#FF4A1A]"
+          className="mb-1 text-[10px] font-medium tracking-[0.32em] text-white"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.7, delay: 0.18 }}
@@ -111,7 +113,7 @@ export function CasesCard({ entry }: CasesCardProps) {
             animate={isInView ? { y: "0%" } : { y: "105%" }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
           >
-            {entry.title}
+            <LocalizedText value={entry.title} />
           </motion.h2>
         </div>
 
@@ -127,7 +129,7 @@ export function CasesCard({ entry }: CasesCardProps) {
               key={tag}
               className="border border-white/[0.1] px-2.5 py-1 text-[10px] tracking-[0.22em] text-white/40"
             >
-              {tag}
+              <LocalizedText value={tag} />
             </span>
           ))}
         </motion.div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion, useInView } from "motion/react";
 import { useCallback, useEffect, useRef } from "react";
 import { punchSrc } from "../punchAssets";
@@ -91,9 +93,7 @@ export function PunchPosters() {
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.6, delay: 0.15 }}
-      >
-        SWIPE →
-      </motion.p>
+      ><LocalizedText value={"SWIPE →"} /></motion.p>
 
       <div
         className="relative z-10 min-h-0 flex-1 md:pt-[calc(var(--oni-header-h,4rem)+3.5rem)] md:pb-10"
@@ -166,9 +166,7 @@ export function PunchPosters() {
         className="absolute bottom-8 left-8 md:bottom-10 md:left-10 lg:left-14"
         light
         visible={isInView}
-      >
-        Print &amp; digital
-      </PunchCaption>
+      ><LocalizedText value={"Print & digital"} /></PunchCaption>
     </section>
   );
 }

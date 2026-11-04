@@ -1,5 +1,17 @@
 # ONI Navigation Architecture
 
+DEC-012 adds a compact global EN/RU selector beside the menu trigger. Header ink
+follows existing Brandbook/PUNCH section contexts and reverts to dark ink over
+the open menu. Language state is owned by `systems/i18n/`, not by navigation.
+
+DEC-011 override (2026-11-04): menu is HOME, PROJECTS (`/#projects`), CASES,
+ARCHIVE, WORKS, BRANDBOOK, CONTACT (`/#contact`). Bounded Bold labels use stable
+breakpoint-based sizes. First tap follows a link and closes the overlay. The
+plane and trigger remain. The fixed-body lock prevents background scrolling;
+document-level touchmove blocking is disabled only for this consumer so the
+expanded index can scroll natively on short mobile screens. Historical menu
+hierarchy below is superseded.
+
 ## Planning Status
 
 **Phase:** Navigation control surface (Phase 5 — implemented) + artifact interaction grammar (implemented) + route awareness (DEC-005)

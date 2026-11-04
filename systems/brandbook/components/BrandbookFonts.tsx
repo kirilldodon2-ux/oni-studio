@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 
@@ -114,7 +116,7 @@ export function BrandbookFonts() {
                   fontWeight: 300,
                 }}
               >
-                {face.role}
+                <LocalizedText value={face.role} />
               </p>
               <motion.p
                 className="break-words text-black"

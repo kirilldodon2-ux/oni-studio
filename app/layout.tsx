@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Inter } from "next/font/google";
+import { Bebas_Neue } from "next/font/google";
+import localFont from "next/font/local";
+import { SITE_ORIGIN, SITE_PREVIEW, SITE_TITLE, SITE_DESCRIPTION } from "@/content/site";
 import "./globals.css";
+import { LocaleProvider } from "@/systems/i18n/LocaleProvider";
 
 const bebasNeue = Bebas_Neue({
   weight: "400",
@@ -9,16 +12,40 @@ const bebasNeue = Bebas_Neue({
   display: "swap",
 });
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+const cascadia = localFont({
+  src: [
+    { path: "./fonts/CascadiaCodePL-Regular.otf", weight: "400", style: "normal" },
+    { path: "./fonts/CascadiaCodePL-SemiBold.otf", weight: "600", style: "normal" },
+  ],
+  variable: "--font-cascadia",
+  display: "swap",
+});
+
+const bounded = localFont({
+  src: "./fonts/Bounded-Variable.ttf",
+  weight: "200 900",
+  style: "normal",
+  variable: "--font-bounded",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "ONI Studio",
-  description:
-    "We design motion, identity and digital worlds for brands that move culture forward.",
+  metadataBase: new URL(SITE_ORIGIN),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    siteName: "ONI Studio",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [SITE_PREVIEW],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [SITE_PREVIEW],
+  },
 };
 
 export default function RootLayout({
@@ -29,9 +56,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${bebasNeue.variable} ${inter.variable} font-sans antialiased`}
+        className={`${bebasNeue.variable} ${cascadia.variable} ${bounded.variable} font-sans antialiased`}
       >
-        {children}
+        <LocaleProvider>{children}</LocaleProvider>
       </body>
     </html>
   );

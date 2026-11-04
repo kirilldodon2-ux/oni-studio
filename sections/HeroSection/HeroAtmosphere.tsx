@@ -201,7 +201,7 @@ export function HeroAtmosphere() {
           <div
             style={{
               width: 5, height: 5,
-              background: "#FF4A1A",
+              background: "var(--oni-ambient-mark)",
               opacity: 0.36,
             }}
           />

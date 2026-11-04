@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion } from "motion/react";
 import { useBrandbookSection } from "./BrandbookSectionContext";
 
@@ -52,7 +54,7 @@ export function BrandbookSectionNav() {
               animate={{ color: isActive ? dotColor : labelColor }}
               transition={{ duration: 0.3 }}
             >
-              {label}
+              <LocalizedText value={label} />
             </motion.span>
 
             <div className="relative flex h-4 w-4 items-center justify-center">

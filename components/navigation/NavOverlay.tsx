@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { LocalizedText, useLocale } from "@/systems/i18n/LocaleProvider";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useDocumentScrollLock } from "@/systems/useDocumentScrollLock";
@@ -10,8 +12,6 @@ type NavItem = {
   label: string;
   href: string;
   ariaLabel: string;
-  className: string;
-  listClassName?: string;
 };
 
 const NAV_ITEMS: readonly NavItem[] = [
@@ -20,44 +20,42 @@ const NAV_ITEMS: readonly NavItem[] = [
     label: "HOME",
     href: "/",
     ariaLabel: "Go to HOME",
-    className:
-      "text-[clamp(3rem,9vw,6.5rem)] text-black/[0.45] md:text-[clamp(3.75rem,7vw,7rem)]",
   },
   {
-    id: "archive",
-    label: "ARCHIVE",
-    href: "/archive",
-    ariaLabel: "Go to ARCHIVE",
-    className:
-      "text-[clamp(4.4rem,14vw,9.25rem)] text-black/80 md:text-[clamp(5rem,8.5vw,9.25rem)]",
-    listClassName: "mt-[clamp(1.25rem,3vh,1.75rem)]",
-  },
-  {
-    id: "brandbook",
-    label: "BRANDBOOK",
-    href: "/brandbook",
-    ariaLabel: "Go to BRANDBOOK",
-    className:
-      "text-[clamp(3.8rem,12vw,8rem)] text-black/80 md:text-[clamp(4.5rem,7.5vw,8rem)]",
-    listClassName: "mt-[clamp(0.5rem,1.2vh,0.75rem)]",
+    id: "projects",
+    label: "PROJECTS",
+    href: "/#projects",
+    ariaLabel: "Go to PROJECTS",
   },
   {
     id: "cases",
     label: "CASES",
     href: "/cases",
     ariaLabel: "Go to CASES",
-    className:
-      "text-[clamp(3.8rem,12vw,8rem)] text-black/80 md:text-[clamp(4.5rem,7.5vw,8rem)]",
-    listClassName: "mt-[clamp(0.5rem,1.2vh,0.75rem)]",
+  },
+  {
+    id: "archive",
+    label: "ARCHIVE",
+    href: "/archive",
+    ariaLabel: "Go to ARCHIVE",
+  },
+  {
+    id: "works",
+    label: "WORKS",
+    href: "/works",
+    ariaLabel: "Go to WORKS",
+  },
+  {
+    id: "brandbook",
+    label: "BRANDBOOK",
+    href: "/brandbook",
+    ariaLabel: "Go to BRANDBOOK",
   },
   {
     id: "contact",
     label: "CONTACT",
     href: "/#contact",
     ariaLabel: "Go to CONTACT",
-    className:
-      "text-[clamp(3.6rem,11vw,7.5rem)] text-black/[0.55] md:text-[clamp(4.25rem,7.25vw,7.5rem)]",
-    listClassName: "mt-[clamp(1.5rem,3.5vh,2rem)]",
   },
 ];
 
@@ -68,17 +66,6 @@ function isNavItemCurrent(href: string, pathname: string): boolean {
   }
   if (href.startsWith("#")) return pathname === "/";
   return false;
-}
-
-function overlayFieldAnnotation(pathname: string): string {
-  if (pathname === "/") return "HOME FIELD";
-  if (pathname.startsWith("/brandbook")) return "BRANDBOOK OPEN";
-  if (pathname.startsWith("/cases")) return "CASES OPEN";
-  if (pathname === "/works") return "WORKS INDEX";
-  if (pathname.startsWith("/works/")) return "WORK OPEN";
-  if (pathname === "/archive") return "ARCHIVE FIELD";
-  if (pathname.startsWith("/archive/")) return "ARCHIVE OPEN";
-  return "ONI STUDIO";
 }
 
 interface NavOverlayProps {
@@ -95,12 +82,12 @@ interface NavOverlayProps {
  * Body scroll is locked while open.
  */
 export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
+  const { t } = useLocale();
   const pathname = usePathname();
-  const fieldAnnotation = overlayFieldAnnotation(pathname);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const touchActivationRef = useRef(false);
 
-  useDocumentScrollLock(isOpen, { blockTouchMove: true });
+  // The fixed-body lock remains; the longer index must allow native inner scrolling.
+  useDocumentScrollLock(isOpen, { blockTouchMove: false });
 
   useEffect(() => {
     if (!isOpen) return;
@@ -114,7 +101,6 @@ export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
   useEffect(() => {
     if (!isOpen) {
       setActiveIndex(null);
-      touchActivationRef.current = false;
     }
   }, [isOpen]);
 
@@ -123,7 +109,7 @@ export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
       id="nav-overlay"
       role="dialog"
       aria-modal="true"
-      aria-label="Site navigation"
+      aria-label={t("Site navigation")}
       aria-hidden={!isOpen}
       className={[
         "fixed inset-0 z-50",
@@ -158,42 +144,21 @@ export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
             : "translate-x-full opacity-95 duration-[520ms] ease-in",
         ].join(" ")}
       >
-        <div
-          className="pointer-events-none absolute bottom-8 right-6 hidden select-none text-right text-[10px] font-medium uppercase tracking-[0.22em] text-neutral-400 md:block lg:bottom-10 lg:right-14"
-          aria-hidden="true"
-        >
-          <span className="block">MMXXVI</span>
-          <span className="mt-1 block">ONI STUDIO</span>
-          <span className="mt-1 block text-neutral-300">{fieldAnnotation}</span>
-        </div>
-
         <nav
-          className="relative flex h-full flex-col justify-end px-6 pb-[clamp(3.5rem,11vh,7.5rem)] pt-[calc(var(--oni-header-h)+2rem)] md:px-12 lg:px-0 lg:pl-[clamp(4rem,9vw,9rem)] lg:pr-20"
-          aria-label="Primary navigation"
+          className="relative flex h-full touch-pan-y flex-col overflow-y-auto overscroll-y-contain px-6 pb-8 pt-[calc(var(--oni-header-h)+2rem)] md:px-12 lg:px-0 lg:pl-[clamp(4rem,9vw,9rem)] lg:pr-20"
+          aria-label={t("Primary navigation")}
         >
-          <p
-            className={[
-              "mb-8 text-[10px] font-medium uppercase tracking-[0.24em] text-neutral-400",
-              "transition-[opacity,transform] duration-[620ms] ease-out",
-              isOpen ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
-            ].join(" ")}
-            aria-hidden="true"
-            style={{ transitionDelay: isOpen ? "180ms" : "0ms" }}
-          >
-            INDEX / PRIMARY FIELD
-          </p>
-
-          <ul className="flex flex-col items-start gap-0">
+          <ul className="my-auto flex shrink-0 flex-col items-start gap-3 md:gap-5">
             {NAV_ITEMS.map(
-              ({ id, label, href, ariaLabel, className, listClassName }, index) => {
+              ({ id, label, href }, index) => {
                 const isCurrent = isNavItemCurrent(href, pathname);
                 const isHovered = activeIndex === index;
 
                 return (
-                  <li key={id} className={listClassName ?? ""}>
+                  <li key={id}>
                     <Link
                       href={href}
-                      aria-label={ariaLabel}
+                      aria-label={t(label)}
                       aria-current={isCurrent ? "page" : undefined}
                       onPointerEnter={(event) => {
                         if (event.pointerType !== "touch") setActiveIndex(index);
@@ -201,36 +166,15 @@ export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
                       onPointerLeave={(event) => {
                         if (event.pointerType !== "touch") setActiveIndex(null);
                       }}
-                      onPointerDown={(event) => {
-                        touchActivationRef.current =
-                          event.pointerType === "touch" && activeIndex !== index;
-                        setActiveIndex(index);
-                      }}
                       onFocus={() => setActiveIndex(index)}
                       onBlur={() => setActiveIndex(null)}
-                      onClick={(event) => {
-                        if (touchActivationRef.current) {
-                          event.preventDefault();
-                          touchActivationRef.current = false;
-                          return;
-                        }
-                        if (activeIndex !== index) {
-                          event.preventDefault();
-                          setActiveIndex(index);
-                          return;
-                        }
-                        onClose();
-                      }}
+                      onClick={onClose}
                       tabIndex={isOpen ? 0 : -1}
                       className={[
-                        "flex items-end overflow-visible font-bebas uppercase tracking-[0.035em]",
-                        "transition-[opacity,transform,padding] duration-[680ms] ease-out",
-                        isOpen ? "translate-x-0 opacity-100" : "translate-x-8 opacity-0",
-                        activeIndex === index
-                          ? "pb-0 pt-[clamp(0.95rem,3.2vh,3rem)]"
-                          : "py-0",
-                        !isCurrent && !isHovered ? "opacity-[0.38]" : "",
-                        className,
+                        "block py-1 font-display text-2xl font-bold uppercase leading-tight tracking-normal text-black md:text-3xl lg:text-4xl",
+                        "transition-[opacity,transform] duration-[420ms] ease-out motion-reduce:transition-none",
+                        isOpen ? "translate-x-0" : "translate-x-8",
+                        !isOpen ? "opacity-0" : !isCurrent && !isHovered ? "opacity-60" : "opacity-100",
                       ].join(" ")}
                       style={{
                         transitionDelay:
@@ -239,17 +183,7 @@ export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
                             : "0ms",
                       }}
                     >
-                      <span
-                        className={[
-                          "block origin-bottom leading-[0.83] [transform-origin:bottom_center]",
-                          "transition-transform duration-[680ms] ease-out",
-                          activeIndex === index
-                            ? "scale-y-[1.26]"
-                            : "scale-y-100",
-                        ].join(" ")}
-                      >
-                        {label}
-                      </span>
+                      <LocalizedText value={label} />
                     </Link>
                   </li>
                 );

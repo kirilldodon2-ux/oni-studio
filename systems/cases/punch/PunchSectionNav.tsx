@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion } from "motion/react";
 import { usePunchSection } from "./PunchSectionContext";
 
@@ -45,7 +47,7 @@ export function PunchSectionNav() {
               animate={{ color: isActive ? DOT_ACTIVE : DOT_INACTIVE }}
               transition={{ duration: 0.3 }}
             >
-              {label}
+              <LocalizedText value={label} />
             </motion.span>
 
             <div className="relative flex h-4 w-4 items-center justify-center">

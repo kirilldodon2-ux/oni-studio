@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion } from "motion/react";
 
 export function CasesCover() {
@@ -76,9 +78,7 @@ export function CasesCover() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.4 }}
-        >
-          CASE STUDIES · 2026
-        </motion.p>
+        ><LocalizedText value={"CASE STUDIES · 2026"} /></motion.p>
 
         <div className="overflow-hidden">
           <motion.h1
@@ -99,9 +99,7 @@ export function CasesCover() {
             initial={{ y: "105%" }}
             animate={{ y: "0%" }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-          >
-            CASES
-          </motion.h1>
+          ><LocalizedText value={"CASES"} /></motion.h1>
         </div>
 
         <motion.div

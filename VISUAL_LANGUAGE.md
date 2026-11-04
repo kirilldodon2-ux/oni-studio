@@ -1,5 +1,11 @@
 # ONI Visual Language
 
+DEC-011 override (2026-11-04): interface is black/white/neutral gray, without
+orange. Body/UI uses local Cascadia Code PL; landing/menu headings use local
+Bounded at 700. Original project-media colors, legacy display fonts and scoped
+brandbook typography remain. Historical specifications below are superseded
+for the changed surfaces.
+
 ## Keywords
 
 - cinematic

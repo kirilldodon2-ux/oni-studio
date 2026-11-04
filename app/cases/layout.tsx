@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 export const metadata = {
   title: "26' Cases — ONI Studio",
+  alternates: { canonical: "/cases" },
   description:
     "Case studies — ONI Studio 2026. Brand systems, digital campaigns, and spatial identity.",
 };

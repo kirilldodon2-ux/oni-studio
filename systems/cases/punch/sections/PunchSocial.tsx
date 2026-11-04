@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { punchSrc } from "../punchAssets";
@@ -45,9 +47,7 @@ export function PunchSocial() {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.7, delay: 0.05 }}
-        >
-          SECTION 06 / DIGITAL
-        </motion.p>
+        ><LocalizedText value={"SECTION 06 / DIGITAL"} /></motion.p>
 
         <motion.h2
           className="font-bebas leading-[0.88] text-white"
@@ -55,28 +55,21 @@ export function PunchSocial() {
           initial={{ opacity: 0, y: 24 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-        >
-          DIGITAL &
-        </motion.h2>
+        ><LocalizedText value={"DIGITAL &"} /></motion.h2>
         <motion.h2
           className="font-bebas leading-[0.88]"
           style={{ fontSize: "clamp(2.5rem, 11vw, 4.5rem)", color: PURPLE }}
           initial={{ opacity: 0, y: 24 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.18 }}
-        >
-          SOCIAL
-        </motion.h2>
+        ><LocalizedText value={"SOCIAL"} /></motion.h2>
 
         <motion.p
           className="mt-4 max-w-[20rem] text-[10px] leading-[1.75] tracking-[0.02em] text-white/30 md:mt-5 md:max-w-[16rem] md:text-[11px] md:leading-[1.8]"
           initial={{ opacity: 0, y: 6 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          Telegram-анонсы, социальные баннеры и диджитал-ассеты —
-          с той же энергией, что и в печатных материалах.
-        </motion.p>
+        ><LocalizedText value={"Telegram-анонсы, социальные баннеры и диджитал-ассеты — с той же энергией, что и в печатных материалах."} /></motion.p>
 
         <motion.div
           className="mt-4 flex gap-4 pb-4 md:mt-5 md:pb-0"

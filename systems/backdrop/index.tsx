@@ -23,7 +23,7 @@
  */
 export function PageBackdrop() {
   return (
-    <div className="h-full w-full overflow-hidden" aria-hidden>
+    <div className="h-full w-full overflow-hidden [--oni-accent:var(--oni-ambient-mark)]" aria-hidden>
       <svg
         className="h-full w-full min-h-[100%]"
         xmlns="http://www.w3.org/2000/svg"
@@ -59,11 +59,11 @@ export function PageBackdrop() {
         {/* ── Transition zone A: Hero → Work (y≈1450) ──────────────────── */}
         {/* Faint horizon thread right of spine — spatial page crease       */}
         <line x1="560" y1="1450" x2="1340" y2="1450" stroke="#e8e8e8" strokeWidth="0.7" opacity="0.52" />
-        <rect x="1348" y="1447" width="5" height="5" fill="#FF4A1A" opacity="0.22" />
+        <rect x="1348" y="1447" width="5" height="5" fill="var(--oni-accent)" opacity="0.22" />
 
         {/* ── Transition zone B: Work → Showreel (y≈2350) ──────────────── */}
         <line x1="100" y1="2350" x2="860" y2="2350" stroke="url(#page-line-fade-h)" strokeWidth="0.7" opacity="0.46" />
-        <rect x="64" y="2347" width="4" height="4" fill="#FF4A1A" opacity="0.18" />
+        <rect x="64" y="2347" width="4" height="4" fill="var(--oni-accent)" opacity="0.18" />
 
         {/* ── Transition zone C: Showreel → Contact (y≈3280) ───────────── */}
         <line x1="500" y1="3280" x2="1360" y2="3280" stroke="#e8e8e8" strokeWidth="0.6" opacity="0.44" />
@@ -77,9 +77,9 @@ export function PageBackdrop() {
         <line x1="280" y1="1280" x2="400" y2="1040" stroke="#000" strokeWidth="1" opacity="0.22" />
         <circle cx="1120" cy="520" r="200" fill="none" stroke="#ececec" strokeWidth="1" />
         <circle cx="1120" cy="520" r="248" fill="none" stroke="#f2f2f2" strokeWidth="1" />
-        <rect x="108" y="120" width="7" height="7" fill="#FF4A1A" />
-        <rect x="1240" y="200" width="6" height="6" fill="#FF4A1A" />
-        <rect x="1320" y="560" width="8" height="8" fill="#FF4A1A" />
+        <rect x="108" y="120" width="7" height="7" fill="var(--oni-accent)" />
+        <rect x="1240" y="200" width="6" height="6" fill="var(--oni-accent)" />
+        <rect x="1320" y="560" width="8" height="8" fill="var(--oni-accent)" />
         <rect x="640" y="360" width="4" height="4" fill="#000" opacity="0.55" />
         <rect x="780" y="720" width="4" height="4" fill="#000" opacity="0.45" />
         <circle cx="200" cy="1400" r="1.5" fill="#000" opacity="0.22" />
@@ -91,16 +91,16 @@ export function PageBackdrop() {
         <line x1="0" y1="2100" x2="380" y2="2280" stroke="url(#page-line-fade-d)" strokeWidth="1" />
         <line x1="1440" y1="2380" x2="960" y2="2220" stroke="#e5e5e5" strokeWidth="1" />
         <circle cx="520" cy="2000" r="160" fill="none" stroke="#efefef" strokeWidth="1" />
-        <rect x="920" y="1680" width="6" height="6" fill="#FF4A1A" />
-        <rect x="240" y="1920" width="5" height="5" fill="#FF4A1A" />
-        <rect x="1280" y="2240" width="7" height="7" fill="#FF4A1A" />
+        <rect x="920" y="1680" width="6" height="6" fill="var(--oni-accent)" />
+        <rect x="240" y="1920" width="5" height="5" fill="var(--oni-accent)" />
+        <rect x="1280" y="2240" width="7" height="7" fill="var(--oni-accent)" />
 
         {/* ── Future ShowreelSection atmosphere ────────────────────────── */}
         <line x1="900" y1="2600" x2="1360" y2="2880" stroke="#e5e5e5" strokeWidth="1" />
         <circle cx="1200" cy="3200" r="170" fill="none" stroke="#efefef" strokeWidth="1" />
-        <rect x="1220" y="2880" width="7" height="7" fill="#FF4A1A" />
-        <rect x="980" y="3040" width="6" height="6" fill="#FF4A1A" />
-        <rect x="420" y="2760" width="5" height="5" fill="#FF4A1A" />
+        <rect x="1220" y="2880" width="7" height="7" fill="var(--oni-accent)" />
+        <rect x="980" y="3040" width="6" height="6" fill="var(--oni-accent)" />
+        <rect x="420" y="2760" width="5" height="5" fill="var(--oni-accent)" />
         <circle cx="1280" cy="2600" r="1.5" fill="#000" opacity="0.2" />
 
         {/* ── Future ContactFooterSection atmosphere ───────────────────── */}
@@ -110,18 +110,6 @@ export function PageBackdrop() {
         <path d="M720 3100 l5 0 M722.5 3096 l0 8" stroke="#000" strokeWidth="0.75" opacity="0.24" />
       </svg>
 
-      {/* ── Global ambient: floating annotation overlay ───────────────── */}
-      <div className="pointer-events-none absolute inset-0 text-[9px] font-medium tracking-[0.18em] text-neutral-400">
-        <p className="absolute left-[4%] top-[14%] origin-left -rotate-90">PRSM 001</p>
-        <p className="absolute left-[5%] top-[42%]">PRSM 002</p>
-        <p className="absolute right-[7%] top-[58%]">PRSM 003</p>
-        <p className="absolute right-[6%] top-[18%] origin-right rotate-90 text-[10px] tracking-[0.28em] text-neutral-300">
-          ONI
-        </p>
-        <p className="absolute bottom-[22%] right-[7%] hidden max-w-[200px] text-right text-[9px] leading-snug tracking-[0.14em] md:block">
-          MOVEMENT BY CONNECTION
-        </p>
-      </div>
     </div>
   );
 }

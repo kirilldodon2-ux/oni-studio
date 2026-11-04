@@ -56,14 +56,14 @@ export function ContinuityField() {
         </AmbientField>
       </div>
 
-      {/* Accent mark — small orange square, backdrop vocabulary */}
+      {/* Signal mark follows the interface palette. */}
       <div
         className="absolute"
         style={{ top: "calc(100svh - 1.5rem)", left: "72.5%" }}
       >
         <AmbientField breathe delay={-8200}>
           <div
-            style={{ width: 4, height: 4, background: "#FF4A1A", opacity: 0.26 }}
+            style={{ width: 4, height: 4, background: "var(--oni-ambient-mark)", opacity: 0.26 }}
           />
         </AmbientField>
       </div>
@@ -111,7 +111,7 @@ export function ContinuityField() {
       >
         <AmbientField breathe delay={-10800}>
           <div
-            style={{ width: 5, height: 5, background: "#FF4A1A", opacity: 0.19 }}
+            style={{ width: 5, height: 5, background: "var(--oni-ambient-soft)", opacity: 0.19 }}
           />
         </AmbientField>
       </div>

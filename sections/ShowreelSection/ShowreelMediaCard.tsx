@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useLocale } from "@/systems/i18n/LocaleProvider";
 import { useRef, useEffect, useState, useCallback } from "react";
 import { resolveArchiveMediaSrc } from "@/content/archiveObjectPaths";
 import {
@@ -38,6 +39,7 @@ const SHOWREEL_VIDEO_PATH = "/showreel/gg2.mp4";
  * ShowreelMediaCard — ambient artifact (State A) + installation viewer (State B).
  */
 export function ShowreelMediaCard() {
+  const { t } = useLocale();
   const exportMode = useExportMode();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -152,7 +154,7 @@ export function ShowreelMediaCard() {
         type="button"
         onClick={openViewer}
         disabled={exportMode}
-        aria-label="Open showreel"
+        aria-label={t("Open showreel")}
         className={[
           "group relative w-full border-0 bg-transparent p-0 text-left",
           exportMode ? "cursor-default" : "cursor-pointer",
@@ -196,7 +198,7 @@ export function ShowreelMediaCard() {
                     playsInline
                     loop
                     preload="none"
-                    aria-label="ONI studio showreel"
+                    aria-label={t("ONI studio showreel")}
                     onLoadedData={() => setMediaReady(true)}
                   />
                 </div>

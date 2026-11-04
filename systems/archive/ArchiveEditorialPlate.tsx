@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import type { ObjectEditorialAsset } from "./getObjectAssets";
@@ -81,7 +83,7 @@ export function ArchiveEditorialPlate({ asset, variant, className = "" }: Props)
             className="mb-2 block font-sans text-[7px] font-medium tabular-nums uppercase tracking-[0.4em] text-neutral-300/70"
             aria-hidden
           >
-            {label}
+            <LocalizedText value={label} />
           </span>
           <div
             className="w-full overflow-hidden bg-white"
@@ -112,9 +114,7 @@ export function ArchiveEditorialPlate({ asset, variant, className = "" }: Props)
             type="button"
             className="absolute right-5 top-20 font-sans text-[9px] uppercase tracking-[0.35em] text-neutral-400 hover:text-black"
             onClick={closeZoom}
-          >
-            Close
-          </button>
+          ><LocalizedText value={"Close"} /></button>
           <div
             className="max-h-[85svh] max-w-[min(100%,56rem)]"
             onClick={(e) => e.stopPropagation()}

@@ -11,12 +11,13 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        sans: ["var(--font-cascadia)", "ui-monospace", "monospace"],
+        display: ["var(--font-bounded)", "system-ui", "sans-serif"],
         bebas: ["var(--font-bebas)", "system-ui", "sans-serif"],
       },
       colors: {
         oni: {
-          accent: "#FF4A1A",
+          accent: "#000000",
         },
       },
       // ─── MaxWidth tokens ───────────────────────────────────────────────────

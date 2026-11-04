@@ -1,5 +1,26 @@
 # ONI Architecture
 
+DEC-012 adds `systems/i18n/`: a root client context with English SSR default,
+optional persisted EN/RU preference, explicit text translations and no DOM wrapper
+or routing migration. Icon metadata is file-based (`app/icon.svg`, `favicon.ico`,
+`apple-icon.png`); `public/icons/` holds exports of the unchanged source mark.
+
+## Current Landing Update (2026-11-04)
+
+DEC-011 supersedes historical landing descriptions below. Homepage composition:
+Hero -> `sections/ProjectsSection/` -> Showreel -> Contact. Five curated series
+reuse existing archive and case records with separate media transports.
+Legacy archive fragment code and published routes remain. Form is not mounted.
+
+`app/fonts/` holds local Cascadia Code PL (`font-sans`) and variable Bounded
+(`font-display`, landing/menu at 700). Bebas remains on legacy display surfaces.
+Interface is monochrome, without recoloring project media. Menu uses one tap.
+
+Landing retains PageBackdrop, ContinuityField and HeroAtmosphere in neutral grays.
+Header telemetry, decorative field annotations and project counters are removed.
+Export fallback is a sculpture-only
+transparent capture at `public/png/hero-sculpture.png`, not a full-layout mockup.
+
 ## Core Principles
 
 - sections own their own layout

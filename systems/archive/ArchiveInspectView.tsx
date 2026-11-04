@@ -1,5 +1,8 @@
 "use client";
 
+import { LocalizedText, useLocale } from "@/systems/i18n/LocaleProvider";
+import { archiveDescriptionsRu } from "@/systems/i18n/archiveDescriptions";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -46,6 +49,7 @@ export function ArchiveInspectView({
   sequenceAssets = [],
 }: Props) {
   const router = useRouter();
+  const { locale, t } = useLocale();
   const viewportRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
   const wheelAccum = useRef(0);
@@ -70,7 +74,7 @@ export function ArchiveInspectView({
   const heroOccupancy = getInspectHeroOccupancy(aspectW, aspectH);
 
   const territories = entry.territories
-    .map((t) => TERRITORY_LABEL[t] ?? t)
+    .map((territory) => t(TERRITORY_LABEL[territory] ?? territory))
     .join(" · ");
 
   const goPrev = useCallback(() => {
@@ -189,9 +193,7 @@ export function ArchiveInspectView({
           <Link
             href="/archive"
             className="font-sans text-[9px] font-medium uppercase tracking-[0.4em] text-neutral-400 transition-colors duration-200 hover:text-black"
-          >
-            ← Archive
-          </Link>
+          ><LocalizedText value={"← Archive"} /></Link>
 
           <div className="flex items-center gap-3">
             <span className="font-sans text-[9px] font-medium tabular-nums uppercase tracking-[0.3em] text-neutral-300">
@@ -272,7 +274,7 @@ export function ArchiveInspectView({
             <div className="flex items-start justify-between gap-8">
               <div>
                 <p className="font-sans text-[8px] font-medium uppercase tracking-[0.44em] text-neutral-300">
-                  {territories}
+                  <LocalizedText value={territories} />
                   {entry.creator && (
                     <>
                       &nbsp;&nbsp;·&nbsp;&nbsp;
@@ -281,11 +283,11 @@ export function ArchiveInspectView({
                   )}
                 </p>
                 <h1 className="mt-2.5 font-bebas text-[clamp(1.5rem,3.5vw,2.6rem)] uppercase leading-[0.88] tracking-[0.06em] text-black/80">
-                  {entry.title}
+                  <LocalizedText value={entry.title} />
                 </h1>
                 {entry.summary && (
                   <p className="mt-3 max-w-xs font-sans text-[11px] leading-[1.75] text-neutral-400">
-                    {entry.summary}
+                    {locale === "ru" ? archiveDescriptionsRu[entry.slug] ?? entry.summary : entry.summary}
                   </p>
                 )}
               </div>

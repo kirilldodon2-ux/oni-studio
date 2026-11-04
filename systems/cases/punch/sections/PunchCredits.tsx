@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion, useInView } from "motion/react";
 import Link from "next/link";
 import { useRef } from "react";
@@ -154,9 +156,7 @@ export function PunchCredits() {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.8, delay: 0.85 }}
-        >
-          CREATED BY ONI STUDIO · 2026
-        </motion.p>
+        ><LocalizedText value={"CREATED BY ONI STUDIO · 2026"} /></motion.p>
 
         {/* Role tags */}
         <motion.div
@@ -170,7 +170,7 @@ export function PunchCredits() {
               key={tag}
               className="rounded-full border border-white/10 px-3 py-1 text-[9px] tracking-[0.22em] text-white/20"
             >
-              {tag}
+              <LocalizedText value={tag} />
             </span>
           ))}
         </motion.div>
@@ -186,9 +186,7 @@ export function PunchCredits() {
             href="/cases"
             className="group inline-flex items-center gap-3 text-[10px] font-medium tracking-[0.35em] text-white/30 transition-opacity hover:opacity-60"
           >
-            <span className="inline-block transition-transform duration-300 group-hover:-translate-x-1">←</span>
-            ALL CASES
-          </Link>
+            <span className="inline-block transition-transform duration-300 group-hover:-translate-x-1">←</span><LocalizedText value={"ALL CASES"} /></Link>
         </motion.div>
       </div>
     </section>

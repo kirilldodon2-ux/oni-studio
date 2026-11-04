@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion } from "motion/react";
 import { useCasesSection } from "./CasesSectionContext";
 import { casesRegistry } from "./casesData";
@@ -42,7 +44,7 @@ export function CasesSectionNav() {
               animate={{ color: isActive ? LABEL_ACTIVE : LABEL_INACTIVE }}
               transition={{ duration: 0.3 }}
             >
-              {label}
+              <LocalizedText value={label} />
             </motion.span>
 
             <div className="relative flex h-4 w-4 items-center justify-center">

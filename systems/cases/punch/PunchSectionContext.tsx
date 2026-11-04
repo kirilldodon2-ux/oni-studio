@@ -45,3 +45,7 @@ export function usePunchSection() {
   if (!ctx) throw new Error("usePunchSection requires PunchSectionProvider");
   return ctx;
 }
+
+export function usePunchSectionOptional() {
+  return useContext(PunchSectionContext);
+}

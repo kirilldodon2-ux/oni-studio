@@ -10,18 +10,12 @@ export function HeroExportFallback() {
       data-oni-hero-fallback=""
       aria-hidden
     >
-      <picture className="block h-full w-full">
-        <source
-          media="(min-width: 1024px)"
-          srcSet="/png/desktop/desktop hero bright.png"
-        />
-        <img
-          src="/png/mobile/mobile hero bright.png"
-          alt=""
-          className="h-full w-full select-none object-contain object-center"
-          draggable={false}
-        />
-      </picture>
+      <img
+        src="/png/hero-sculpture.png"
+        alt=""
+        className="h-full w-full select-none object-contain object-center"
+        draggable={false}
+      />
     </div>
   );
 }

@@ -1,5 +1,19 @@
 # ONI Roadmap
 
+## Language And Icons (2026-11-04)
+
+Implemented locally: EN-first global reading preference with RU translations,
+cross-route persistence, and favicon/touch icons from the original ONI logo.
+Separately indexed Russian URLs are not implemented; current sitemap and
+canonicals remain English-first. See DEC-012 and `docs/LANGUAGE_AND_ICONS.md`.
+
+## Minor Landing Update (2026-11-04)
+
+Implemented locally: monochrome interface, local Cascadia/Bounded typography,
+five-series homepage list, simplified menu and first-tap navigation. Form stays
+unmounted. Pending: final project selection, accessible Figma export comparison,
+and deployment. See DEC-011.
+
 ## Engineering Philosophy
 
 - stability first, spectacle second

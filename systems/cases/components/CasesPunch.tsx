@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion, useInView } from "motion/react";
 import Link from "next/link";
 import { useRef } from "react";
@@ -99,9 +101,7 @@ export function CasesPunch() {
             initial={{ y: "105%" }}
             animate={isInView ? { y: "0%" } : { y: "105%" }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.08 }}
-          >
-            PARTY
-          </motion.h2>
+          ><LocalizedText value={"PARTY"} /></motion.h2>
         </div>
 
         <div className="overflow-hidden">
@@ -111,9 +111,7 @@ export function CasesPunch() {
             initial={{ y: "105%" }}
             animate={isInView ? { y: "0%" } : { y: "105%" }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.18 }}
-          >
-            IDENTITY
-          </motion.h2>
+          ><LocalizedText value={"IDENTITY"} /></motion.h2>
         </div>
 
         <motion.div
@@ -125,9 +123,7 @@ export function CasesPunch() {
           <Link
             href="/cases/punch"
             className="text-[11px] font-semibold tracking-[0.26em] text-white transition-opacity hover:opacity-60"
-          >
-            WATCH FULL →
-          </Link>
+          ><LocalizedText value={"WATCH FULL →"} /></Link>
         </motion.div>
       </div>
     </section>

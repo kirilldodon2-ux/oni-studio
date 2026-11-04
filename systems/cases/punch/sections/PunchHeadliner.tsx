@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { punchSrc } from "../punchAssets";
@@ -73,9 +75,7 @@ export function PunchHeadliner() {
         </motion.div>
       </div>
 
-      <PunchCaption className="absolute bottom-8 right-8 z-20 hidden text-right md:block md:bottom-10 md:right-10 lg:right-14" visible={isInView}>
-        Headliner
-      </PunchCaption>
+      <PunchCaption className="absolute bottom-8 right-8 z-20 hidden text-right md:block md:bottom-10 md:right-10 lg:right-14" visible={isInView}><LocalizedText value={"Headliner"} /></PunchCaption>
     </section>
   );
 }

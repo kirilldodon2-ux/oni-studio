@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { punchSrc } from "../punchAssets";
@@ -53,9 +55,7 @@ export function PunchPeople() {
         </motion.div>
       </div>
 
-      <PunchCaption className="absolute bottom-8 right-8 text-right md:bottom-10 md:right-10 lg:right-14" visible={isInView}>
-        Murmansk · 1700 guests
-      </PunchCaption>
+      <PunchCaption className="absolute bottom-8 right-8 text-right md:bottom-10 md:right-10 lg:right-14" visible={isInView}><LocalizedText value={"Murmansk · 1700 guests"} /></PunchCaption>
     </section>
   );
 }

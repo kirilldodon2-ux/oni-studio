@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { ArchiveEditorialPlate } from "./ArchiveEditorialPlate";
 import { composeEditorialField, type EditorialUnit } from "./composeEditorialField";
 import type { ObjectEditorialAsset } from "./getObjectAssets";
@@ -81,8 +83,7 @@ export function ArchiveEditorialSequence({ assets, title }: Props) {
       <p
         className={`${READ_AXIS} mb-10 font-sans text-[7px] font-medium tabular-nums uppercase tracking-[0.44em] text-neutral-300/80 md:mb-12`}
       >
-        {assets.length} plates
-      </p>
+        {assets.length}{" "}<LocalizedText value={"plates"} /></p>
 
       <div className="relative">{units.map((unit, idx) => renderUnit(unit, `${unit.type}-${idx}`))}</div>
     </section>

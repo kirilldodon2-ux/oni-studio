@@ -2,8 +2,66 @@
 
 Operational decision log. Read before changing navigation, content lanes, or control-surface behavior.
 
+## DEC-012 — Global Reading Language And Site Icons (2026-11-04)
+
+English remains the server default and indexed language. A root LocaleProvider
+and header EN/RU selector provide a persistent reading preference across all
+existing routes. This does not migrate URLs or imply separately indexed Russian
+pages. Translations are explicit React content, not runtime DOM replacement.
+Brandbook Russian source prose informs its English translation and the landing
+description. Designed bilingual labels, proper names and original media remain.
+
+Header contrast follows existing brandbook/PUNCH section state so the language
+selector is readable on both dark and light sections. Existing motion and media
+transport are unchanged. The original ONI mark supplies SVG, favicon and Apple
+touch icons. See `docs/LANGUAGE_AND_ICONS.md`.
+
 **Status:** ACTIVE  
 **Format:** newest decisions first
+
+---
+
+## DEC-011 — Minor landing simplification (2026-11-04)
+
+**Latest clarification:** preserve all published sections and include every
+registered archive/Works detail URL in the sitemap, not only homepage selections.
+Menu: HOME, PROJECTS, CASES, ARCHIVE, WORKS, BRANDBOOK, CONTACT. The expanded
+index uses native inner scrolling under the existing fixed-body document lock;
+only this consumer disables document-level touchmove blocking. Showreel locks
+remain unchanged. ONI is presented as an independent creative collective with
+3D/motion at its core and web development alongside.
+
+**Status:** Implemented locally; final project curation and Figma comparison pending.
+
+- Homepage: Hero -> Projects -> Showreel -> Contact. `ProjectsSection` groups
+  existing media into PUNCH (Event / Clubshow Design), 3D / Motion, Vertical 3D
+  Animation, Digital Fashion and Poster Design. Each asset links to its existing
+  detail route and retains registry attribution. Previews use intrinsic ratios,
+  without forced 4:3 backgrounds or separator frames. Includes a compact link
+  to the existing brandbook using its wire artwork. Large preview is user-owned.
+- Motion previews use real source-video stills in `public/project-previews/`
+  until viewport-gated R2 playback starts; no generated replacement artwork.
+- Menu: HOME, PROJECTS (`/#projects`), CASES, ARCHIVE, WORKS, BRANDBOOK,
+  CONTACT (`/#contact`).
+  Footer and hero use the project anchor. All legacy routes remain intact.
+- Local Cascadia Code PL owns body/UI; local variable Bounded uses weight 700
+  for landing headings and menu. Legacy display and brandbook fonts remain.
+- Interface is monochrome, including backdrop marks and text selection.
+  Project images/video retain their original colors.
+- Menu links activate on the first tap/click, without hover-driven layout shifts.
+- Contact form stays unmounted; Worker and form implementation are preserved.
+- Follow-up clarified: retain PageBackdrop, ContinuityField and HeroAtmosphere
+  in neutral grays. Remove only header telemetry, field annotations, project
+  counters and showreel year. Preserve WebGL and showreel interactions.
+- Export mode now uses a transparent capture of the actual WebGL sculpture,
+  not an old full-layout reference image containing duplicate text/navigation.
+
+This supersedes older typography, color, and homepage navigation descriptions.
+
+Social preview and search foundation: the original user-supplied image is in
+`public/social/oni-preview.jpg`; root social metadata, canonical URLs, sitemap
+and robots are implemented. Search Console submission remains pending deployment.
+See `docs/SEARCH_VISIBILITY.md`.
 
 ---
 

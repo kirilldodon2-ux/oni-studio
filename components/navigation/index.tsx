@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { LanguageSwitch } from "./LanguageSwitch";
+import { useBrandbookSectionOptional } from "@/systems/brandbook/BrandbookSectionContext";
+import { usePunchSectionOptional } from "@/systems/cases/punch/PunchSectionContext";
 import { NavHome } from "./NavHome";
-import { NavTelemetry } from "./NavTelemetry";
 import { NavMenuTrigger } from "./NavMenuTrigger";
 import { NavOverlay } from "./NavOverlay";
 
@@ -14,13 +17,18 @@ import { NavOverlay } from "./NavOverlay";
  * interactive above the overlay. NavOverlay renders before the header in
  * the DOM; at the same z-level, DOM order gives the header the higher stack.
  *
- * Three zones: [ IDENTITY ] [ TELEMETRY ] [ ACTION ]
- * Telemetry is desktop-only (lg+), pointer-events-none, aria-hidden.
+ * Two zones: [ IDENTITY ] [ ACTION ]. Decorative telemetry is not mounted.
  *
  * Closed surface is identical at all scroll positions — no scroll-state (DEC-004).
  */
 export function ControlSurface() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const brandbook = useBrandbookSectionOptional();
+  const punch = usePunchSectionOptional();
+  const light = !menuOpen && (brandbook
+    ? [1, 2, 3].includes(brandbook.activeSection)
+    : punch ? ![4, 7].includes(punch.activeSection) : pathname.startsWith("/cases"));
 
   return (
     <>
@@ -33,12 +41,11 @@ export function ControlSurface() {
           menuOpen ? "z-50" : "z-40",
         ].join(" ")}
       >
-        <NavHome />
-        <NavTelemetry />
-        <NavMenuTrigger
-          isOpen={menuOpen}
-          onToggle={() => setMenuOpen((v) => !v)}
-        />
+        <NavHome light={light} />
+        <div className="flex items-center gap-3 md:gap-6">
+          <LanguageSwitch light={light} />
+          <NavMenuTrigger light={light} isOpen={menuOpen} onToggle={() => setMenuOpen((v) => !v)} />
+        </div>
       </header>
     </>
   );

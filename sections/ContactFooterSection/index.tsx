@@ -1,12 +1,13 @@
 "use client";
 
+import { LocalizedText, useLocale } from "@/systems/i18n/LocaleProvider";
+
 import { SectionContainer } from "@/systems/layout/SectionContainer";
 import { RevealUp } from "@/systems/atmosphere";
 
 const FOOTER_NAV = [
-  { label: "WORKS", href: "/works" },
-  { label: "ARCHIVE", href: "/archive" },
-  { label: "IDENTITY", href: "#identity" },
+  { label: "PROJECTS", href: "/#projects" },
+  { label: "BRANDBOOK", href: "/brandbook" },
   { label: "SHOWREEL", href: "#showreel" },
   { label: "CONTACT", href: "/#contact" },
   { label: "INSTAGRAM", href: "https://www.instagram.com/onidigital_studio" },
@@ -14,6 +15,7 @@ const FOOTER_NAV = [
 ] as const;
 
 export function ContactFooterSection() {
+  const { t } = useLocale();
   return (
     <SectionContainer
       id="contact"
@@ -25,16 +27,14 @@ export function ContactFooterSection() {
         <div className="relative mx-auto max-w-oni-contact">
           <h2
             id="contact-heading"
-            className="font-bebas text-[clamp(5rem,22vw,9.5rem)] uppercase leading-[0.86] tracking-[-0.01em] text-black"
+            className="font-display text-[2rem] font-bold uppercase leading-[1.08] tracking-normal text-black min-[375px]:text-[2.25rem] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
           >
-            <span className="block">Let&apos;s</span>
-            <span className="block">Work</span>
-            <span className="block">Together</span>
+            <span className="block"><LocalizedText value={"Let's"} /></span>
+            <span className="block"><LocalizedText value={"Work"} /></span>
+            <span className="block"><LocalizedText value={"Together"} /></span>
           </h2>
 
-          <p className="mt-6 max-w-md font-sans text-[13px] leading-relaxed tracking-[0.02em] text-neutral-500 md:mt-8">
-            Tell us about your project.
-          </p>
+          <p className="mt-6 max-w-md font-sans text-[13px] leading-relaxed tracking-[0.02em] text-neutral-500 md:mt-8"><LocalizedText value={"Tell us about your project."} /></p>
 
           <div className="mt-12 flex flex-col gap-1 md:mt-16">
             <a
@@ -63,7 +63,7 @@ export function ContactFooterSection() {
 
           <footer className="mt-16 border-t border-black/[0.08] pt-7 md:mt-28 md:pt-10">
             <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-              <nav aria-label="Footer navigation">
+              <nav aria-label={t("Footer navigation")}>
                 <ul className="flex flex-wrap items-center gap-y-2 font-sans text-[10px] font-medium uppercase tracking-[0.20em] text-neutral-400">
                   {FOOTER_NAV.map((item, i) => (
                     <li key={item.label} className="flex items-center">
@@ -74,7 +74,7 @@ export function ContactFooterSection() {
                           ? { target: "_blank", rel: "noopener noreferrer" }
                           : {})}
                       >
-                        {item.label}
+                        <LocalizedText value={item.label} />
                       </a>
                       {i < FOOTER_NAV.length - 1 ? (
                         <span className="mx-2.5 text-neutral-300" aria-hidden>

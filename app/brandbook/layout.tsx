@@ -17,6 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata = {
   title: "Brandbook — ONI Studio",
+  alternates: { canonical: "/brandbook" },
   description:
     "Interactive ONI Brandbook — identity, logo, colors, typography, and links.",
 };

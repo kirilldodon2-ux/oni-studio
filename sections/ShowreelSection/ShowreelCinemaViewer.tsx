@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText, useLocale } from "@/systems/i18n/LocaleProvider";
+
 import { useCallback, useEffect, useRef, type RefObject } from "react";
 import { createPortal } from "react-dom";
 import { useDocumentScrollLock } from "@/systems/useDocumentScrollLock";
@@ -28,6 +30,7 @@ export function ShowreelCinemaViewer({
   onTimeSync,
   returnFocusRef,
 }: ShowreelCinemaViewerProps) {
+  const { t } = useLocale();
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const viewerVideoRef = useRef<HTMLVideoElement>(null);
@@ -101,7 +104,7 @@ export function ShowreelCinemaViewer({
       ref={dialogRef}
       role="dialog"
       aria-modal="true"
-      aria-label="ONI showreel"
+      aria-label={t("ONI showreel")}
       aria-hidden={!isOpen}
       className={[
         "fixed inset-0 flex h-[100dvh] max-h-[100dvh] w-full flex-col bg-black",
@@ -116,7 +119,7 @@ export function ShowreelCinemaViewer({
       <button
         type="button"
         tabIndex={isOpen ? 0 : -1}
-        aria-label="Close showreel"
+        aria-label={t("Close showreel")}
         className="absolute inset-0 z-0 cursor-default border-0 bg-transparent p-0"
         onClick={handleClose}
       />
@@ -142,9 +145,7 @@ export function ShowreelCinemaViewer({
         type="button"
         className="fixed right-5 top-[max(1.25rem,env(safe-area-inset-top))] z-[2] font-sans text-[9px] uppercase tracking-[0.35em] text-white/45 hover:opacity-60"
         onClick={handleClose}
-      >
-        CLOSE
-      </button>
+      ><LocalizedText value={"CLOSE"} /></button>
     </div>
   );
 

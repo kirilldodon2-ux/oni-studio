@@ -37,7 +37,7 @@ export const archiveObjects: ArchiveObject[] = [
     year: 2026,
     previewSrc: canonicalPreviewSrc("car-render", ".mp4"),
     mediaType: "motion",
-    mediaAspect: [16, 9],
+    mediaAspect: [2101, 1080],
     archetype: "Work",
     creator: "@minzvr",
     summary:
@@ -65,7 +65,7 @@ export const archiveObjects: ArchiveObject[] = [
     year: 2026,
     previewSrc: canonicalPreviewSrc("boots-artifact", ".mp4"),
     mediaType: "motion",
-    mediaAspect: [4, 5],
+    mediaAspect: [10, 13],
     archetype: "ProcessArtifact",
     creator: "@minzvr",
     summary:
@@ -380,7 +380,7 @@ export const archiveObjects: ArchiveObject[] = [
     year: 2026,
     previewSrc: canonicalPreviewSrc("motion-poster", ".mp4"),
     mediaType: "motion",
-    mediaAspect: [9, 16],
+    mediaAspect: [3, 4],
     archetype: "AtmosphericFragment",
     creator: "@whytheweakest",
     summary:

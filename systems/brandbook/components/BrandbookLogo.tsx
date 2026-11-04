@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import logoSvgPaths from "../imports/logoSvgPaths";
@@ -150,7 +152,7 @@ export function BrandbookLogo() {
                 animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 16 }}
                 transition={{ duration: 0.6, ease: "easeOut", delay: 1 + i * 0.12 }}
               >
-                {line}
+                <LocalizedText value={line} />
               </motion.p>
             ))}
           </div>

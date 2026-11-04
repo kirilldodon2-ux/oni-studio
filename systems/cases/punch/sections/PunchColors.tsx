@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 
@@ -29,9 +31,7 @@ export function PunchColors() {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.7, delay: 0.05 }}
-        >
-          SECTION 04 / BRAND COLOURS
-        </motion.p>
+        ><LocalizedText value={"SECTION 04 / BRAND COLOURS"} /></motion.p>
         <motion.p
           className="text-[9px] font-medium tracking-[0.28em] text-black/20"
           initial={{ opacity: 0 }}
@@ -49,9 +49,7 @@ export function PunchColors() {
           initial={{ y: "110%" }}
           animate={isInView ? { y: "0%" } : { y: "110%" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-        >
-          COLOURS
-        </motion.h2>
+        ><LocalizedText value={"COLOURS"} /></motion.h2>
       </div>
 
       <motion.p
@@ -59,10 +57,7 @@ export function PunchColors() {
         initial={{ opacity: 0, y: 6 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
         transition={{ duration: 0.7, delay: 0.3 }}
-      >
-        Каждый цвет выбран с весом: фиолетовый — ночь и избыток,
-        антрацит — бетон и грязь, туман — дым перед рассветом.
-      </motion.p>
+      ><LocalizedText value={"Каждый цвет выбран с весом: фиолетовый — ночь и избыток, антрацит — бетон и грязь, туман — дым перед рассветом."} /></motion.p>
 
       {/* Mobile: 2×2 grid — Desktop: horizontal row */}
       <div className="relative z-10 grid min-h-0 flex-1 grid-cols-2 grid-rows-2 gap-1 px-8 pb-8 pt-4 md:flex md:gap-[2px] md:px-10 md:pb-10 md:pt-6 lg:px-14">
@@ -88,7 +83,7 @@ export function PunchColors() {
                 className="text-[8px] font-medium tracking-[0.28em] md:text-[9px] md:tracking-[0.32em]"
                 style={{ color: sw.text, opacity: 0.5 }}
               >
-                {sw.name}
+                <LocalizedText value={sw.name} />
               </p>
               <p
                 className="mt-0.5 font-bebas text-[1rem] leading-none md:mt-1 md:text-[1.2rem]"

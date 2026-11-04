@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { punchSrc } from "../punchAssets";
@@ -38,9 +40,7 @@ export function PunchAbout() {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.8, delay: 0.22 }}
-        >
-          Club event identity — Murmansk, 2026.
-        </motion.p>
+        ><LocalizedText value={"Club event identity — Murmansk, 2026."} /></motion.p>
       </div>
 
       <div className="relative z-10 shrink-0 px-8 pb-8 md:px-10 lg:px-14 lg:pb-10">
@@ -59,9 +59,7 @@ export function PunchAbout() {
         </div>
       </div>
 
-      <PunchCaption className="absolute bottom-8 right-8 text-right md:bottom-10 md:right-10 lg:right-14" visible={isInView}>
-        Brand colours
-      </PunchCaption>
+      <PunchCaption className="absolute bottom-8 right-8 text-right md:bottom-10 md:right-10 lg:right-14" visible={isInView}><LocalizedText value={"Brand colours"} /></PunchCaption>
     </section>
   );
 }

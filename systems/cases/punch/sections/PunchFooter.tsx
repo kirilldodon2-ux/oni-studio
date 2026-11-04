@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion, useInView } from "motion/react";
 import Link from "next/link";
 import { useRef } from "react";
@@ -30,9 +32,7 @@ export function PunchFooter() {
         animate={isInView ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.7, delay: 0.05 }}
       >
-        <p className="text-[10px] font-medium tracking-[0.30em]" style={{ color: MUTE }}>
-          08 — END
-        </p>
+        <p className="text-[10px] font-medium tracking-[0.30em]" style={{ color: MUTE }}><LocalizedText value={"08 — END"} /></p>
       </motion.div>
 
       <div className="flex flex-1 items-center justify-center overflow-hidden">
@@ -63,9 +63,7 @@ export function PunchFooter() {
         transition={{ duration: 0.8, delay: 0.2 }}
       >
         <div className="flex flex-col gap-4">
-          <p className="text-[9px] font-medium tracking-[0.36em]" style={{ color: INK, opacity: 0.38 }}>
-            LINKS
-          </p>
+          <p className="text-[9px] font-medium tracking-[0.36em]" style={{ color: INK, opacity: 0.38 }}><LocalizedText value={"LINKS"} /></p>
           <div className="flex flex-col gap-3">
             {LINKS.map((link) => (
               <a
@@ -76,22 +74,18 @@ export function PunchFooter() {
                 className="text-[10px] tracking-[0.04em] transition-opacity hover:opacity-60"
                 style={{ color: MUTE }}
               >
-                {link.label} — {link.handle}
+                <LocalizedText value={link.label} /> — {link.handle}
               </a>
             ))}
           </div>
         </div>
 
         <div className="flex flex-col items-start gap-4 md:items-end">
-          <p className="text-[10px] tracking-[0.22em]" style={{ color: INK, opacity: 0.35 }}>
-            Created by ONI Studio · 2026
-          </p>
+          <p className="text-[10px] tracking-[0.22em]" style={{ color: INK, opacity: 0.35 }}><LocalizedText value={"Created by ONI Studio · 2026"} /></p>
           <Link
             href="/cases"
             className="border-t border-black/[0.12] pt-3 text-[11px] font-semibold tracking-[0.26em] text-black transition-opacity hover:opacity-60"
-          >
-            ALL CASES →
-          </Link>
+          ><LocalizedText value={"ALL CASES →"} /></Link>
         </div>
       </motion.div>
     </section>

@@ -11,7 +11,10 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }) {
   const work = getWorkBySlug(params.slug);
   if (!work) return {};
-  return { title: `${work.title} — ONI Works` };
+  return {
+    title: `${work.title} — ONI Works`,
+    alternates: { canonical: `/works/${work.slug}` },
+  };
 }
 
 export default function WorkPage({ params }: { params: { slug: string } }) {

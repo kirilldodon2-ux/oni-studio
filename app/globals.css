@@ -11,8 +11,11 @@
    ─────────────────────────────────────────────────────────────────────────── */
 :root {
   --oni-header-h: 4.25rem;
-  /* Signal-selection — accent-family residue, not full accent fill */
-  --oni-selection-bg: rgba(255, 98, 0, 0.14);
+  --oni-accent: #000000;
+  --oni-ambient-mark: #8a8a8a;
+  --oni-ambient-soft: #b8b8b8;
+  /* Neutral selection preserves the monochrome interface. */
+  --oni-selection-bg: rgba(0, 0, 0, 0.14);
   --oni-selection-fg: #111111;
 }
 

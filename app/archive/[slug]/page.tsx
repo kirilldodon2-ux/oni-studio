@@ -11,7 +11,10 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }) {
   const entry = archiveFieldEntries.find((e) => e.slug === params.slug);
   if (!entry) return {};
-  return { title: `${entry.title} — ONI Archive` };
+  return {
+    title: `${entry.title} — ONI Archive`,
+    alternates: { canonical: `/archive/${entry.slug}` },
+  };
 }
 
 export default function ArchiveObjectPage({

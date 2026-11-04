@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import Image from "next/image";
 import Link from "next/link";
 import type { ArchiveObject } from "@/content/types";
@@ -68,14 +70,14 @@ export function ArchiveTile({ entry }: ArchiveTileProps) {
           aria-hidden
         >
           <p className="truncate font-sans text-[7px] font-medium uppercase tracking-[0.42em] text-neutral-400">
-            {territory}
+            <LocalizedText value={territory} />
             {entry.creator && (
               <span className="text-neutral-300">&nbsp;&nbsp;{entry.creator}</span>
             )}
             &nbsp;&nbsp;{entry.year}
           </p>
           <p className="mt-0.5 truncate font-sans text-[9px] font-semibold uppercase tracking-[0.18em] text-black/80">
-            {entry.title}
+            <LocalizedText value={entry.title} />
           </p>
         </div>
       </div>

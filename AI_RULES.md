@@ -89,8 +89,11 @@ Motion should:
 
 - background: `#ffffff`
 - foreground: `#000000`
-- accent: `#FF4A1A` — use sparingly, never randomly
-- fonts: Bebas Neue (display) + Inter (body/UI)
+- interface accent: black; no orange UI accents (DEC-011)
+- retain PageBackdrop, ContinuityField and HeroAtmosphere in neutral grays;
+  do not restore decorative microcopy, field indices or telemetry
+- fonts: local Bounded Bold (landing display) + Cascadia Code PL (body/UI)
+- retain original colors in project media; legacy routes keep their display fonts
 - the aesthetic is cinematic minimalism — not startup, not brutalist, not maximalist
 
 ---

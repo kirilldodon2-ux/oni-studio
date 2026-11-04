@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { punchSrc } from "../punchAssets";
@@ -69,9 +71,7 @@ export function PunchMerch() {
         </div>
       </div>
 
-      <PunchCaption className="absolute bottom-8 left-8 md:bottom-10 md:left-10 lg:left-14" visible={isInView}>
-        Uniforms &amp; print
-      </PunchCaption>
+      <PunchCaption className="absolute bottom-8 left-8 md:bottom-10 md:left-10 lg:left-14" visible={isInView}><LocalizedText value={"Uniforms & print"} /></PunchCaption>
     </section>
   );
 }

@@ -1,6 +1,9 @@
 "use client";
 
-import { motion } from "motion/react";
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
+import { motion, useInView } from "motion/react";
+import { useRef } from "react";
 
 const BODY_PARAGRAPHS = [
   "ONI (ОНИ)\nВизуальная студия, специализирующаяся на 3D, разработке, моушне и digital-дизайне.",
@@ -9,8 +12,11 @@ const BODY_PARAGRAPHS = [
 ];
 
 export function BrandbookAbout() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { amount: 0.2 });
   return (
     <section
+      ref={sectionRef}
       className="relative overflow-hidden bg-[#070707]"
       style={{ height: "100vh", scrollSnapAlign: "start", flexShrink: 0 }}
     >
@@ -33,8 +39,8 @@ export function BrandbookAbout() {
         />
       </div>
 
-      <div className="relative z-10 flex h-full flex-col justify-between px-[6%] py-[8%] max-md:py-[7%] md:px-[5.2%] md:py-[9%] max-md:[text-shadow:0_1px_24px_rgba(0,0,0,0.85)]">
-        <div>
+      <div className="relative z-10 flex h-full flex-col justify-between gap-6 px-[6%] py-[8%] max-md:pb-6 max-md:pt-[calc(var(--oni-header-h)+1rem)] md:px-[5.2%] md:py-[9%] max-md:[text-shadow:0_1px_24px_rgba(0,0,0,0.85)]">
+        <div className="shrink-0">
           <div className="overflow-hidden">
             <motion.h2
               className="leading-none tracking-tight text-[#F7F7F7]"
@@ -44,9 +50,8 @@ export function BrandbookAbout() {
                 fontSize: "clamp(72px, 14vw, 130px)",
               }}
               initial={{ y: "110%" }}
-              whileInView={{ y: "0%" }}
+              animate={isInView ? { y: "0%" } : { y: "110%" }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              viewport={{ once: false }}
             >
               ABOUT US
             </motion.h2>
@@ -60,16 +65,15 @@ export function BrandbookAbout() {
                 fontSize: "clamp(72px, 14vw, 130px)",
               }}
               initial={{ y: "110%" }}
-              whileInView={{ y: "0%" }}
+              animate={isInView ? { y: "0%" } : { y: "110%" }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-              viewport={{ once: false }}
             >
               О НАС
             </motion.h2>
           </div>
         </div>
 
-        <div className="flex max-w-[460px] flex-col gap-5">
+        <div className="flex min-h-0 max-w-[460px] flex-col gap-5 overflow-y-auto overscroll-y-contain">
           {BODY_PARAGRAPHS.map((para, i) => (
             <motion.p
               key={i}
@@ -81,11 +85,10 @@ export function BrandbookAbout() {
                 lineHeight: 1.7,
               }}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.7, ease: "easeOut", delay: 0.4 + i * 0.15 }}
-              viewport={{ once: false }}
             >
-              {para}
+              <LocalizedText value={para} />
             </motion.p>
           ))}
         </div>

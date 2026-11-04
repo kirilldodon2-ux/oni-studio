@@ -1,5 +1,7 @@
 "use client";
 
+import { LocalizedText } from "@/systems/i18n/LocaleProvider";
+
 import { motion } from "motion/react";
 import heroSvgPaths from "../imports/heroSvgPaths";
 import { BrandbookHeroMetallicDrift } from "./BrandbookHeroMetallicDrift";
@@ -54,7 +56,7 @@ export function BrandbookHero() {
                   delay: 0.9 + i * 0.12,
                 }}
               >
-                {line}
+                <LocalizedText value={line} />
               </motion.p>
             </div>
           ))}
