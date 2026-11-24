@@ -19,9 +19,10 @@ export function ContactFooterSection() {
   return (
     <SectionContainer
       id="contact"
+      tabIndex={-1}
       data-oni-section="contact"
       aria-labelledby="contact-heading"
-      className="pt-14 pb-10 md:pt-16 md:pb-10 lg:pt-16 lg:pb-10"
+      className="pt-14 pb-[calc(2.5rem+var(--oni-dock-floor))] md:pt-16"
     >
       <RevealUp>
         <div className="relative mx-auto max-w-oni-contact">

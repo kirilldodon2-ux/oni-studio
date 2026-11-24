@@ -193,14 +193,9 @@ content/
 
 components/
   navigation/
-    index.tsx             ← ControlSurface — fixed floating nav, z-40/50 owner (Phase 5)
-    NavHome.tsx           ← HOME link on `/`, `/archive*`, `/brandbook`; else NavLogo spacer
-    NavLogo.tsx           ← Reserved identity-zone spacer (fallback)
-    NavTelemetry.tsx      ← route lane annotation (DEC-005), desktop-only;
-                            optional BrandbookSectionContext on /brandbook for section index
-    NavMenuTrigger.tsx    ← Menu trigger: MENU label + ONINavigationSigil (3D)
-    NavOverlay.tsx        ← Adaptive menu overlay (z-50): route awareness (DEC-005);
-                            editorial index incl. BRANDBOOK → /brandbook
+    index.tsx             ← ControlSurface, current destination and language controls
+    dock.module.css       ← Adaptive glass and interaction styles
+    LanguageSwitch.tsx    ← EN/RU controls
 
 public/
   archive/objects/[slug]/ ← object territory (00-hero.*, editorial sequence)
@@ -639,100 +634,25 @@ All z-index values are formally owned. No undocumented or ad-hoc values.
 | Section content                | `10`          | `SectionContainer` (`relative z-10`)           |
 | Section atmosphere             | `20`          | Phase 4 section atmosphere systems             |
 | Showreel installation viewer   | `30`          | `ShowreelInstallationViewer.tsx` — desktop modal, in-tree |
-| Navigation control surface     | `40` / `50`*  | `components/navigation/index.tsx`              |
-| Menu overlay                   | `50`          | `components/navigation/NavOverlay.tsx` — full-viewport layer; adaptive plane (full-width `< md`, partial-width right plane `md+`) |
+| Navigation dock and language controls | `40` | `components/navigation/index.tsx`; hidden during the shared document lock |
 | Showreel cinema viewer (portal)| `[60]`        | `ShowreelCinemaViewer.tsx` — mobile-only; `createPortal` → `document.body` (DEC-007) |
 | Project Finder / inspector (portal) | `[60]` | `systems/projectFolders/ProjectDesk.tsx`; mutually exclusive foreground, local window stack (DEC-014) |
 
-\* The control surface `<header>` is promoted from `z-40` to `z-50` while the overlay is
-active, so the trigger button remains interactive above the overlay. `NavOverlay` renders
-before the header in the DOM; at the same z-level, DOM order gives the header the higher
-stack position. When the overlay is closed the header returns to `z-40`.
+Section content and atmosphere stay at `z-10` and `z-20`. Route-local
+section rails sit inside the dock clearance. Modal viewers use the
+layers listed here and the shared scroll lock.
 
-Rules:
-- Section content and atmosphere stay at `z-10` / `z-20` unless listed here
-- Navigation (`40`/`50`) and documented modal viewers (`30`, `[60]`) are the only stack exceptions above `z-20`
-- No component uses escape-hatch values (`z-index: 9999`)
-- All z-index values must appear in this table
+### Glass Dock
 
-### Control Surface Layout Zones
+The same four HTML links sit in a horizontal bottom dock on mobile and
+a vertical right dock on desktop. The reading position determines the
+active section on the homepage. Brandbook and archive/case routes
+highlight their related destination. Language controls stay above the page.
 
-```
-[ IDENTITY ]           [ TELEMETRY ]           [ ACTION ]
-  Logo — left            Annotation (lg+)         Menu trigger — right
-```
-
-Telemetry is desktop-only (`lg+`), `pointer-events-none`, `aria-hidden`.
-
-### Environmental Control Layer (Atmospheric Polish Layer 1 — implemented)
-
-The closed control surface is an environmental marker layer, not a visible strip.
-It carries no panel, blur, border, or full-width material treatment at any scroll position (`docs/DECISIONS.md` DEC-004).
-`NavOverlay` is an **adaptive atmospheric navigation plane** (intentional): a full-viewport scrim plus a navigation plane that is full-width below `md` and a right-aligned partial-width plane on `md+` — see `NAVIGATION_ARCHITECTURE.md` §7.
-
-**ControlSurface `<header>` (all scroll positions):**
-
-| Property        | Value                    | Intent                                          |
-|-----------------|--------------------------|-------------------------------------------------|
-| Background      | none                     | No persistent navbar/panel field                |
-| Backdrop filter | none                     | Hero atmosphere remains uninterrupted           |
-| Border          | none                     | No full-width header edge; not a bar            |
-| Pointer events  | `pointer-events-none` on header; trigger opts in | The invisible band does not behave like chrome |
-
-**NavOverlay — scrim (full viewport):**
-
-| Property        | Value                    | Intent                                          |
-|-----------------|--------------------------|-------------------------------------------------|
-| Background      | `bg-black/[0.055]`       | Light tint; page field remains readable         |
-| Backdrop filter | `backdrop-blur-[1.5px]`  | Minimal depth; dismiss on pointer-down          |
-
-**NavOverlay — navigation plane (adaptive):**
-
-| Property        | Value                    | Intent                                          |
-|-----------------|--------------------------|-------------------------------------------------|
-| Width           | `w-full` below `md`; `md:w-[min(76vw,58rem)]`; `lg:w-[min(68vw,64rem)]` | Full-width on narrow viewports; right atmospheric plane on wide |
-| Background      | `bg-white/[0.82]`        | Near-opaque plane; field visible beside plane on `md+` |
-| Backdrop filter | `backdrop-blur-[3px]`    | Minimal atmospheric depth below legibility floor |
-| Motion          | `translateX` from right + opacity | Restrained spatial reveal (~520–760ms)      |
-
-Rules:
-- Do not add background, blur, border, shadow, glow, or gradient styling to the closed control surface at any scroll position
-- Do not reintroduce scroll-state (glass or hairline) without `docs/DECISIONS.md` reintroduction gate
-- Blur values must remain below `6px` on overlay surfaces to stay out of glassmorphism territory
-- Preserve the adaptive plane — do not revert to permanent center-nav links on the control surface
-
-### Component Architecture (Phase 5 — implemented)
-
-```
-components/
-  navigation/
-    index.tsx             ← ControlSurface — fixed floating container, z-40/50 owner
-    NavHome.tsx           ← HOME link on `/`, `/archive*`, `/brandbook`; else NavLogo spacer
-    NavLogo.tsx           ← Reserved identity-zone spacer (fallback)
-    NavTelemetry.tsx      ← Ambient annotation, desktop-only, pointer-events-none
-    NavMenuTrigger.tsx    ← Menu trigger: MENU label + ONINavigationSigil; toggles MENU/CLOSE
-    NavOverlay.tsx        ← Adaptive menu overlay (z-50): scrim + plane full-width `< md`, right plane `md+` (implemented)
-```
-
-`components/SiteHeader.tsx` has been removed. `components/navigation/index.tsx` is the active implementation.
-
-### Navigation Sigil (`systems/spatial/ONINavigationSigil.tsx`)
-
-Canonical 3D menu artifact — **navigation infrastructure**, not content-layer decoration.
-
-| Concern | Owner |
-|---------|--------|
-| Menu open/close state | `ControlSurface` → `NavMenuTrigger` → `NavOverlay` |
-| Sigil rendering + motion | `ONINavigationSigil` (local R3F canvas, 28×28px) |
-| Model asset | `/public/models/ONI_3d_no_texture.glb` (shared with Hero; not duplicated) |
-
-**Motion:** slow Y/Z drift (dormant machinery); convergence adds blended X/Z tilt; click adds a decaying Y impulse. `prefers-reduced-motion` freezes drift.
-
-**Artifact consumption:** `ArtifactConsumptionPair` + `convergenceInteraction` — sigil inward (`−17px`, `scale(1.21)`); MENU fully absent at peak (`opacity 0`, no blur). Sigil hover: frontal reveal (rotation settles, calmer spin). `ConvergencePair` is deprecated alias.
-
-**Material:** dark graphite `MeshStandardMaterial` — editorial-industrial, not Hero chrome.
-
-**Rules:** no fullscreen canvas, no global render manager, no separate menu system. Sigil sits in the action zone beside `MENU` / `CLOSE` without enlarging header height.
+The glass uses a translucent CSS backdrop where supported, with a solid
+fallback and a separate reduced-transparency treatment. Both dock and
+language controls disappear while a Finder or showreel modal owns the
+document lock. See DEC-015 and `NAVIGATION_ARCHITECTURE.md`.
 
 ### Hero Impact (Phase 5 — implemented)
 
@@ -755,7 +675,7 @@ Canonical module: `systems/useDocumentScrollLock.ts` (`docs/DECISIONS.md` DEC-00
 
 - Ref-counted acquire/release — safe when multiple consumers could nest (today: one overlay or one showreel viewer at a time).
 - Optional `blockTouchMove: true` — document-level `touchmove` `preventDefault` for iOS Safari while locked.
-- **Consumers:** `NavOverlay`, `ShowreelInstallationViewer`, `ShowreelCinemaViewer`.
+- **Consumers:** `ProjectDesk`, `ShowreelInstallationViewer`, `ShowreelCinemaViewer`.
 - Do not duplicate inline `body` lock logic in components.
 
 ### Touch ownership (homepage)
@@ -1034,7 +954,7 @@ Doctrine: `docs/FIGMA_RECONCILIATION_WORKFLOW.md`. Capture mechanics: `docs/FIGM
 - Content maturity — Zod, MDX, writings/code routes, Works evidence sequences (Layer 1 deferred per DEC-001)
 - Cross-route hash overlay targets (`#work`, `#contact`) from non-home routes — deferred
 
-**Shipped:** floating control surface + `NavOverlay` (Phase 5); archive + Works Lean Path routes; nav route awareness (DEC-005); brandbook route (Phase 1 — `docs/BRANDBOOK_INTEGRATION.md`).
+**Shipped:** floating glass dock (DEC-015); archive + Works Lean Path routes; nav route awareness (DEC-005); brandbook route (Phase 1 — `docs/BRANDBOOK_INTEGRATION.md`).
 
 ---
 

@@ -1,36 +1,24 @@
 # ONI Navigation Architecture
 
-DEC-014 current menu: HOME, PROJECTS, BRANDBOOK, CONTACT. Project discovery is
-the homepage folder desktop. Archive/cases browse links are not menu entries;
-full case pages and published detail URLs remain accessible. `/archive` redirects
-to `/#projects`. ProjectDesk has its own focus-contained z-60 portal and native
-inner scrolling under the shared document lock.
+## Current — DEC-015
 
-DEC-013: Works is hidden from the menu in both languages; its existing routes
-remain accessible. Menu reveal is shortened and retains one scrim blur, not two
-overlapping backdrop filters. The 3D sigil renders on demand at an ambient 30fps
-cadence only while visible, respecting tab visibility and reduced motion.
+`components/navigation/index.tsx` renders Home, Projects, Brandbook and
+Contact as direct links. The fixed dock is horizontal along the bottom
+on phones and vertical along the right edge on desktops. Both layouts
+use the same markup. The language control remains at the top right.
+The current destination follows the landing scroll position or the
+current route. Desktop tooltips appear on hover and focus.
 
-DEC-012 adds a compact global EN/RU selector beside the menu trigger. Header ink
-follows existing Brandbook/PUNCH section contexts and reverts to dark ink over
-the open menu. Language state is owned by `systems/i18n/`, not by navigation.
+The CSS glass samples the real backdrop through `backdrop-filter`.
+A solid fallback keeps the links usable. Finder and the showreel hide the
+dock via the shared document-lock subscription. The bottom safe area
+and clearance are shared layout tokens. Route-local section rails sit
+inside the right-hand dock. Homepage featured links go directly to
+published detail pages.
 
-DEC-011 override (2026-11-04): menu is HOME, PROJECTS (`/#projects`), CASES,
-ARCHIVE, WORKS, BRANDBOOK, CONTACT (`/#contact`). Bounded Bold labels use stable
-breakpoint-based sizes. First tap follows a link and closes the overlay. The
-plane and trigger remain. The fixed-body lock prevents background scrolling;
-document-level touchmove blocking is disabled only for this consumer so the
-expanded index can scroll natively on short mobile screens. Historical menu
-hierarchy below is superseded.
+## Historical navigation designs
 
-## Planning Status
-
-**Phase:** Navigation control surface (Phase 5 — implemented) + artifact interaction grammar (implemented) + route awareness (DEC-005)
-**Runtime:** `components/navigation/` — `ControlSurface`, `NavTelemetry`, `NavOverlay`, `NavMenuTrigger`
-**Artifact semantics:** `systems/spatial/` — §9 below; see also `ARCHITECTURE.md` (Navigation Sigil)
-**Retired:** `components/SiteHeader.tsx` — removed; do not reintroduce
-
----
+The sections below describe the retired overlay and earlier control surface.
 
 ## 1. Historical — SiteHeader (replaced)
 

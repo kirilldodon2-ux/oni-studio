@@ -105,23 +105,13 @@ Motion should:
 
 ## Navigation Rules
 
-The navigation system is a **floating control surface**, not a navbar. These rules apply to any work touching `components/navigation/` or `components/SiteHeader.tsx`:
-
-- never apply `bg-white` or any fully opaque background to the control surface at page top — the atmospheric backdrop must composite through it
-- never use `position: sticky` for the control surface — it must be `position: fixed` and float above content
-- never add permanent visible nav links to the control surface — navigation links belong in `NavOverlay` only
-- `NavOverlay` uses an **adaptive atmospheric plane** (intentional): full-viewport scrim at `z-50`; below `md` the navigation plane is **full-width**; at `md+` it is a **right-aligned partial-width plane** (`md:w-[min(76vw,58rem)]`, `lg:w-[min(68vw,64rem)]`) over the scrim — not permanent links on the control surface
-- preserve overlay reveal as restrained **translateX from the right + opacity** (with typography stagger) — not loud slide choreography or startup drawer gimmicks
-- never add a bottom navigation bar — incompatible with ONI visual language
-- never use `z-index` values outside the formally documented table in `ARCHITECTURE.md`
-- never break the three-zone layout (identity / telemetry / action)
-- `NavTelemetry` is always `pointer-events-none` and `aria-hidden` — it is never interactive
-- menu trigger uses `ONINavigationSigil` from `systems/spatial/` — consistent across all breakpoints; do not revert to hamburger or 4-dot glyph
-- the control surface does not entrance-animate — it is present, not performative
-- hover states are opacity-only (`hover:opacity-60`) — no scale, no translate, no color change
-- do not remove `--oni-header-h` from `globals.css` without also updating Hero to remove its dependency
-
-Phase 5 is complete. `components/SiteHeader.tsx` has been replaced by `components/navigation/`. ControlSurface is `fixed`, transparent at all scroll positions (`docs/DECISIONS.md` DEC-004). `NavOverlay` — HOME · CAPABILITIES · ARCHIVE · BRANDBOOK · CONTACT (`DEC-002`). Overlay: `z-50`, ESC close, `useDocumentScrollLock` (DEC-008).
+- DEC-015 defines the fixed glass dock: bottom on mobile, right on desktop.
+- Keep one list of links and one tab order for both layouts, with text labels on touch layouts and keyboard-accessible labels on desktop.
+- Respect safe areas, preserve a solid glass fallback, and keep touch targets at least 44 px.
+- Hide global controls during the shared document lock. Finder and the showreel retain their own controls.
+- Keep route-local desktop section rails inside the global dock clearance.
+- Keep direct links to featured detail pages in the homepage HTML and preserve the canonical routes.
+- Keep `--oni-header-h` available to the Hero for top clearance.
 
 ---
 

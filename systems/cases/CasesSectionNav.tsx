@@ -16,14 +16,14 @@ const LABEL_INACTIVE = "#888888";
 /**
  * Cases-internal section rail — dot navigation on right edge.
  * All sections are dark → dots always use light palette.
- * Route-local only: not site navigation. ControlSurface remains primary (z-40/50).
+ * Route-local only: not site navigation. ControlSurface remains primary (z-40).
  */
 export function CasesSectionNav() {
   const { activeSection, scrollToSection } = useCasesSection();
 
   return (
     <nav
-      className="fixed right-6 top-1/2 z-[30] hidden -translate-y-1/2 flex-col items-end gap-3 md:right-8 lg:flex"
+      className="fixed right-[var(--oni-rail-right)] top-1/2 z-[30] hidden -translate-y-1/2 flex-col items-end gap-3 lg:flex"
       aria-label="Cases navigation"
       data-oni-layer="decorative"
     >

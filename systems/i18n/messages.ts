@@ -12,6 +12,7 @@ const pairs: readonly (readonly [string, string])[] = [
   ["Previous image", "Предыдущее изображение"], ["Next image", "Следующее изображение"],
   ["Open original", "Открыть оригинал"], ["Created by", "Автор"], ["Year", "Год"],
   ["View full case", "Смотреть полный кейс"], ["Visit website", "Открыть сайт"], ["Media unavailable", "Медиа недоступно"], ["Retry", "Повторить"],
+  ["Home", "Главная"], ["Projects", "Проекты"], ["Brandbook", "Брендбук"], ["Contact", "Контакты"],
   ["HOME", "ГЛАВНАЯ"], ["PROJECTS", "ПРОЕКТЫ"], ["CASES", "КЕЙСЫ"],
   ["ARCHIVE", "АРХИВ"], ["WORKS", "РАБОТЫ"], ["BRANDBOOK", "БРЕНДБУК"],
   ["CONTACT", "КОНТАКТЫ"], ["MENU", "МЕНЮ"], ["CLOSE", "ЗАКРЫТЬ"],

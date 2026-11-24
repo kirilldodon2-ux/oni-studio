@@ -19,7 +19,7 @@ const DARK_BG_SECTIONS = new Set([1, 2, 3]);
 
 /**
  * Brandbook-internal section rail — restored from Figma Make OniNav.
- * Route-local only: not site navigation. ControlSurface remains primary (z-40/50).
+ * Route-local only: not site navigation. ControlSurface remains primary (z-40).
  */
 export function BrandbookSectionNav() {
   const { activeSection, scrollToSection } = useBrandbookSection();
@@ -30,7 +30,7 @@ export function BrandbookSectionNav() {
 
   return (
     <nav
-      className="fixed right-6 top-1/2 z-[30] hidden -translate-y-1/2 flex-col items-end gap-3 md:right-8 lg:flex"
+      className="fixed right-[var(--oni-rail-right)] top-1/2 z-[30] hidden -translate-y-1/2 flex-col items-end gap-3 lg:flex"
       aria-label="Brandbook sections"
       data-oni-layer="decorative"
     >

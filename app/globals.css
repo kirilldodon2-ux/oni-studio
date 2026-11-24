@@ -11,6 +11,10 @@
    ─────────────────────────────────────────────────────────────────────────── */
 :root {
   --oni-header-h: 4.25rem;
+  --oni-dock-bottom: max(0.875rem, env(safe-area-inset-bottom));
+  --oni-dock-right: max(1.125rem, env(safe-area-inset-right));
+  --oni-dock-floor: calc(var(--oni-dock-bottom) + 4.75rem);
+  --oni-rail-right: calc(var(--oni-dock-right) + 4.75rem);
   --oni-accent: #000000;
   --oni-ambient-mark: #8a8a8a;
   --oni-ambient-soft: #b8b8b8;
@@ -25,7 +29,14 @@
   }
 }
 
+@media (min-width: 64rem) and (min-height: 25rem) {
+  :root {
+    --oni-dock-floor: 0rem;
+  }
+}
+
 html {
+  scroll-padding-block-end: var(--oni-dock-floor);
   max-width: 100vw;
   min-height: 100%;
   /* Viewport-level horizontal containment. overflow-x: clip prevents any

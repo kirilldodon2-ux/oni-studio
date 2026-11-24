@@ -2,6 +2,7 @@ import { type ReactNode } from "react";
 
 interface SectionContainerProps {
   id?: string;
+  tabIndex?: number;
   "aria-labelledby"?: string;
   "aria-label"?: string;
   /** Reconciliation key for code ↔ Figma workflows (landing export prep) */
@@ -19,6 +20,7 @@ interface SectionContainerProps {
  */
 export function SectionContainer({
   id,
+  tabIndex,
   "aria-labelledby": ariaLabelledBy,
   "aria-label": ariaLabel,
   "data-oni-section": dataOniSection,
@@ -28,6 +30,7 @@ export function SectionContainer({
   return (
     <section
       id={id}
+      tabIndex={tabIndex}
       aria-labelledby={ariaLabelledBy}
       aria-label={ariaLabel}
       data-oni-section={dataOniSection}

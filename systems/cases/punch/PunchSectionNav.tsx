@@ -27,7 +27,7 @@ export function PunchSectionNav() {
 
   return (
     <nav
-      className="fixed right-6 top-1/2 z-[30] hidden -translate-y-1/2 flex-col items-end gap-3 md:right-8 lg:flex"
+      className="fixed right-[var(--oni-rail-right)] top-1/2 z-[30] hidden -translate-y-1/2 flex-col items-end gap-3 lg:flex"
       aria-label="PUNCH case sections"
       data-oni-layer="decorative"
     >

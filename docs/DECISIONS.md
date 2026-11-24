@@ -2,6 +2,21 @@
 
 Operational decision log. Read before changing navigation, content lanes, or control-surface behavior.
 
+## DEC-015 — Glass dock and direct project links (2026-11-24)
+
+The modal menu gives way to a fixed dock. The same Home, Projects,
+Brandbook and Contact links sit along the bottom on phones and along
+the right edge on desktops. The current destination follows the
+route or landing scroll. The dock uses CSS backdrop glass and yields
+to Finder and showreel through the existing document lock.
+Desktop route-local section rails sit inside the dock clearance.
+
+The homepage has four editor-selected direct links below the folders.
+Archive detail metadata uses the catalog description and an authored
+still when available. Canonical URLs and the sitemap use the same paths.
+
+---
+
 ## DEC-014 — Project Folders And Work Inspector (2026-11-04)
 
 User-approved composition: Hero -> Showreel -> large project folders -> brandbook
