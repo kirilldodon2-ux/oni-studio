@@ -3,7 +3,7 @@ export type ProjectMedia = { src: string; kind: "image" | "video" };
 export type FolderProject = {
   id: string;
   title: string;
-  year: string;
+  year?: string;
   creator?: string;
   description: string;
   descriptionRu?: string;

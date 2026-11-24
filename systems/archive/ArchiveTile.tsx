@@ -38,13 +38,14 @@ export function ArchiveTile({ entry }: ArchiveTileProps) {
     <Link
       href={`/archive/${entry.slug}`}
       className="group relative block overflow-hidden rounded-[2px] bg-neutral-100 sm:rounded-none focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-black/25"
-      aria-label={`${entry.title} — ${territory}, ${entry.year}`}
+      aria-label={`${entry.title} — ${territory}${entry.year ? `, ${entry.year}` : ""}`}
     >
       <div className="relative">
         {isCinematicVideo ? (
           <video
             ref={videoRef}
             src={previewSrc}
+            poster={entry.posterSrc ? resolveArchiveMediaSrc(entry.posterSrc) : undefined}
             width={w * 200}
             height={h * 200}
             muted
@@ -74,7 +75,7 @@ export function ArchiveTile({ entry }: ArchiveTileProps) {
             {entry.creator && (
               <span className="text-neutral-300">&nbsp;&nbsp;{entry.creator}</span>
             )}
-            &nbsp;&nbsp;{entry.year}
+            {entry.year && <>&nbsp;&nbsp;{entry.year}</>}
           </p>
           <p className="mt-0.5 truncate font-sans text-[9px] font-semibold uppercase tracking-[0.18em] text-black/80">
             <LocalizedText value={entry.title} />

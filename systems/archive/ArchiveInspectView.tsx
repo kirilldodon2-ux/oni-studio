@@ -16,6 +16,7 @@ import {
 import { ArchiveEditorialSequence } from "./ArchiveEditorialSequence";
 import { ONI_SILHOUETTE_FILTER } from "@/systems/spatial/silhouetteGrounding";
 import { ArchiveHeroFrame } from "./ArchiveHeroFrame";
+import { CreatorCredit } from "./CreatorCredit";
 import type { ObjectEditorialAsset } from "./getObjectAssets";
 
 const TERRITORY_LABEL: Record<string, string> = {
@@ -242,6 +243,7 @@ export function ArchiveInspectView({
               {isVideo && !heroAsset ? (
                 <video
                   src={heroSrc}
+                  poster={entry.posterSrc ? resolveArchiveMediaSrc(entry.posterSrc) : undefined}
                   controls
                   autoPlay
                   muted
@@ -278,7 +280,7 @@ export function ArchiveInspectView({
                   {entry.creator && (
                     <>
                       &nbsp;&nbsp;·&nbsp;&nbsp;
-                      <span className="text-neutral-500">{entry.creator}</span>
+                      <CreatorCredit creator={entry.creator} className="text-neutral-500" />
                     </>
                   )}
                 </p>
@@ -287,13 +289,23 @@ export function ArchiveInspectView({
                 </h1>
                 {entry.summary && (
                   <p className="mt-3 max-w-xs font-sans text-[11px] leading-[1.75] text-neutral-400">
-                    {locale === "ru" ? archiveDescriptionsRu[entry.slug] ?? entry.summary : entry.summary}
+                    {locale === "ru" ? entry.summaryRu ?? archiveDescriptionsRu[entry.slug] ?? entry.summary : entry.summary}
                   </p>
                 )}
+                {entry.sourceUrl && (
+                  <a
+                    href={entry.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-flex min-h-6 items-center font-sans text-[11px] text-neutral-600 underline underline-offset-2 hover:text-black focus-visible:outline"
+                  >
+                    {t("View full case")}
+                  </a>
+                )}
               </div>
-              <p className="shrink-0 pt-0.5 font-sans text-[9px] font-medium tabular-nums uppercase tracking-[0.32em] text-neutral-300">
+              {entry.year && <p className="shrink-0 pt-0.5 font-sans text-[9px] font-medium tabular-nums uppercase tracking-[0.32em] text-neutral-300">
                 {entry.year}
-              </p>
+              </p>}
             </div>
           </figcaption>
         </figure>

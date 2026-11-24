@@ -8,6 +8,7 @@ import { createPortal } from "react-dom";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useLocale } from "@/systems/i18n/LocaleProvider";
 import { useDocumentScrollLock } from "@/systems/useDocumentScrollLock";
+import { CreatorCredit, getCreatorLabel } from "@/systems/archive/CreatorCredit";
 import { FolderCard } from "./FolderCard";
 import type { FolderProject, ProjectFolder, ProjectMedia as Media } from "./types";
 import styles from "./folders.module.css";
@@ -175,8 +176,9 @@ export function ProjectDesk({ folders }: { folders: ProjectFolder[] }) {
     if (next) { lastProject.current = next.id; navigate({ folder: folder!.id, project: next.id }, true); }
   };
   const matches = folder?.items.filter((item) =>
-    `${item.title} ${t(item.title)} ${item.creator ?? ""}`.toLowerCase().includes(query.toLowerCase())) ?? [];
+    `${item.title} ${t(item.title)} ${item.creator ?? ""} ${getCreatorLabel(item.creator) ?? ""}`.toLowerCase().includes(query.toLowerCase())) ?? [];
   const media = project?.media[mediaIndex] ?? project?.media[0];
+  const externalCase = project?.caseHref?.startsWith("https://");
   const description = project && locale === "ru" ? project.descriptionRu ?? t(project.description) : project?.description;
 
   const titlebar = (title: string, close: () => void) => <div className={styles.titlebar}>
@@ -226,7 +228,7 @@ export function ProjectDesk({ folders }: { folders: ProjectFolder[] }) {
                   <img src={item.cover} alt="" loading="lazy" draggable={false} width={240} height={180} />
                 </span>
                 <span className={styles.fileTitle}>{t(item.title)}</span>
-                {list && <><span className={styles.fileCreator}>{item.creator}</span><span className={styles.fileYear}>{item.year}</span></>}
+                {list && <><span className={styles.fileCreator}>{getCreatorLabel(item.creator) ?? item.creator}</span><span className={styles.fileYear}>{item.year}</span></>}
               </button>)}
               {!matches.length && <p className={styles.empty}>{t("Nothing found")}</p>}
             </div>
@@ -268,11 +270,12 @@ export function ProjectDesk({ folders }: { folders: ProjectFolder[] }) {
                 <h3 className="font-display font-bold">{t(project.title)}</h3>
                 {description && <p className={styles.description}>{description}</p>}
                 <dl>
-                  {project.creator && <div><dt>{t("Created by")}</dt><dd>{project.creator}</dd></div>}
-                  <div><dt>{t("Year")}</dt><dd>{project.year}</dd></div>
+                  {project.creator && <div><dt>{t("Created by")}</dt><dd><CreatorCredit creator={project.creator} /></dd></div>}
+                  {project.year && <div><dt>{t("Year")}</dt><dd>{project.year}</dd></div>}
                   <div><dt>{t("Folder")}</dt><dd>{t(folder.title)}</dd></div>
                 </dl>
-                {project.caseHref && <a className={styles.caseLink} href={project.caseHref}>
+                {project.caseHref && <a className={styles.caseLink} href={project.caseHref}
+                  target={externalCase ? "_blank" : undefined} rel={externalCase ? "noopener noreferrer" : undefined}>
                   {t("View full case")}<ArrowUpRight size={16} /></a>}
               </aside>
             </div>

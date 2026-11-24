@@ -158,6 +158,14 @@ This layer defines **what archive objects are** — not how they are discovered.
 
 ---
 
+## Portfolio imports
+
+The archive can include a short entry for a team member's external project. The entry contains its creator credit, a real preview, a short English and Russian description and a link to the original case or post. The same record feeds the archive, sitemap and Finder folder.
+
+For a reviewed batch, run `python3 scripts/prepare-archive-intake.py batch.json staging-folder`. Each input row has `slug`, `title`, `creator`, `folderId`, `sourceUrl` and `heroUrl`, plus `summary`, `summaryRu` and a year when known. The script skips catalog matches and stages media and metadata for review. Add the reviewed records to `content/importedArchive.ts` and use the archive upload steps below.
+
+Telegram's public page can hide the caption or media for posts visible in the app. Review the post in Telegram if its web preview is incomplete. A motion case can use `00-hero.mp4` with an optional `poster.webp` registered as `posterSrc`.
+
 ## Preview derivation
 
 Preview ownership is deterministic.

@@ -13,7 +13,7 @@
  *   - Scalable: supports 100–1000+ objects without per-object layout configuration.
  *   - Creator-honest: creator is only set when explicitly known — never inferred.
  *
- * Required fields: slug, title, previewSrc, territories, year.
+ * Required fields: slug, title, previewSrc, territories.
  * Everything else is optional.
  */
 
@@ -42,6 +42,8 @@ export type ArchiveTerritoryId =
   | "archive-research"
   | "atmospheric-fragments";
 
+export type ArchiveFolderId = "3d-motion" | "digital-fashion" | "events" | "graphic-design" | "web" | "experiments";
+
 /** The canonical archive object. */
 export type ArchiveObject = {
   // ── Required ──────────────────────────────────────────────────────────────
@@ -53,8 +55,8 @@ export type ArchiveObject = {
   previewSrc: string;
   /** Archive territories — primary classification, drives browsing filters */
   territories: ArchiveTerritoryId[];
-  /** Year of creation or publication */
-  year: number;
+  /** Year of creation or publication, when confirmed. */
+  year?: number;
 
   // ── Media ─────────────────────────────────────────────────────────────────
   /**
@@ -62,6 +64,8 @@ export type ArchiveObject = {
    * Omit for images (default). Set "video" / "motion" for moving media.
    */
   mediaType?: ArchiveMediaType;
+  /** Still cover used while a motion preview is loading. */
+  posterSrc?: string;
   /**
    * Declared spatial reservation ratio [width, height] for masonry Frame geometry.
    * Must match 00-hero intrinsic ratio when set (canonical data integrity).
@@ -85,8 +89,14 @@ export type ArchiveObject = {
   client?: string;
 
   // ── Editorial ─────────────────────────────────────────────────────────────
+  /** Finder category for projects brought into the archive from an artist’s portfolio. */
+  folderId?: ArchiveFolderId;
+  /** Original case or post published by the artist. */
+  sourceUrl?: string;
   /** Brief editorial note — shown in inspect view metadata */
   summary?: string;
+  /** Russian version of the editorial note. */
+  summaryRu?: string;
 };
 
 /** @deprecated Use ArchiveObject */

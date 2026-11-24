@@ -55,9 +55,10 @@ function project(slug: string, title: string): FolderProject {
   const video = entry.mediaType === "motion" || entry.mediaType === "video";
   const src = resolveArchiveMediaSrc(entry.previewSrc);
   return {
-    id: slug, title, year: String(entry.year), creator: entry.creator,
-    description: descriptions[slug] ?? entry.summary ?? "", descriptionRu: archiveDescriptionsRu[slug],
-    cover: `/project-previews/${slug}.jpg`,
+    id: slug, title, year: entry.year?.toString(), creator: entry.creator,
+    description: descriptions[slug] ?? entry.summary ?? "", descriptionRu: entry.summaryRu ?? archiveDescriptionsRu[slug],
+    cover: entry.posterSrc ? resolveArchiveMediaSrc(entry.posterSrc) : entry.folderId ? src : `/project-previews/${slug}.jpg`,
+    caseHref: entry.sourceUrl,
     media: [
       { src, kind: video ? "video" : "image" },
       ...(galleries[slug] ?? []).map((file) => ({
@@ -104,6 +105,10 @@ export function getProjectFolders(): ProjectFolder[] {
       project("y2k-artifact", "Y2K"),
     ] },
   ];
+  for (const entry of archiveObjects) {
+    const folder = folders.find(({ id }) => id === entry.folderId);
+    folder?.items.push(project(entry.slug, entry.title));
+  }
   const ids = folders.flatMap((folder) => folder.items.map((item) => item.id));
   if (new Set(ids).size !== ids.length || archiveObjects.some((entry) => !ids.includes(entry.slug))) {
     throw new Error("Folder curation must cover every archive project exactly once");

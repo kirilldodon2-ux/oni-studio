@@ -51,7 +51,7 @@ function loadAllAssets(slug: string): ObjectEditorialAsset[] {
 
   const files = fs
     .readdirSync(dir)
-    .filter((f) => IMAGE_EXT.has(path.extname(f).toLowerCase()))
+    .filter((f) => f !== "poster.webp" && IMAGE_EXT.has(path.extname(f).toLowerCase()))
     .sort((a, b) => {
       const oa = parseOrder(a);
       const ob = parseOrder(b);

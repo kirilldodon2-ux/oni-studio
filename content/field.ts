@@ -1,5 +1,6 @@
 import type { ArchiveObject } from "./types";
 import { canonicalPreviewSrc } from "./archiveObjectPaths";
+import { importedArchiveObjects } from "./importedArchive";
 
 export const archiveObjects: ArchiveObject[] = [
   {
@@ -441,6 +442,7 @@ export const archiveObjects: ArchiveObject[] = [
     summary:
       "3D rap-studio spatial fragment — synthetic recording-room environment rendered as atmospheric music-scene residue.",
   },
+  ...importedArchiveObjects,
 ];
 
 export const archiveFieldEntries = archiveObjects;
