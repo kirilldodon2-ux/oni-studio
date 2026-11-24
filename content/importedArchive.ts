@@ -2,6 +2,82 @@ import type { ArchiveObject } from "./types";
 
 export const importedArchiveObjects: ArchiveObject[] = [
   {
+    "slug": "oni-digital",
+    "title": "ONI Digital",
+    "creator": "dodon.one x @minzvr x @zxseeczs x @whytheweakest x @somovdes",
+    "sourceUrl": "https://onidigital.net/",
+    "summary": "A studio website with a showreel and a project archive you can browse through interactive folders.",
+    "summaryRu": "Сайт студии с шоурилом и архивом работ в интерактивных папках.",
+    "folderId": "web",
+    "territories": [
+      "system-architectures",
+      "spatial-identity"
+    ],
+    "archetype": "Work",
+    "previewSrc": "/archive/objects/oni-digital/00-hero.webp",
+    "mediaAspect": [
+      8,
+      5
+    ]
+  },
+  {
+    "slug": "dodon-portfolio",
+    "title": "dodon.one",
+    "creator": "dodon.one",
+    "sourceUrl": "https://dodon.one/",
+    "summary": "Kirill Dodon’s interactive portfolio. Websites, apps and tools appear as objects in a room you can explore.",
+    "summaryRu": "Интерактивное портфолио Кирилла Додона. Сайты, приложения и инструменты собраны в комнате, которую можно исследовать.",
+    "folderId": "web",
+    "territories": [
+      "system-architectures",
+      "spatial-identity"
+    ],
+    "archetype": "Work",
+    "previewSrc": "/archive/objects/dodon-portfolio/00-hero.webp",
+    "mediaAspect": [
+      8,
+      5
+    ]
+  },
+  {
+    "slug": "digibug-portfolio",
+    "title": "German Virre · digibug.eu",
+    "creator": "@minzvr",
+    "sourceUrl": "https://www.digibug.eu/",
+    "summary": "German Virre’s portfolio of product visuals, brand animation and motion graphics, with an animated homepage and a selection of projects.",
+    "summaryRu": "Портфолио Германа Вирре с продуктовой 3D-графикой, анимацией для брендов и моушн-дизайном. На сайте есть анимированный первый экран и подборка проектов.",
+    "folderId": "web",
+    "territories": [
+      "system-architectures",
+      "spatial-identity"
+    ],
+    "archetype": "Work",
+    "previewSrc": "/archive/objects/digibug-portfolio/00-hero.webp",
+    "mediaAspect": [
+      8,
+      5
+    ]
+  },
+  {
+    "slug": "voevodin-portfolio",
+    "title": "Vyacheslav Voevodin · vvoevodin.art",
+    "creator": "@zxseeczs",
+    "sourceUrl": "https://vvoevodin.art/",
+    "summary": "Vyacheslav Voevodin’s portfolio of 3D motion, CGI and art direction, with a video-led homepage and bilingual project pages.",
+    "summaryRu": "Портфолио Вячеслава Воеводина по 3D-моушну, CGI и арт-дирекшну. На первом экране — видео, страницы проектов доступны на русском и английском.",
+    "folderId": "web",
+    "territories": [
+      "system-architectures",
+      "spatial-identity"
+    ],
+    "archetype": "Work",
+    "previewSrc": "/archive/objects/voevodin-portfolio/00-hero.webp",
+    "mediaAspect": [
+      8,
+      5
+    ]
+  },
+  {
     "slug": "somov-lt-scream-emoji",
     "title": "LT SCREAM · Telegram Emoji",
     "creator": "@somovdes",

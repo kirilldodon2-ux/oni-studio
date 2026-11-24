@@ -299,7 +299,7 @@ export function ArchiveInspectView({
                     rel="noopener noreferrer"
                     className="mt-2 inline-flex min-h-6 items-center font-sans text-[11px] text-neutral-600 underline underline-offset-2 hover:text-black focus-visible:outline"
                   >
-                    {t("View full case")}
+                    {t(entry.folderId === "web" ? "Visit website" : "View full case")}
                   </a>
                 )}
               </div>

@@ -276,7 +276,7 @@ export function ProjectDesk({ folders }: { folders: ProjectFolder[] }) {
                 </dl>
                 {project.caseHref && <a className={styles.caseLink} href={project.caseHref}
                   target={externalCase ? "_blank" : undefined} rel={externalCase ? "noopener noreferrer" : undefined}>
-                  {t("View full case")}<ArrowUpRight size={16} /></a>}
+                  {t(folder.id === "web" ? "Visit website" : "View full case")}<ArrowUpRight size={16} /></a>}
               </aside>
             </div>
           </div>}
